@@ -1,22 +1,77 @@
-:root{
-    --color1: #fac608;
-    --color2: #f9e78e;
-    --color3: #5a3e0b;
-    --color4: #84744c;
-    --color5: #c3c4c4;
-}
 
-body{
-    background-color: #f7f7f7;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-main{
-    padding: 1em;
+body {
+    font-family: Arial, sans-serif;
+    padding-top: 150px; 
 }
 
-footer{
-    background-color: #c3c4c4;
-    padding: 1em;
-    
+.header2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background-color: #F7F7F7;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+.BarraTop {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Logo img {
+    display: block;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #FDCD00;
+    color: black;
+    border-radius: 30px;
+}
+
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 0;
+}
+
+
+footer {
+    text-align: center;
+    padding: 30px 0;
+    background-color: #FDCD00;
+    margin-top: 50px;
+}
+
+footer p {
+    margin: 5px 0;
+    font-size: 14px;
 }
