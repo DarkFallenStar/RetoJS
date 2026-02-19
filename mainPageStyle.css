@@ -94,6 +94,8 @@ footer {
 
 .imagenProducto{
     width: 10em;
+    margin-left: 1.45em;
+    border-radius: 1em;
 }
 
 .ponerCarro{
@@ -131,5 +133,11 @@ footer {
 }
 
 #contenido{
-    background-color: red;
+    padding: 1em;
+}
+
+.tarjeta{
+    background-color: #fdf0b3;
+    padding: 1em;
+    border-radius: 1em;
 }
