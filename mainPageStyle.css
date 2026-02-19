@@ -22,8 +22,8 @@ body {
 }
 
 .BarraTop, main {
-    width: 90%;
-    max-width: 69em;
+    width: 95%;
+
     margin: auto;
 
 }
@@ -39,7 +39,7 @@ main {
 }
 
 .logo {
-    height: 8em;
+    height: 7em;
     width: auto;
 }
 
@@ -56,12 +56,13 @@ nav a {
     color: black;
     font-size: 1.2em;
     font-weight: bold;
-    padding: 0.625em 1em;
+    padding: 0.625em 1.5em;
     transition: 0.3s ease;
 }
 
 #icono{
    margin: auto;
+   
 }
 nav a:hover {
     background-color: #FDCD00;
@@ -72,6 +73,7 @@ nav a:hover {
 
 #contenido {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -88,4 +90,46 @@ footer {
         margin: 0.5em 0;
         font-size: 1em;
     }
+}
+
+.imagenProducto{
+    width: 10em;
+}
+
+.ponerCarro{
+    text-decoration: none;
+    color: black;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 0.625em 1em;
+    transition: 0.3s ease;
+    border-radius: 2em; 
+
+}
+.ponerCarro:hover{
+    background-color: #FDCD00;
+    color: black;
+    border-radius: 2em;
+}
+
+.ponerCarro:active{
+    background-color: #b87f25;
+    color: black;
+    border-radius: 2em;
+}
+
+#contador{
+    position: absolute;
+    right: 0.5em;
+    top: 0.2em;
+    border-radius: 2em;
+}
+
+#carrito{
+    position: relative;
+
+}
+
+#contenido{
+    background-color: red;
 }
