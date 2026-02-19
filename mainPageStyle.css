@@ -46,7 +46,10 @@ main {
 nav {
     display: flex;
     gap: 1em;
+    align-items: center;
 }
+
+
 
 nav a {
     text-decoration: none;
@@ -57,6 +60,9 @@ nav a {
     transition: 0.3s ease;
 }
 
+#icono{
+   margin: auto;
+}
 nav a:hover {
     background-color: #FDCD00;
     color: black;
