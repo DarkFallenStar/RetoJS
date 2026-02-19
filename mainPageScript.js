@@ -31,29 +31,36 @@ document.addEventListener('DOMContentLoaded', () => {
         <h2>${producto.nombre}</h2>
         <p>Stock: ${producto.stock}</p>
         <p>Precio: $${producto.precio}</p>
-        <button class="ponerCarro">Agregar a carrito</button>
+        <button class="ponerCarro" id="${producto.id}">Agregar a carrito</button>
         `;
         contenedor.appendChild(tarjeta)
     }
     Productos.forEach(producto => {
         crearTarjeta(producto);
     });
-
-
+    
+    const buttons = document.querySelectorAll(".ponerCarro")   
+    
+    buttons.forEach(butt => {
+        butt.addEventListener('click', addCounter)
+        butt.addEventListener('click', showId)
+    });
+    
+    
 });
+let counter = 0
 
 function addCounter(){
     counter++
     document.getElementById("contador").innerHTML = counter;
+
+    document.getElementById("Pepsi").innerHTML = (pepsi.stock)-1;
 }
-let counter = 0
 
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll(".ponerCarro")   
+function showId(event) {
+  const id = event.target.id
+}
 
-    buttons.forEach(butt => {
-        butt.addEventListener('click', addCounter)
-    });
 
-});
+
 
