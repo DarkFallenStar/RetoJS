@@ -7,7 +7,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    padding-top: 150px; 
+    padding-top: 10em; 
 }
 
 .header2 {
@@ -15,69 +15,71 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 150px;
+    height: 9em;
     background-color: #F7F7F7;
     display: flex;
     align-items: center;
-    z-index: 1000;
 }
 
-.BarraTop {
+.BarraTop, main {
     width: 90%;
-    max-width: 1100px;
+    max-width: 69em;
     margin: auto;
+
+}
+
+.BarraTop{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.Logo img {
-    display: block;
+main {
+    padding: 2em 0;
+}
+
+.logo {
+    height: 8em;
+    width: auto;
 }
 
 nav {
     display: flex;
-    gap: 20px;
+    gap: 1em;
 }
 
 nav a {
     text-decoration: none;
     color: black;
-    font-size: 18px;
+    font-size: 1.2em;
     font-weight: bold;
-    padding: 10px 15px;
+    padding: 0.625em 1em;
     transition: 0.3s ease;
 }
 
 nav a:hover {
     background-color: #FDCD00;
     color: black;
-    border-radius: 30px;
+    border-radius: 2em;
 }
 
 
-main {
-    width: 90%;
-    max-width: 1100px;
-    margin: auto;
-    padding: 40px 0;
-}
 .contenedor{
     width: 30%;
-    max-width: 1100px;
+    max-width: 69em;
     margin: auto;
-    padding: 40px 0;
+    padding: 2em 0;
     background-color: beige;
 }
 
 footer {
     text-align: center;
-    padding: 30px 0;
+    padding: 2em 0;
     background-color: #FDCD00;
-    margin-top: 50px;
-}
+    margin-top: 4em;
 
-footer p {
-    margin: 5px 0;
-    font-size: 14px;
+    p{
+        margin: 0.5em 0;
+        font-size: 1em;
+    }
 }
