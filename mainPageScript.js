@@ -22,12 +22,17 @@ const Temperas =new Producto("Temperas", "Temperas", 8, 2300,"https://tauro.com.
 const Sacapuntas =new Producto("Sacapuntas", "Sacapuntas", 50, 1500,"https://tauro.com.co/wp-content/uploads/2022/01/36733-430x490.jpg");
 const Productos = [papel, tijera, legajador, lapicero,Cinta,Colores,Bond,Borrador,Cuaderno, Grapas, Temperas, Sacapuntas];
 
+const alertaNoti = document.getElementById("alertaNoti")
+
+let timeoutId = null
+
 document.addEventListener('DOMContentLoaded', () => {
 
     function crearTarjeta(producto) {
         const contenedor = document.getElementById("contenido");
         const tarjeta = document.createElement("div");
         tarjeta.classList.add("tarjeta");
+        tarjeta.setAttribute("id", `tarjeta-${producto.id}`);
         tarjeta.innerHTML = `
         <img src="${producto.imagen}" class="imagenProducto">
         <h2>${producto.nombre}</h2>
@@ -46,12 +51,55 @@ document.addEventListener('DOMContentLoaded', () => {
     buttons.forEach(butt => {
         butt.addEventListener('click', addCounter);
     });
-    
+    let resultado= document.getElementById("resultado")
+    let search=document.getElementById("search")
+    buscarProductos()
     
 });
 let counter = 0
 
+function buscarProductos() {
+    search.addEventListener("input", e=>{
+        const inpuText= e.target.value.toLowerCase().trim();
+        const filtro = Productos.filter(i => i.nombre.toLowerCase().startsWith(inpuText))
+        let antifiltro = Productos.filter(i => !i.nombre.toLowerCase().startsWith(inpuText))
+        
+        console.log(antifiltro)
 
+        if (inpuText === ""){
+            filtro.forEach(i => {
+                const id = i.id
+                child = document.getElementById(`${id}`)
+                pDiv = child.parentNode
+                console.log(pDiv);
+                pDiv.classList.remove("remove");
+                pDiv.classList.add("showDiv");
+            })
+        }
+        else{
+            filtro.forEach(i => {
+                const id = i.id
+                child = document.getElementById(`${id}`)
+                pDiv = child.parentNode
+                console.log(pDiv);
+                pDiv.classList.remove("remove");
+                pDiv.classList.add("showDiv");
+            })
+
+            antifiltro.forEach(i => {
+                const id = i.id
+                child = document.getElementById(`${id}`)
+                pDiv = child.parentNode
+                console.log(pDiv);
+                pDiv.classList.add("remove");
+            });
+        }
+  
+
+
+    })
+    
+}
 function addCounter(e){
 
     const boton = e.target;
@@ -64,9 +112,33 @@ function addCounter(e){
 
         counter++
         document.getElementById("contador").innerHTML = counter;
+
+        alertaNoti.classList.remove("hide", "remove", "show");
+        void alertaNoti.offsetWidth;
+        alertaNoti.classList.add("show");
+
+        if (producto.stock <= 0){
+            document.getElementById(`${producto.id}`).innerHTML = `Agotado`;
+
+            
+            ponerCarro.style.display = "none";
+        }
+
+        if (timeoutId) {
+        clearTimeout(timeoutId);
+        }
+        document.getElementById("alertMsj").innerHTML = `Se ha añadido: <strong>${producto.nombre}</strong> al carrito de compras`;
+        timeoutId = setTimeout(() => {
+            alertaNoti.classList.remove("show");
+            alertaNoti.classList.add("hide");
+
+            alertaNoti.addEventListener("animationend", (e) => {
+                alertaNoti.classList.add("remove")
+            }, {
+                once: true,
+            })
+        },3000)
     }
-    else{
-        alert("YA NO QUEDA MAS")
-    }
+    
 
 }
