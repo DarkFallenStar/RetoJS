@@ -9,7 +9,6 @@
 
 body {
     font-family: Arial, sans-serif;
-    padding-top: 10em; 
 }
 
 .header2 {
@@ -38,6 +37,30 @@ main {
     padding: 2em 0;
 }
 
+.buscador{
+    position: sticky;
+}
+
+@media (max-width:1000px) {
+        .BarraTop{
+            flex-direction: column;
+            gap: 1em;
+            padding-top: 1em;
+
+        }
+        .header2 {
+            height: 16em;
+            background-color: #F7F7F7;
+            position: static;
+        }
+
+        nav{
+            position: sticky;
+            top: 0;
+        }
+
+    }
+
 .logo {
     height: 7em;
     width: auto;
@@ -48,6 +71,7 @@ nav {
     display: flex;
     gap: 1em;
     align-items: center;
+    
 
     a{
         text-decoration: none;
@@ -80,16 +104,6 @@ nav {
     }
 }
 
-
-#contenido {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 2em;
-}
-
 footer {
     text-align: center;
     padding: 2em 0;
@@ -103,11 +117,15 @@ footer {
 }
 
 #contenido{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
     padding: 1em;
 
-    @media (max-width:860px) {
-        margin: 0;
-    }
+    
     
     .tarjeta{
         background-color: #fdf0b3;
