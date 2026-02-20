@@ -23,9 +23,7 @@ body {
 
 .BarraTop, main {
     width: 95%;
-
     margin: auto;
-
 }
 
 .BarraTop{
@@ -47,27 +45,36 @@ nav {
     display: flex;
     gap: 1em;
     align-items: center;
-}
 
+    a{
+        text-decoration: none;
+        color: black;
+        font-size: 1.2em;
+        font-weight: bold;
+        padding: 0.625em 1.5em;
+        transition: 0.3s ease;
+    }
 
-
-nav a {
-    text-decoration: none;
-    color: black;
-    font-size: 1.2em;
-    font-weight: bold;
-    padding: 0.625em 1.5em;
-    transition: 0.3s ease;
-}
-
-#icono{
-   margin: auto;
-   
-}
-nav a:hover {
+    a:hover {
     background-color: #FDCD00;
     color: black;
     border-radius: 2em;
+    }
+
+    #icono {
+       margin: auto;
+    }
+
+    #carrito {
+        position: relative;
+
+        #contador {
+            position: absolute;
+            right: 0.5em;
+            top: 0.2em;
+            border-radius: 2em;
+        }
+    }
 }
 
 
@@ -92,53 +99,47 @@ footer {
     }
 }
 
-.imagenProducto{
-    width: 10em;
-    height: 10em;
-    margin-left: 1.45em;
-    border-radius: 1em;
-}
-
-.ponerCarro{
-    text-decoration: none;
-    color: black;
-    font-size: 1.2em;
-    font-weight: bold;
-    padding: 0.625em 1em;
-    transition: 0.3s ease;
-    border-radius: 2em; 
-
-}
-.ponerCarro:hover{
-    background-color: #FDCD00;
-    color: black;
-    border-radius: 2em;
-}
-
-.ponerCarro:active{
-    background-color: #b87f25;
-    color: black;
-    border-radius: 2em;
-}
-
-#contador{
-    position: absolute;
-    right: 0.5em;
-    top: 0.2em;
-    border-radius: 2em;
-}
-
-#carrito{
-    position: relative;
-
-}
-
 #contenido{
     padding: 1em;
-}
-
-.tarjeta{
-    background-color: #fdf0b3;
-    padding: 1em;
-    border-radius: 1em;
+    
+    .tarjeta{
+        background-color: #fdf0b3;
+        padding: 1em;
+        border-radius: 1em;
+        
+        .imagenProducto{
+            width: 10em;
+            height: 10em;
+            margin-left: 1.45em;
+            border-radius: 1em;
+        }
+        
+        p{
+            margin-top: 0.5em;
+            font-size: 1.2em;
+        }
+        
+        .ponerCarro{
+            text-decoration: none;
+            color: black;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 0.625em 1em;
+            transition: 0.3s ease;
+            border-radius: 2em; 
+            margin-top: 1em;
+            
+        }
+        .ponerCarro:hover{
+            background-color: #FDCD00;
+            color: black;
+            border-radius: 2em;
+        }
+        
+        .ponerCarro:active{
+            background-color: #b87f25;
+            color: black;
+            border-radius: 2em;
+        }
+    }
 }
