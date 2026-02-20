@@ -134,7 +134,8 @@ function addCounter(e){
             document.getElementById(`${producto.id}`).innerHTML = `Agotado`;
 
             
-            ponerCarro.style.display = "none";
+            boton.classList.remove("ponerCarro")
+            boton.classList.add("disabledButton")
         }
 
         if (timeoutId) {
