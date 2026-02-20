@@ -96,11 +96,7 @@ function buscarProductos() {
                 pDiv.classList.add("remove");
             });
         }
-  
-
-
     })
-    
 }
 function addCounter(e){
 
@@ -108,7 +104,22 @@ function addCounter(e){
     const idProducto = boton.id
     const producto = Productos.find(i => i.id === idProducto);
 
-    if (producto.stock > 0) {
+    let productoEnCarrito = elementosComprados.find(p => p.id === producto.id);
+
+    if (productoEnCarrito) {
+            productoEnCarrito.cantidad++;
+        } else {
+            elementosComprados.push({
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                imagen: producto.imagen,
+                cantidad: 1
+            }); 
+        }
+        sessionStorage.setItem("carrito", JSON.stringify(elementosComprados));
+
+    if (producto.stock > 0){
         producto.stock--;
         document.getElementById(`stock-${producto.id}`).innerHTML = `Stock: ${producto.stock}`;
 
