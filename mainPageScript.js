@@ -24,6 +24,8 @@ const Productos = [papel, tijera, legajador, lapicero,Cinta,Colores,Bond,Borrado
 
 const alertaNoti = document.getElementById("alertaNoti")
 
+let timeoutId = null
+
 document.addEventListener('DOMContentLoaded', () => {
 
     function crearTarjeta(producto) {
@@ -67,10 +69,15 @@ function addCounter(e){
         counter++
         document.getElementById("contador").innerHTML = counter;
 
-        alertaNoti.classList.toggle("show");
-        alertaNoti.classList.remove("hide", "remove");
+        alertaNoti.classList.remove("hide", "remove", "show");
+        void alertaNoti.offsetWidth;
+        alertaNoti.classList.add("show");
 
-        setTimeout(() => {
+        if (timeoutId) {
+        clearTimeout(timeoutId);
+        }
+        document.getElementById("alertMsj").innerHTML = `Se ha añadido: <strong>${producto.nombre}</strong> al carrito de compras`;
+        timeoutId = setTimeout(() => {
             alertaNoti.classList.remove("show");
             alertaNoti.classList.add("hide");
 
