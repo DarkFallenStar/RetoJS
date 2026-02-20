@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const contenedor = document.getElementById("contenido");
         const tarjeta = document.createElement("div");
         tarjeta.classList.add("tarjeta");
+        tarjeta.setAttribute("id", `tarjeta-${producto.id}`);
         tarjeta.innerHTML = `
         <img src="${producto.imagen}" class="imagenProducto">
         <h2>${producto.nombre}</h2>
@@ -59,9 +60,43 @@ let counter = 0
 
 function buscarProductos() {
     search.addEventListener("input", e=>{
-    const inpuText= e.target.value.toLowerCase().trim();
-    const filtro = Productos.filter(producto => producto.nombre.toLowerCase().startsWith(inpuText))
-    console.log(filtro)
+        const inpuText= e.target.value.toLowerCase().trim();
+        const filtro = Productos.filter(i => i.nombre.toLowerCase().startsWith(inpuText))
+        let antifiltro = Productos.filter(i => !i.nombre.toLowerCase().startsWith(inpuText))
+        
+        console.log(antifiltro)
+
+        if (inpuText === ""){
+            filtro.forEach(i => {
+                const id = i.id
+                child = document.getElementById(`${id}`)
+                pDiv = child.parentNode
+                console.log(pDiv);
+                pDiv.classList.remove("remove");
+                pDiv.classList.add("showDiv");
+            })
+        }
+        else{
+            filtro.forEach(i => {
+                const id = i.id
+                child = document.getElementById(`${id}`)
+                pDiv = child.parentNode
+                console.log(pDiv);
+                pDiv.classList.remove("remove");
+                pDiv.classList.add("showDiv");
+            })
+
+            antifiltro.forEach(i => {
+                const id = i.id
+                child = document.getElementById(`${id}`)
+                pDiv = child.parentNode
+                console.log(pDiv);
+                pDiv.classList.add("remove");
+            });
+        }
+  
+
+
     })
     
 }
@@ -82,6 +117,10 @@ function addCounter(e){
         void alertaNoti.offsetWidth;
         alertaNoti.classList.add("show");
 
+        if (producto.stock <= 0){
+            document.getElementById(`${producto.id}`).innerHTML = `Agotado`;
+        }
+
         if (timeoutId) {
         clearTimeout(timeoutId);
         }
@@ -97,8 +136,6 @@ function addCounter(e){
             })
         },3000)
     }
-    else{
-        alert("YA NO QUEDA MAS")
-    }
+    
 
 }

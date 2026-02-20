@@ -34,31 +34,25 @@ body {
 }
 
 main {
-    padding: 2em 0;
-}
-
-.buscador{
-    position: sticky;
+    padding: 9em 0;
 }
 
 @media (max-width:1000px) {
         .BarraTop{
             flex-direction: column;
             gap: 1em;
-            padding-top: 1em;
 
         }
         .header2 {
             height: 16em;
             background-color: #F7F7F7;
-            position: static;
-        }
-
-        nav{
             position: sticky;
             top: 0;
+            left: 0;
         }
-
+        main {
+            padding: 1em 0;
+        }
     }
 
 .logo {
@@ -102,6 +96,13 @@ nav {
             border-radius: 2em;
         }
     }
+}
+
+input{
+    height: 2em;
+    border-radius: 2em;
+    border: 1px solid black;
+    padding-left: 1em;
 }
 
 footer {
@@ -154,10 +155,9 @@ footer {
             transition: 0.3s ease;
             border-radius: 2em; 
             margin-top: 1em;
-            
-
-            
+            width: 11em;
         }
+
         .ponerCarro:hover{
             background-color: #FDCD00;
             color: black;
@@ -169,7 +169,6 @@ footer {
             background-color: #b87f25;
         }
     }
-
 }
 
 .alertaNoti{
@@ -213,6 +212,10 @@ footer {
 .show{
     display: block;
     animation: slide-in 1s forwards ;
+}
+
+.showDiv{
+    display: block;
 }
 
 .hide{
