@@ -119,6 +119,9 @@ function addCounter(e){
 
         if (producto.stock <= 0){
             document.getElementById(`${producto.id}`).innerHTML = `Agotado`;
+
+            
+            ponerCarro.style.display = "none";
         }
 
         if (timeoutId) {

@@ -40,11 +40,11 @@ main {
 @media (max-width:1000px) {
         .BarraTop{
             flex-direction: column;
-            gap: 1em;
+            gap: 0.5em;
 
         }
         .header2 {
-            height: 16em;
+            height: 15em;
             background-color: #F7F7F7;
             position: sticky;
             top: 0;
