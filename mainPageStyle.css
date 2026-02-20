@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -110,8 +111,9 @@ footer {
         .imagenProducto{
             width: 10em;
             height: 10em;
-            margin-left: 1.45em;
             border-radius: 1em;
+            margin-left: 1.45em;
+            margin-bottom: 0.7em;
         }
         
         p{
@@ -128,12 +130,17 @@ footer {
             transition: 0.3s ease;
             border-radius: 2em; 
             margin-top: 1em;
+
+            .popupText{
+                
+            }
             
         }
         .ponerCarro:hover{
             background-color: #FDCD00;
             color: black;
             border-radius: 2em;
+            cursor: pointer;
         }
         
         .ponerCarro:active{
