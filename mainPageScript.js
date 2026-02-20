@@ -8,13 +8,13 @@ function Producto(id,nombre, stock, precio, imagen) {
     this.imagen = imagen;
 }
 
-const coca= new Producto("Coca-cola", "Coca-cola", 10, 1500, "https://bevgo.com.co/wp-content/uploads/2021/05/1535.jpg");
-const pepsi= new Producto("Pepsi", "Pepsi", 15, 1400, "https://www.pepsicopartners.com/medias/300Wx300H-1-HYK-24760.jpg?context=bWFzdGVyfHJvb3R8MjQxNjB8aW1hZ2UvanBlZ3xhRGcxTDJnMVppOHhNVFV3TURrd09USTVOelk1TkM4ek1EQlhlRE13TUVoZk1TMUlXVXN0TWpRM05qQXVhbkJufDkwMzQzZjNiN2Y2MmJhODU4ZWQ0MGNlMTE1MzBlZDEyZTUyNzljNThjZDRiZTVhOWQ0MmJhNGYyNDAwNjc4ODQ");
-const sprite= new Producto("Sprite", "Sprite", 20, 1300);
-const fanta= new Producto("Fanta", "Fanta", 25, 1200);
-const a= new Producto("Fanta", "Fanta", 25, 1200);
-const b= new Producto("Fanta", "Fanta", 25, 1200);
-const c= new Producto("Fanta", "Fanta", 25, 1200);
+const coca= new Producto("Plastilina", "Plastilina", 10, 8100, "https://tauro.com.co/wp-content/uploads/2020/07/102534.jpg");
+const pepsi= new Producto("Tijera", "Tijera", 15, 6000, "https://officemax.vtexassets.com/arquivos/ids/1347697/35697_1.jpg?v=638158814488200000");
+const sprite= new Producto("Papel", "Resma de papel", 20, 13900, "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRwgrNbzVlGirwrODFNp_FcXGa5zCtJDJouxH469MmlcIOHykzGG4zgWu9H2iU4X6LNJeMjB93q77fbfRv7GNHP1gW1i-7aisWJczLGlwKWJUDRZ7QR33eZ2GI");
+const fanta= new Producto("Lapices", "Lapices x12 Und", 50, 8944,"https://cdn1.totalcommerce.cloud/normaco/product-image/es/lapices-norma-negros-de-grafito-hexagonal-x12-und-2.webp");
+const a= new Producto("Borrador", "Borrador", 90, 550,"https://tauro.com.co/wp-content/uploads/2021/02/10502-300x300.jpg");
+const b= new Producto("Boligrafo", "Boligrafo", 110, 700,"https://tauro.com.co/wp-content/uploads/2019/12/11635.png");
+const c= new Producto("Grapadora", "Grapadora", 25, 1200,"https://tauro.com.co/wp-content/uploads/2022/06/11117.jpg");
 const d= new Producto("Fanta", "Fanta", 25, 1200);
 const e= new Producto("Fanta", "Fanta", 25, 1200);
 
