@@ -2,72 +2,58 @@
     <html>
 
     <head>
-        <title>Papelería Sol y Luna</title>
+        <title>Papelería Papel y Luna</title>
         <link rel="stylesheet" href="mainPageStyle.css">
-        <script src="mainPageScript.js"></script>
+        <script src="mainPageScript.js" defer></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
 
     <body>
-
         <header class="header2">
             <div class="BarraTop">
-                <div class="Logo">
-                    <img src="PapeleriPapelYLuna.jpg" alt="Logo de la papelería" class="logo" width="180" height="150">
+                <div class="LogoContainer">
+                    <img src="PapeleriaPapelYLunaBanner.jpg" alt="Logo de la papelería" class="logo">
                 </div>
+                <form class="buscador" id="buscador" onsubmit="return-false;">
+                <input type="search" name="search" placeholder="Buscar producto" id="search">
+                </form>
                 <nav>
-                    <a href="#">Carrito De Compras</a>
-                    <a href="#">Productos</a>
-                    <a href="#">Contacto</a>
+                    <a href="ShoppingCart.html" id="carrito"><i class="fa-solid fa-basket-shopping" id="icono"></i><p id="contador">0</p></a>
+                    <a href="#contInvi" >Productos</a>
+                    <a href="#footer">Contacto</a>
                 </nav>
             </div>
         </header>
+        <div id="alertaNoti" class="alertaNoti">
+            <div id="alertContent">
 
-        <div class="app">
+                <span id="alertIcon">
+                    <svg class="checkIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10" stroke="#F7F7F7" stroke-width="1.5"></circle> <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#F7F7F7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </span>
+
+                <span id="alertMsj">
+                    
+                </span>
+                
+                <span id="alertClose">
+                    <svg class="closeIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="#0F0F0F"></path> </g></svg>
+                </span>
+            </div>
+        </div>
+        <div id="contInvi"></div>
+        <div class="app" >
             <main>
-                <section>
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-
-
-
-                    Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.Aca van las cosas y los productos y todo lo que se necesite mostrar en la pagina principal, como por
-                    ejemplo los productos mas vendidos, ofertas, etc.
-
+                <section id="contenido">
+                
+                   
                 </section>
             </main>
         </div>
     </body>
-    <footer>
-        <h2>FULL STACK DEVELOPER : CAMILO FAJARDO</h2>
-        <h2>STYLE DEVELOPER : KENNY FANG</h2>
-        <h2>BACKEND DEVELOPER : Juan Manuel</h2>
+    <footer id="footer">
+        <h3>Camilo Fajardo: camilofaac@unisabana.edu.co</h3>
+        <h3>Kenny Fang: kennyface@unisabana.edu.co</h3>
+        <h3>Juan Manuel: juancaspar@unisabana.edu.co</h3>
     </footer>
 
     </html>
