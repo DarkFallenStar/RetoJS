@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-     scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -58,7 +58,8 @@ nav a:hover {
 
 main {}
 
-.containergrande {
+#containergrande {
+
     width: 100%;
     height: 40em;
     color: #F7F7F7;
@@ -68,7 +69,9 @@ main {}
 }
 
 
-.productoslist {
+#listaproductos {
+    padding-top: 1em;
+    border-radius: 2em;
     margin: auto;
     background: #F7F7F7;
     font-weight: bold;
@@ -80,14 +83,18 @@ main {}
     text-align: center;
 }
 
-.payresult{
-    font-weight: bold;
-    margin: auto;
-    background: #F7F7F7;
-    color: black;
-    width: 20em;
-    height: 20em;
-    justify-content: space-around;
-    text-align: center;
 
+.producto {
+    display: flex;
+    flex-direction: row;
+    font-size: medium;
+    justify-content: center;
 }
+
+.producto p{
+    text-align: center;
+    padding-top: 3px;
+}
+
+
+

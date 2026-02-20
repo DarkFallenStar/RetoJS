@@ -22,10 +22,13 @@ const Temperas = new Producto("Temperas", "Temperas", 8, 2300, "https://tauro.co
 const Sacapuntas = new Producto("Sacapuntas", "Sacapuntas", 50, 1500, "https://tauro.com.co/wp-content/uploads/2022/01/36733-430x490.jpg");
 const Productos = [papel, tijera, legajador, lapicero, Cinta, Colores, Bond, Borrador, Cuaderno, Grapas, Temperas, Sacapuntas];
 
-document.addEventListener('DOMContentLoaded', () => {
+const alertaNoti = document.getElementById("alertaNoti")
 
-    let counter = 0
-    const elementosComprados = [];
+let timeoutId = null
+
+let elementosComprados = JSON.parse(sessionStorage.getItem("carrito")) || [];
+
+document.addEventListener('DOMContentLoaded', () => {
 
     function crearTarjeta(producto) {
         const contenedor = document.getElementById("contenido");
@@ -40,41 +43,79 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         contenedor.appendChild(tarjeta)
     }
-
     Productos.forEach(producto => {
         crearTarjeta(producto);
     });
 
-
-    function addCounter(e) {
-
-        const boton = e.target;
-        const idProducto = boton.id
-        const producto = Productos.find(i => i.id === idProducto);
-
-        if (producto.stock > 0) {
-            producto.stock--;
-            document.getElementById(`stock-${producto.id}`).innerHTML = `Stock: ${producto.stock}`;
-
-            counter++
-            document.getElementById("contador").innerHTML = counter;
-        }
-        else {
-            alert("YA NO QUEDA MAS " + idProducto)
-        }
-
-    }
-
-
-
     const buttons = document.querySelectorAll(".ponerCarro")
 
     buttons.forEach(butt => {
-        butt.addEventListener('click', addCounter);
-        butt.addEventListener("")
+        butt.addEventListener('click', Carrito);
     });
-
+    let resultado = document.getElementById("resultado")
+    let search = document.getElementById("search")
+    buscarProductos()
 
 });
+let counter = 0
 
+function buscarProductos() {
+    search.addEventListener("input", e => {
+        const inpuText = e.target.value.toLowerCase().trim();
+        const filtro = Productos.filter(producto => producto.nombre.toLowerCase().startsWith(inpuText))
+        console.log(filtro)
+    })
 
+}
+function Carrito(e) {
+
+    const boton = e.target;
+    const idProducto = boton.id
+    const producto = Productos.find(i => i.id === idProducto);
+
+    if (producto.stock > 0) {
+        producto.stock--;
+        document.getElementById(`stock-${producto.id}`).innerHTML = `Stock: ${producto.stock}`;
+
+        let productoEnCarrito = elementosComprados.find(p => p.id === producto.id);
+
+        if (productoEnCarrito) {
+            productoEnCarrito.cantidad++;
+        } else {
+            elementosComprados.push({
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                imagen: producto.imagen,
+                cantidad: 1
+            }); 
+        }
+        sessionStorage.setItem("carrito", JSON.stringify(elementosComprados));
+
+        counter++
+        document.getElementById("contador").innerHTML = counter;
+
+        alertaNoti.classList.remove("hide", "remove", "show");
+        void alertaNoti.offsetWidth;
+        alertaNoti.classList.add("show");
+
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        document.getElementById("alertMsj").innerHTML = `Se ha añadido: <strong>${producto.nombre}</strong> al carrito de compras`;
+        timeoutId = setTimeout(() => {
+            alertaNoti.classList.remove("show");
+            alertaNoti.classList.add("hide");
+
+            alertaNoti.addEventListener("animationend", (e) => {
+                alertaNoti.classList.add("remove")
+            }, {
+                once: true,
+            })
+        }, 3000)
+    }
+    else {
+        alert("YA NO QUEDA MAS")
+    }
+
+}
