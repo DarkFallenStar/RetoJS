@@ -9,7 +9,7 @@ function Producto(id,nombre, stock, precio, imagen) {
 }
 
 const coca= new Producto("Coca-cola", "Coca-cola", 10, 1500, "https://bevgo.com.co/wp-content/uploads/2021/05/1535.jpg");
-const pepsi= new Producto("Pepsi", "Pepsi", 15, 1400, "https://www.pepsicopartners.com/medias/300Wx300H-1-HYK-24760.jpg?context=bWFzdGVyfHJvb3R8MjQxNjB8aW1hZ2UvanBlZ3xhRGcxTDJnMVppOHhNVFV3TURrd09USTVOelk1TkM4ek1EQlhlRE13TUVoZk1TMUlXVXN0TWpRM05qQXVhbkJufDkwMzQzZjNiN2Y2MmJhODU4ZWQ0MGNlMTE1MzBlZDEyZTUyNzljNThjZDRiZTVhOWQ0MmJhNGYyNDAwNjc4ODQ");
+let pepsi= new Producto("Pepsi", "Pepsi", 15, 1400, "https://www.pepsicopartners.com/medias/300Wx300H-1-HYK-24760.jpg?context=bWFzdGVyfHJvb3R8MjQxNjB8aW1hZ2UvanBlZ3xhRGcxTDJnMVppOHhNVFV3TURrd09USTVOelk1TkM4ek1EQlhlRE13TUVoZk1TMUlXVXN0TWpRM05qQXVhbkJufDkwMzQzZjNiN2Y2MmJhODU4ZWQ0MGNlMTE1MzBlZDEyZTUyNzljNThjZDRiZTVhOWQ0MmJhNGYyNDAwNjc4ODQ");
 const sprite= new Producto("Sprite", "Sprite", 20, 1300);
 const fanta= new Producto("Fanta", "Fanta", 25, 1200);
 const a= new Producto("Fanta", "Fanta", 25, 1200);
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tarjeta.innerHTML = `
         <img src="${producto.imagen}" class="imagenProducto">
         <h2>${producto.nombre}</h2>
-        <p>Stock: ${producto.stock}</p>
+        <p id="stock-${producto.id}">Stock: ${producto.stock}</p>
         <p>Precio: $${producto.precio}</p>
         <button class="ponerCarro" id="${producto.id}">Agregar a carrito</button>
         `;
@@ -42,23 +42,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll(".ponerCarro")   
     
     buttons.forEach(butt => {
-        butt.addEventListener('click', addCounter)
-        butt.addEventListener('click', showId)
+        butt.addEventListener('click', addCounter);
     });
     
     
 });
 let counter = 0
 
-function addCounter(){
-    counter++
-    document.getElementById("contador").innerHTML = counter;
 
-    document.getElementById("Pepsi").innerHTML = (pepsi.stock)-1;
-}
+function addCounter(e){
 
-function showId(event) {
-  const id = event.target.id
+    const boton = e.target;
+    const idProducto = boton.id 
+    const producto = Productos.find(i => i.id === idProducto);
+
+    if (producto.stock > 0){
+        producto.stock--;
+        document.getElementById(`stock-${producto.id}`).innerHTML = `Stock: ${producto.stock}`;
+
+        counter++
+        document.getElementById("contador").innerHTML = counter;
+    }
+    else{
+        alert("YA NO QUEDA MAS")
+    }
+
+
+
+
+
+
+
+
+    
+
 }
 
 
