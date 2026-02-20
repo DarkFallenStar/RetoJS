@@ -67,17 +67,4 @@ function addCounter(e){
         alert("YA NO QUEDA MAS")
     }
 
-
-
-
-
-
-
-
-    
-
 }
-
-
-
-
