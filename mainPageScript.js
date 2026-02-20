@@ -50,12 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
     buttons.forEach(butt => {
         butt.addEventListener('click', addCounter);
     });
-    
+    let resultado= document.getElementById("resultado")
+    let search=document.getElementById("search")
+    buscarProductos()
     
 });
 let counter = 0
 
-
+function buscarProductos() {
+    search.addEventListener("input", e=>{
+    const inpuText= e.target.value.toLowerCase().trim();
+    const filtro = Productos.filter(producto => producto.nombre.toLowerCase().startsWith(inpuText))
+    console.log(filtro)
+    })
+    
+}
 function addCounter(e){
 
     const boton = e.target;
