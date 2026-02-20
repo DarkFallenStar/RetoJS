@@ -26,6 +26,8 @@ const alertaNoti = document.getElementById("alertaNoti")
 
 let timeoutId = null
 
+let elementosComprados = JSON.parse(sessionStorage.getItem("carrito")) || [];
+
 document.addEventListener('DOMContentLoaded', () => {
 
     function crearTarjeta(producto) {
@@ -94,11 +96,7 @@ function buscarProductos() {
                 pDiv.classList.add("remove");
             });
         }
-  
-
-
     })
-    
 }
 function addCounter(e){
 
