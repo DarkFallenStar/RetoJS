@@ -132,10 +132,8 @@ footer {
             transition: 0.3s ease;
             border-radius: 2em; 
             margin-top: 1em;
+            
 
-            .popupText{
-                
-            }
             
         }
         .ponerCarro:hover{
@@ -147,8 +145,77 @@ footer {
         
         .ponerCarro:active{
             background-color: #b87f25;
-            color: black;
-            border-radius: 2em;
         }
+    }
+}
+
+.alertaNoti{
+    position: fixed;
+    display: none;
+    top: 0.5em;
+    right: 0.5em;
+    justify-content: center;
+    border-radius: 0.6em;
+    border: 1px solid #d1d5db;
+    
+    #alertContent{
+        align-items: center;
+        display: flex;
+        gap: 1em;
+        justify-content: center;
+    }
+    
+    #alertIcon{
+        background-color: #17a34a;
+        padding: 0.5em;
+        border-radius: 0.5em 0 0 0.5em;
+    }
+
+    #alertClose{
+        padding: 0.5em;
+    }
+
+    #alertClose:hover{
+        cursor: pointer;
+        background-color: #d1d5db;
+        border-radius: 0 0.5em 0.5em 0;
+    }
+
+    .checkIcon, .closeIcon{
+        width: 1.5em;
+    }
+}
+
+.show{
+    display: block;
+    animation: slide-in 1s forwards ;
+}
+
+.hide{
+    display: block;
+    animation: slide-out 1s forwards ;
+}
+
+.remove{
+    display: none;
+}
+
+@keyframes slide-in {
+    0%{
+        transform: translateX(100%);
+    }
+
+    100%{
+        transform: translateX(0%);
+    }
+}
+
+@keyframes slide-out {
+    0%{
+        transform: translateY(0%);
+    }
+
+    100%{
+        transform: translateY(-150%);
     }
 }

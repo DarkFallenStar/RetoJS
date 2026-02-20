@@ -22,6 +22,8 @@ const Temperas =new Producto("Temperas", "Temperas", 8, 2300,"https://tauro.com.
 const Sacapuntas =new Producto("Sacapuntas", "Sacapuntas", 50, 1500,"https://tauro.com.co/wp-content/uploads/2022/01/36733-430x490.jpg");
 const Productos = [papel, tijera, legajador, lapicero,Cinta,Colores,Bond,Borrador,Cuaderno, Grapas, Temperas, Sacapuntas];
 
+const alertaNoti = document.getElementById("alertaNoti")
+
 document.addEventListener('DOMContentLoaded', () => {
 
     function crearTarjeta(producto) {
@@ -73,6 +75,20 @@ function addCounter(e){
 
         counter++
         document.getElementById("contador").innerHTML = counter;
+
+        alertaNoti.classList.toggle("show");
+        alertaNoti.classList.remove("hide", "remove");
+
+        setTimeout(() => {
+            alertaNoti.classList.remove("show");
+            alertaNoti.classList.add("hide");
+
+            alertaNoti.addEventListener("animationend", (e) => {
+                alertaNoti.classList.add("remove")
+            }, {
+                once: true,
+            })
+        },3000)
     }
     else{
         alert("YA NO QUEDA MAS")
