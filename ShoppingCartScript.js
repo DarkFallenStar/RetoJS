@@ -10,16 +10,18 @@ document.addEventListener("DOMContentLoaded",()=>{
     productoDiv.classList.add("producto");
 
     productoDiv.innerHTML = `
-        <h3>${producto.nombre} : </h2>
-        <p> Precio: $${producto.precio}</p>
-        <p>,  Cantidad: ${producto.cantidad}</p>
+        <img src='${producto.imagen}' class="imagenProducto">
+        <div class="infoProducto">
+        <h2>${producto.nombre}</h2>
+        <p>Precio Unitario: $${producto.precio}</p>
+        <p>Cantidad: ${producto.cantidad}</p>
+        </div>
+        <div class="containerBotones"><button class="quitar" id="${producto.id}">-</button><button class="agregar" id="${producto.id}">+</button>
+        </div>
     `; 
-
     contenedor.appendChild(productoDiv);
+
     total += producto.precio * producto.cantidad;
 });
-
-
-
-    document.getElementById("payresult").innerText = `Total: $${total}`;
+    document.getElementById("payresult").innerHTML = `<h2>Precio Total: $${total}</h2>`;
 });

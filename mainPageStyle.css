@@ -74,12 +74,14 @@ nav {
         font-weight: bold;
         padding: 0.625em 1.5em;
         transition: 0.3s ease;
+        white-space: nowrap 
     }
 
     a:hover {
     background-color: #FDCD00;
     color: black;
     border-radius: 2em;
+    
     }
 
     #icono {
