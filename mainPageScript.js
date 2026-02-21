@@ -8,6 +8,8 @@ function Producto(id,nombre, stock, precio, imagen) {
     this.imagen = imagen;
 }
 
+let counter = 0
+
 const papel= new Producto("papel", "Papel resma", 10, 16000, "https://tauro.com.co/wp-content/uploads/2020/02/Papel-resma-Marfil-430x490.jpg");
 const tijera= new Producto("Tijeras", "Tijeras", 20, 6100, "https://officemax.vtexassets.com/arquivos/ids/1347697/35697_1.jpg?v=638158814488200000");
 const legajador= new Producto("Legajador carta", "Legajador carta", 5, 7750,"https://tauro.com.co/wp-content/uploads/2019/12/83525-430x490.png");
@@ -56,9 +58,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let resultado= document.getElementById("resultado")
     let search=document.getElementById("search")
     buscarProductos()
-    
+    recalcularCounter()
+    document.getElementById("contador").innerHTML = counter;
 });
-let counter = 0
+
+
+function recalcularCounter(){
+    counter = 0
+
+    elementosComprados.forEach(producto => {
+        counter += producto.cantidad
+    });
+
+}
 
 function buscarProductos() {
     search.addEventListener("input", e=>{
@@ -124,11 +136,14 @@ function addCounter(e){
         document.getElementById(`stock-${producto.id}`).innerHTML = `Stock: ${producto.stock}`;
 
         counter++
+        recalcularCounter()
         document.getElementById("contador").innerHTML = counter;
 
         alertaNoti.classList.remove("hide", "remove", "show");
         void alertaNoti.offsetWidth;
         alertaNoti.classList.add("show");
+
+        
 
         if (producto.stock <= 0){
             document.getElementById(`${producto.id}`).innerHTML = `Agotado`;

@@ -95,47 +95,63 @@ nav a:hover {
     flex-direction: row;
     font-size: medium;
     align-items: center;
+    justify-content: space-evenly;
     gap: 3em;
 
     .imagenProducto{
                 width: 10em;
                 height: 10em;
                 border-radius: 1em;
-                margin: 2em 2em 0 2em;
+                margin: 2em 0 0 1.5em;
             }
 
     .infoProducto{
-        width: 12em;
+        width: 14em;
         line-height: 1.8em;
         padding-top: 1.8em;
         font-size: 1.2em;
     }
 
     .containerBotones{
-        margin-top: 1.8em;
-        background-color: rebeccapurple;
+        margin: 1.8em 1.5em 0 0;
+
     }
     
-    .quitar, .agregar{
+    .quitar, .agregar, .eliminar{
         font-size: 1.8em;
-        margin: 1em;
+        margin: 0.6em 0.8em 0.6em 0;
         width: 2em;
         height: 1.4em;
         cursor: pointer;
-
+        border-radius: 2em;
+        box-shadow: 0 0.1em 0em rgb(0, 0, 0, 0.5);
+    }
+    .agregar:hover, .quitar:hover{
+        background-color: #FDCD00;
+        
+    }
+    .agregar:active, .quitar:active, .eliminar:active{
+        background-color: #b87f25;
+        transform: translateY(0.1em);
+        box-shadow: 0 0em 0em rgb(0, 0, 0, 0.5);
     }
 
-    .agregar{
+    .eliminar:hover{
+        background-color: #ff6229
+    }
 
+    .eliminar:active{
+        background-color: red;
     }
 }
 
 #payresult{
     background-color: #FDCD00;
     width: 50em;
-    padding: 2em;
+    padding: 1.5em 2em 1.5em 2em;
     border-radius: 0 0 2em 2em;
     margin: auto auto 10em auto;
+    line-height: 3em;
 
     @media (max-width:840px){
         width: 95%;
