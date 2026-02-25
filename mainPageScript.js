@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tarjeta.classList.add("tarjeta");
         tarjeta.setAttribute("id", `tarjeta-${producto.id}`);
         tarjeta.innerHTML = `
-        <img src="${producto.imagen}" class="imagenProducto">
+        <div class="imgContainer"><img src="${producto.imagen}" class="imagenProducto"></div>
         <h2>${producto.nombre}</h2>
         <p id="stock-${producto.id}">Stock: ${producto.stock}</p>
         <p>Precio: $${producto.precio}</p>
@@ -167,6 +167,13 @@ function addCounter(e){
                 once: true,
             })
         },3000)
+    }
+
+    let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+    if(viewportWidth < 320){
+        document.getElementById("logo").setAttribute("src", `PapeleriaPapelYLunaLogo.jpg`);
+        console.log("papa")
     }
     
 
