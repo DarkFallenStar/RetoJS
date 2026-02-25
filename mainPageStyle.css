@@ -51,7 +51,7 @@ body {
 
 
 .logo {
-    height: 5em;
+    height: 4.5em;
 }
 
 nav {
@@ -224,12 +224,20 @@ p{
 
 @media (max-width:768px) {
     .BarraTop{
-        flex-direction: column;
+        
+    }
+    .logo{
+        height: 3.5em;
+    }
+
+    .buscador{
+        padding: 0;
     }
 }
 
-@media (max-width:320px) {
-    #contenido{
+@media (max-width:480px) {
+
+    /*#contenido{
         flex-direction: column;
         gap: 1em;
     }
@@ -244,7 +252,7 @@ p{
         position: sticky;
         top: 0;
         left: 0;
-    }
+    }*/
 }
 
 /*Esto de abajo es para estados y animaciones*/
