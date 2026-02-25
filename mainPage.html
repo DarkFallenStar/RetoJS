@@ -12,7 +12,11 @@
         <header class="header2">
             <div class="BarraTop">
                 <div class="LogoContainer">
-                    <img src="PapeleriaPapelYLunaBanner.jpg" alt="Logo de la papelería" class="logo" id="logo">
+                     <picture>
+                         <source media="(max-width:1080px)" srcset="PapeleriaPapelYLunaLogo.jpg">
+
+                        <img src="PapeleriaPapelYLunaBanner.jpg" alt="Logo de la papelería" class="logo" id="logo">
+                    </picture> 
                 </div>
                 <form class="buscador" id="buscador" onsubmit="return false;">
                     <input type="search" name="search" placeholder="Buscar producto" id="search">

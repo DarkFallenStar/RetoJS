@@ -168,13 +168,4 @@ function addCounter(e){
             })
         },3000)
     }
-
-    let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-
-    if(viewportWidth < 320){
-        document.getElementById("logo").setAttribute("src", `PapeleriaPapelYLunaLogo.jpg`);
-        console.log("papa")
-    }
-    
-
 }

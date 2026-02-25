@@ -11,7 +11,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.header2 {
+.header2{
     position: fixed;
     top: 0;
     left: 0;
@@ -20,139 +20,83 @@ body {
     background-color: #F7F7F7;
     display: flex;
     align-items: center;
-
-    .BarraTop, main {
-        width: 95%;
-        margin: auto;
-    }
-
-    .BarraTop{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        
-
-        .buscador{
-            padding: 0 2em 0 4em;
-
-            #search{
-                font-size: 1.2em;
-                height: 2em;
-                border-radius: 2em;
-                border: 1px solid black;
-                padding-left: 1em;
-            }
-        }
-
-        .logo {
-            height: 5em;
-            width: auto;
-            align-items: center;
-
-        }
-        nav {
-            display: flex;
-            gap: 1em;
-            align-items: center;
-
-
-            a{
-                text-decoration: none;
-                color: black;
-                font-size: 1.2em;
-                font-weight: bold;
-                padding: 0.625em 1.5em;
-                transition: 0.3s ease;
-                white-space: nowrap 
-            }
-        
-            a:hover {
-            background-color: #FDCD00;
-            color: black;
-            border-radius: 2em;
-            
-            }
-        
-            #icono {
-               margin: auto;
-            }
-        
-            #carrito {
-                position: relative;
-            
-                #contador {
-                    position: absolute;
-                    right: 0.5em;
-                    top: 0.2em;
-                    border-radius: 2em;
-                }
-            }
-        }
-    }
 }
+
+.BarraTop, main {
+    width: 100%;
+    margin: auto;
+    padding: 0 2em 0 2em;
+}
+.BarraTop{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buscador{
+    padding: 0 2em 0 4em;
+}
+
+#search{
+    font-size: 1.2em;
+    height: 2em;
+    border-radius: 2em;
+    border: 1px solid black;
+    padding-left: 1em;
+}
+
+.header2 .logo {
+    height: 5em;
+}
+
+nav {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 0.625em 1.5em;
+    transition: 0.3s ease;
+    white-space: nowrap 
+}
+
+a:hover {
+    background-color: #FDCD00;
+    color: black;
+    border-radius: 2em;
+}
+
+#carrito {
+    position: relative;
+}
+
+#contador {
+    position: absolute;
+    right: 0.4em;
+    top: -0.3em;
+    border-radius: 2em;
+}
+
 
 main {
     padding: 9em 0;
 }
-
-@media (max-width:1080px) {
-        .BarraTop{
-            flex-direction: column;
-            gap: 0.5em;
-            background-color: #F7F7F7;
-            padding: 1em 0 1em 0;
-            width: 100%;
-
-
-        }
-        .header2 {
-            position: sticky;
-            top: 0;
-            left: 0;
-        
-            .logo {
-                height: 4em;
-                width: auto;
-            }
-        }
-        main {
-            padding: 1em 0;
-        }
-    }
-
-@media (max-width:320px) {
-    #contenido{
-        flex-direction: column;
-        .tarjeta{
-            flex-direction: column;
-        }
-    }
-    .header2 {
-            height: 15em;
-            background-color: #F7F7F7;
-            position: sticky;
-            top: 0;
-            left: 0;
-        }
-}
-
-
-
-
-
-
-
 
 footer {
     text-align: center;
     padding: 2em 0;
     background-color: #FDCD00;
     margin-top: 4em;
+}
 
-    p{
-        margin: 0.5em 0;
-        font-size: 1em;
-    }
+p{
+    margin: 0.5em 0;
+    font-size: 1em;
 }
 
 #contenido{
@@ -163,60 +107,57 @@ footer {
     justify-content: center;
     gap: 4em;
     padding: 1em;
+}
 
+
+
+.tarjeta{
+    background-color: #fdf0b3;
+    padding: 1em;
+    border-radius: 1em;
+    border: 1px solid black;
+}
     
+.imgContainer{
+    margin: 0 auto;
+    text-align: center;
+    padding: 0.5em 0.5em 1.5em 0.5em;
+}
+.imagenProducto{
+    width: 12em;
+    height: 10em;
+    border-radius: 1em;
+}
+
+.tarjeta p{
+    margin-top: 0.5em;
+    font-size: 1.2em;
+}
+
+.ponerCarro, .disabledButton{
+    text-decoration: none;
+    color: black;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 0.625em 1em;
     
-    .tarjeta{
-        background-color: #fdf0b3;
-        padding: 1em;
-        border-radius: 1em;
-        border: 1px solid black;
-        
-        .imgContainer{
-            margin: 0 auto;
-            text-align: center;
-            padding: 0.5em 0.5em 1.5em 0.5em;
-        }
-
-        .imagenProducto{
-            width: 12em;
-            height: 10em;
-            border-radius: 1em;
-           
-        }
-        
-        p{
-            margin-top: 0.5em;
-            font-size: 1.2em;
-        }
-        
-        .ponerCarro, .disabledButton{
-            text-decoration: none;
-            color: black;
-            font-size: 1.2em;
-            font-weight: bold;
-            padding: 0.625em 1em;
-            
-            border-radius: 2em; 
-            margin-top: 1em;
-            width: 11em;
-            box-shadow: 0 0.15em 0em rgb(0, 0, 0, 0.5);
-        }
-
-        .ponerCarro:hover{
-            background-color: #FDCD00;
-            color: black;
-            border-radius: 2em;
-            cursor: pointer;
-        }
-        
-        .ponerCarro:active{
-            background-color: #b87f25;
-            margin-top: 1.2em;
-            margin-bottom: -0.2em;
-            box-shadow: 0 0em 0em rgb(0, 0, 0, 0.5);
-        }
-    }
+    border-radius: 2em; 
+    margin-top: 1em;
+    width: 11em;
+    box-shadow: 0 0.15em 0em rgb(0, 0, 0, 0.5);
+}
+.ponerCarro:hover{
+    background-color: #FDCD00;
+    color: black;
+    border-radius: 2em;
+    cursor: pointer;
+}
+    
+.ponerCarro:active{
+    background-color: #b87f25;
+    margin-top: 1.2em;
+    margin-bottom: -0.2em;
+    box-shadow: 0 0em 0em rgb(0, 0, 0, 0.5);
 }
 
 .alertaNoti{
@@ -229,35 +170,92 @@ footer {
     border: 1px solid #d1d5db;
     box-shadow: 0 0.2em 0.4em rgb(0, 0, 0, 0.5);
     background-color: white;
+    transition: 0.3s ease;
+}
     
-    #alertContent{
-        align-items: center;
-        display: flex;
-        gap: 1em;
-        justify-content: center;
+#alertContent{
+    align-items: center;
+    display: flex;
+    gap: 1em;
+    justify-content: center;
+}
+
+#alertIcon{
+    background-color: #17a34a;
+    padding: 0.5em;
+    border-radius: 0.5em 0 0 0.5em;
+}
+
+#alertClose{
+    padding: 0.5em;
+}
+
+#alertClose:hover{
+    cursor: pointer;
+    background-color: #d1d5db;
+    border-radius: 0 0.5em 0.5em 0;
+}
+
+.checkIcon, .closeIcon{
+    width: 1.5em;
+}
+
+@media (max-width:1080px) {
+    .header2 {
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin-left: 0;
+    }
+        
+    .BarraTop{
+        gap: 0.5em;
+        background-color: #F7F7F7;
+        padding: 1em;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .buscador{
+        padding: 0;
+    }
+        
+    .logo {
+        height: 4em;
+        width: auto;
     }
     
-    #alertIcon{
-        background-color: #17a34a;
-        padding: 0.5em;
-        border-radius: 0.5em 0 0 0.5em;
-    }transition: 0.3s ease;
-
-    #alertClose{
-        padding: 0.5em;
+    main {
+        padding: 1em 0;
     }
+}   
 
-    #alertClose:hover{
-        cursor: pointer;
-        background-color: #d1d5db;
-        border-radius: 0 0.5em 0.5em 0;
-    }
-
-    .checkIcon, .closeIcon{
-        width: 1.5em;
+@media (max-width:768px) {
+    .logo {
+        height: 8em;
+        width: auto;
     }
 }
 
+@media (max-width:320px) {
+    #contenido{
+        flex-direction: column;
+    }
+
+    .tarjeta{
+        flex-direction: column;
+    }
+
+    .header2 {
+        height: 15em;
+        background-color: #F7F7F7;
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
+}
 
 /*Esto de abajo es para estados y animaciones*/
 .disabledButton{
