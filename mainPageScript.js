@@ -39,9 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tarjeta.setAttribute("id", `tarjeta-${producto.id}`);
         tarjeta.innerHTML = `
         <div class="imgContainer"><img src="${producto.imagen}" class="imagenProducto"></div>
+        <div class="info">
         <h2>${producto.nombre}</h2>
         <p id="stock-${producto.id}">Stock: ${producto.stock}</p>
         <p>Precio: $${producto.precio}</p>
+        </div>
         <button class="ponerCarro" id="${producto.id}">Agregar a carrito</button>
         `;
         contenedor.appendChild(tarjeta)
@@ -162,7 +164,9 @@ function addCounter(e){
             alertaNoti.classList.add("hide");
 
             alertaNoti.addEventListener("animationend", (e) => {
-                alertaNoti.classList.add("remove")
+                if (alertaNoti.classList.contains("show") == false){
+                    alertaNoti.classList.add("remove")
+                }
             }, {
                 once: true,
             })
