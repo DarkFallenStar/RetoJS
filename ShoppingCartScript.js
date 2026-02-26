@@ -51,8 +51,6 @@ document.addEventListener("DOMContentLoaded",()=>{
         butt.addEventListener("click", eliminarProducto);
     });
 });
-
-
 function recalcularTotales(){
 
     total = 0;
@@ -82,6 +80,7 @@ function eliminarProducto(e){
 
     recalcularTotales();
     document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
+    toggleEmptyMessage();
 }
 
 function remove(e){
@@ -131,3 +130,18 @@ function add(e){
         recalcularTotales()
     }
 }
+
+function toggleEmptyMessage(){
+    const emptyEl = document.getElementById('empty');
+    const payEl = document.getElementById('payresult');
+    if(carrito.length === 0){
+        emptyEl.style.display = 'block';
+        payEl.style.display = 'none';
+    } else {
+        emptyEl.style.display = 'none';
+        payEl.style.display = 'block';
+    }
+}
+
+
+toggleEmptyMessage();

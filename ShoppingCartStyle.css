@@ -89,6 +89,12 @@ nav a:hover {
         width: 95%;
     }
 }
+.CarritoVacio{
+    width: 10em;
+    height: auto;
+    margin-top: 1em;
+}
+
 
 .producto {
     display: flex;
@@ -144,7 +150,17 @@ nav a:hover {
         background-color: red;
     }
 }
+#empty{
+    width: 50em;
+    padding: 1.5em 2em 1.5em 2em;
+    border-radius: 0 0 2em 2em;
+    margin: auto auto auto auto;
+    line-height: 3em;
 
+    @media (max-width:840px){
+        width: 95%;
+    }
+}
 #payresult{
     background-color: #FDCD00;
     width: 50em;

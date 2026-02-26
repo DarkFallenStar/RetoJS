@@ -74,9 +74,9 @@ function recalcularCounter(){
 
 function buscarProductos() {
     search.addEventListener("input", e=>{
-        const inpuText= e.target.value.toLowerCase().trim();
-        const filtro = Productos.filter(i => i.nombre.toLowerCase().startsWith(inpuText))
-        let antifiltro = Productos.filter(i => !i.nombre.toLowerCase().startsWith(inpuText))
+        const inpuText= e.target.value.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const filtro = Productos.filter(i => i.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(inpuText))
+        let antifiltro = Productos.filter(i => !i.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(inpuText))
         
         console.log(antifiltro)
 
