@@ -3,18 +3,18 @@
 // ============================================================
 
 const DEFAULT_PRODUCTS = [
-    { id: "papel",      nombre: "Papel resma",      stock: 10, precio: 16000, imagen: "https://tauro.com.co/wp-content/uploads/2020/02/Papel-resma-Marfil-430x490.jpg" },
-    { id: "Tijeras",    nombre: "Tijeras",           stock: 20, precio: 6100,  imagen: "https://officemax.vtexassets.com/arquivos/ids/1347697/35697_1.jpg?v=638158814488200000" },
-    { id: "Legajador",  nombre: "Legajador carta",   stock: 5,  precio: 7750,  imagen: "https://tauro.com.co/wp-content/uploads/2019/12/83525-430x490.png" },
-    { id: "lapicero",   nombre: "Lapicero",          stock: 99, precio: 700,   imagen: "https://tauro.com.co/wp-content/uploads/2019/12/11635.png" },
-    { id: "Cinta",      nombre: "Cinta",             stock: 32, precio: 5700,  imagen: "https://tauro.com.co/wp-content/uploads/2019/12/131723-430x490.png" },
-    { id: "Colores",    nombre: "Colores",           stock: 18, precio: 1200,  imagen: "https://tauro.com.co/wp-content/uploads/2019/12/139867-300x300.png" },
-    { id: "Bond",       nombre: "Papel bond",        stock: 10, precio: 2400,  imagen: "https://tauro.com.co/wp-content/uploads/2020/05/PAPEL-BOND.jpg" },
-    { id: "Borrador",   nombre: "Borrador",          stock: 210, precio: 550,  imagen: "https://tauro.com.co/wp-content/uploads/2021/02/10502-430x490.jpg" },
-    { id: "Cuaderno",   nombre: "Cuaderno",          stock: 22, precio: 700,   imagen: "https://tauro.com.co/wp-content/uploads/2025/01/CUADERNO-COSIDO-DOBLE-RAYADO-SURT-FAMA-430x490.jpg" },
-    { id: "Grapas",     nombre: "Grapas",            stock: 4,  precio: 4050,  imagen: "https://tauro.com.co/wp-content/uploads/2019/12/11484.png" },
-    { id: "Temperas",   nombre: "Temperas",          stock: 8,  precio: 2300,  imagen: "https://tauro.com.co/wp-content/uploads/2025/01/Tempera-Marfil-6-colores-430x490.jpg" },
-    { id: "Sacapuntas", nombre: "Sacapuntas",        stock: 50, precio: 1500,  imagen: "https://tauro.com.co/wp-content/uploads/2022/01/36733-430x490.jpg" },
+    { id: "papel",      nombre: "Papel resma",      stock: 10,  precio: 16000, costo: 11000, categoria: "Papelería",    imagen: "https://tauro.com.co/wp-content/uploads/2020/02/Papel-resma-Marfil-430x490.jpg" },
+    { id: "Tijeras",    nombre: "Tijeras",           stock: 20,  precio: 6100,  costo: 3200,  categoria: "Papelería",    imagen: "https://officemax.vtexassets.com/arquivos/ids/1347697/35697_1.jpg?v=638158814488200000" },
+    { id: "Legajador",  nombre: "Legajador carta",   stock: 5,   precio: 7750,  costo: 4500,  categoria: "Organización", imagen: "https://tauro.com.co/wp-content/uploads/2019/12/83525-430x490.png" },
+    { id: "lapicero",   nombre: "Lapicero",          stock: 99,  precio: 700,   costo: 350,   categoria: "Escritura",    imagen: "https://tauro.com.co/wp-content/uploads/2019/12/11635.png" },
+    { id: "Cinta",      nombre: "Cinta",             stock: 32,  precio: 5700,  costo: 3000,  categoria: "Papelería",    imagen: "https://tauro.com.co/wp-content/uploads/2019/12/131723-430x490.png" },
+    { id: "Colores",    nombre: "Colores",           stock: 18,  precio: 1200,  costo: 600,   categoria: "Arte",         imagen: "https://tauro.com.co/wp-content/uploads/2019/12/139867-300x300.png" },
+    { id: "Bond",       nombre: "Papel bond",        stock: 10,  precio: 2400,  costo: 1200,  categoria: "Papelería",    imagen: "https://tauro.com.co/wp-content/uploads/2020/05/PAPEL-BOND.jpg" },
+    { id: "Borrador",   nombre: "Borrador",          stock: 210, precio: 550,   costo: 250,   categoria: "Escritura",    imagen: "https://tauro.com.co/wp-content/uploads/2021/02/10502-430x490.jpg" },
+    { id: "Cuaderno",   nombre: "Cuaderno",          stock: 22,  precio: 700,   costo: 400,   categoria: "Organización", imagen: "https://tauro.com.co/wp-content/uploads/2025/01/CUADERNO-COSIDO-DOBLE-RAYADO-SURT-FAMA-430x490.jpg" },
+    { id: "Grapas",     nombre: "Grapas",            stock: 4,   precio: 4050,  costo: 2200,  categoria: "Organización", imagen: "https://tauro.com.co/wp-content/uploads/2019/12/11484.png" },
+    { id: "Temperas",   nombre: "Temperas",          stock: 8,   precio: 2300,  costo: 1100,  categoria: "Arte",         imagen: "https://tauro.com.co/wp-content/uploads/2025/01/Tempera-Marfil-6-colores-430x490.jpg" },
+    { id: "Sacapuntas", nombre: "Sacapuntas",        stock: 50,  precio: 1500,  costo: 700,   categoria: "Escritura",    imagen: "https://tauro.com.co/wp-content/uploads/2022/01/36733-430x490.jpg" },
 ];
 
 function loadProducts() {
@@ -91,6 +91,7 @@ function crearTarjeta(producto) {
     tarjeta.innerHTML = `
         <div class="imgContainer"><img src="${producto.imagen}" class="imagenProducto" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1178/1178479.png'"></div>
         <div class="info">
+            ${producto.categoria ? `<span class="categoriaBadge">${producto.categoria}</span>` : ''}
             <h2>${producto.nombre}</h2>
             <p id="stock-${producto.id}">Stock: ${producto.stock}</p>
             <p>Precio: $${producto.precio.toLocaleString()}</p>
@@ -399,25 +400,43 @@ function resetForm() {
     productForm.reset();
     document.getElementById("editId").value = "";
     document.getElementById("formSubmitBtn").textContent = "Guardar Producto";
+    document.getElementById("formCategoriaCustom").classList.add("remove");
     cancelEditBtn.classList.add("remove");
 }
+
+// Show/hide custom category input when "Otro" is selected
+document.getElementById("formCategoria").addEventListener("change", function () {
+    const customInput = document.getElementById("formCategoriaCustom");
+    if (this.value === "Otro") {
+        customInput.classList.remove("remove");
+        customInput.required = true;
+    } else {
+        customInput.classList.add("remove");
+        customInput.required = false;
+        customInput.value = "";
+    }
+});
 
 productForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const editId = document.getElementById("editId").value;
-    const nombre = document.getElementById("formName").value.trim();
-    const precio = parseInt(document.getElementById("formPrice").value);
-    const stock = parseInt(document.getElementById("formStock").value);
-    const imagen = document.getElementById("formImage").value.trim();
+    const editId   = document.getElementById("editId").value;
+    const nombre   = document.getElementById("formName").value.trim();
+    const precio   = parseInt(document.getElementById("formPrice").value);
+    const stock    = parseInt(document.getElementById("formStock").value);
+    const imagen   = document.getElementById("formImage").value.trim();
+    const costo    = parseInt(document.getElementById("formCosto").value) || 0;
+    const catSel   = document.getElementById("formCategoria").value;
+    const catCustom = document.getElementById("formCategoriaCustom").value.trim();
+    const categoria = catSel === "Otro" ? (catCustom || "Otro") : catSel;
 
-    if (!nombre || !precio || stock < 0 || !imagen) return;
+    if (!nombre || !precio || stock < 0 || !imagen || !categoria) return;
 
     if (editId) {
         // EDIT existing product
         const idx = Productos.findIndex(p => p.id === editId);
         if (idx !== -1) {
-            Productos[idx] = { ...Productos[idx], nombre, precio, stock, imagen };
+            Productos[idx] = { ...Productos[idx], nombre, precio, stock, imagen, costo, categoria };
             saveProducts(Productos);
             showNotification(`Producto <strong>${nombre}</strong> actualizado`);
         }
@@ -428,7 +447,7 @@ productForm.addEventListener("submit", (e) => {
             showNotification("Ya existe un producto con ese nombre", "error");
             return;
         }
-        Productos.push({ id: newId, nombre, precio, stock, imagen });
+        Productos.push({ id: newId, nombre, precio, stock, imagen, costo, categoria });
         saveProducts(Productos);
         showNotification(`Producto <strong>${nombre}</strong> agregado`);
     }
@@ -454,7 +473,12 @@ function renderCrudList() {
             <img src="${p.imagen}" class="crudThumb" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1178/1178479.png'">
             <div class="crudRowInfo">
                 <strong>${p.nombre}</strong>
-                <span>$${p.precio.toLocaleString()}<br>Stock: ${p.stock}</span>
+                ${p.categoria ? `<span class="categoriaBadge categoriaBadgeCrud">${p.categoria}</span>` : ''}
+                <span class="crudPrices">
+                    Precio: $${p.precio.toLocaleString()}
+                    ${p.costo ? ` · Costo: $${p.costo.toLocaleString()} · <span class="margenLabel">Margen: $${(p.precio - p.costo).toLocaleString()}</span>` : ''}
+                </span>
+                <span>Stock: ${p.stock}</span>
             </div>
             <div class="crudRowBtns">
                 <button class="btnEditar" data-id="${p.id}"><i class="fa-solid fa-pen"></i></button>
@@ -473,11 +497,29 @@ function startEdit(e) {
     const prod = Productos.find(p => p.id === id);
     if (!prod) return;
 
-    document.getElementById("editId").value = prod.id;
-    document.getElementById("formName").value = prod.nombre;
+    document.getElementById("editId").value    = prod.id;
+    document.getElementById("formName").value  = prod.nombre;
     document.getElementById("formPrice").value = prod.precio;
     document.getElementById("formStock").value = prod.stock;
     document.getElementById("formImage").value = prod.imagen;
+    document.getElementById("formCosto").value = prod.costo || 0;
+
+    const selectEl    = document.getElementById("formCategoria");
+    const customInput = document.getElementById("formCategoriaCustom");
+    const presetVals  = Array.from(selectEl.options).map(o => o.value);
+    if (prod.categoria && presetVals.includes(prod.categoria)) {
+        selectEl.value = prod.categoria;
+        customInput.classList.add("remove");
+        customInput.required = false;
+    } else if (prod.categoria) {
+        selectEl.value = "Otro";
+        customInput.value = prod.categoria;
+        customInput.classList.remove("remove");
+        customInput.required = true;
+    } else {
+        selectEl.value = "";
+    }
+
     document.getElementById("formSubmitBtn").textContent = "Actualizar Producto";
     cancelEditBtn.classList.remove("remove");
 
@@ -532,18 +574,16 @@ const METODOS_PAGO = [
 
 const ventasOverlay  = document.getElementById("ventasOverlay");
 const closeVentasBtn = document.getElementById("closeVentas");
-
 let metodoPagoSeleccionado = null;
 
 function abrirVentasModal() {
     const total      = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
     const totalUnits = elementosComprados.reduce((s, p) => s + p.cantidad, 0);
 
-    // Resumen de productos
     document.getElementById("ventasResumen").innerHTML = `
         <div class="ventasResumenBox">
             <div class="ventasResumenFila"><span>Productos:</span><strong>${totalUnits}</strong></div>
-            <div class="ventasResumenFila ventasTotal"><span>Total a Pagar:</span><strong>$${total.toLocaleString()}</strong></div>
+            <div class="ventasResumenFila ventasTotalFila"><span>Total a Pagar:</span><strong>$${total.toLocaleString()}</strong></div>
         </div>
         <div class="ventasItemsList">
             ${elementosComprados.map(p =>
@@ -552,10 +592,8 @@ function abrirVentasModal() {
                     <span>$${(p.precio * p.cantidad).toLocaleString()}</span>
                 </div>`
             ).join("")}
-        </div>
-    `;
+        </div>`;
 
-    // Botones de método de pago
     const mc = document.getElementById("metodosContainer");
     mc.innerHTML = "";
     METODOS_PAGO.forEach(m => {
@@ -584,15 +622,13 @@ function cerrarVentasModal() {
 }
 
 closeVentasBtn.addEventListener("click", cerrarVentasModal);
-ventasOverlay.addEventListener("click", (e) => { if (e.target === ventasOverlay) cerrarVentasModal(); });
+ventasOverlay.addEventListener("click", e => { if (e.target === ventasOverlay) cerrarVentasModal(); });
 
 function seleccionarMetodo(idMetodo) {
     metodoPagoSeleccionado = idMetodo;
-
-    // Resaltar botón seleccionado
-    document.querySelectorAll(".metodoPagoBoton").forEach(b => {
-        b.classList.toggle("metodoSeleccionado", b.dataset.id === idMetodo);
-    });
+    document.querySelectorAll(".metodoPagoBoton").forEach(b =>
+        b.classList.toggle("metodoSeleccionado", b.dataset.id === idMetodo)
+    );
 
     const formDiv = document.getElementById("ventasFormPago");
     if (idMetodo === "Efectivo") {
@@ -601,8 +637,7 @@ function seleccionarMetodo(idMetodo) {
                 <h3>Pago en Efectivo</h3>
                 <p>¿Con cuánto vas a pagar?</p>
                 <input type="number" id="montoEfectivo" placeholder="Monto en COP" min="1">
-            </div>
-        `;
+            </div>`;
     } else {
         formDiv.innerHTML = `<p class="metodoTexto">Has seleccionado: <strong>${idMetodo}</strong></p>`;
     }
@@ -617,49 +652,158 @@ function confirmarPago() {
 
     if (metodoPagoSeleccionado === "Efectivo") {
         const monto = parseFloat(document.getElementById("montoEfectivo")?.value);
-        if (!monto || monto <= 0) {
-            showNotification("Por favor ingresa el monto con el que pagas.", "error");
-            return;
-        }
-        if (monto < total) {
-            showNotification(`Monto insuficiente. El total es $${total.toLocaleString()}.`, "error");
-            return;
-        }
+        if (!monto || monto <= 0) { showNotification("Por favor ingresa el monto con el que pagas.", "error"); return; }
+        if (monto < total)        { showNotification(`Monto insuficiente. El total es $${total.toLocaleString()}.`, "error"); return; }
         const vueltas = monto - total;
         const msg = vueltas > 0
             ? `Pago: $${monto.toLocaleString()}\nTotal: $${total.toLocaleString()}\nCambio: $${vueltas.toLocaleString()}`
             : `Pago exacto: $${total.toLocaleString()}`;
         if (!confirm(`¿Confirmar pago?\n${msg}`)) return;
-        finalizarVenta(metodoPagoSeleccionado, total, vueltas);
+        cerrarVentasModal();
+        abrirFacturaModal(metodoPagoSeleccionado, total, vueltas);
 
     } else if (metodoPagoSeleccionado === "Debe") {
         if (!confirm(`¿Registrar esta venta como deuda?\nTotal: $${total.toLocaleString()}`)) return;
-        finalizarVenta(metodoPagoSeleccionado, total, 0);
+        cerrarVentasModal();
+        abrirFacturaModal(metodoPagoSeleccionado, total, 0);
 
     } else if (metodoPagoSeleccionado === "Nequi") {
         if (!confirm(`¿Confirmar pago por Nequi?\nTotal: $${total.toLocaleString()}`)) return;
-        finalizarVenta(metodoPagoSeleccionado, total, 0);
+        cerrarVentasModal();
+        abrirFacturaModal(metodoPagoSeleccionado, total, 0);
 
     } else {
         showNotification("Selecciona un método de pago.", "error");
     }
 }
 
-function finalizarVenta(metodo, total, cambio) {
-    const venta = {
-        id:     Date.now(),
-        fecha:  new Date().toLocaleString("es-CO"),
-        metodo,
-        total,
-        cambio,
-        items:  elementosComprados.map(p => ({ nombre: p.nombre, cantidad: p.cantidad, precio: p.precio }))
-    };
+// ============================================================
+//  FACTURA (BILL) MODAL
+// ============================================================
 
+const facturaOverlay  = document.getElementById("facturaOverlay");
+const closeFacturaBtn = document.getElementById("closeFactura");
+
+// Store pending sale data until client form is submitted
+let ventaPendiente = null;
+
+function abrirFacturaModal(metodo, total, cambio) {
+    ventaPendiente = { metodo, total, cambio, items: [...elementosComprados] };
+
+    // Reset to show client form first
+    document.getElementById("facturaClienteForm").classList.remove("remove");
+    document.getElementById("facturaContenido").classList.add("remove");
+    document.getElementById("facturaAcciones").classList.add("remove");
+    document.getElementById("clienteNombre").value   = "";
+    document.getElementById("clienteTelefono").value = "";
+    document.getElementById("clienteCorreo").value   = "";
+
+    facturaOverlay.classList.remove("remove");
+    void facturaOverlay.offsetWidth;
+    facturaOverlay.classList.add("crudVisible");
+}
+
+function cerrarFacturaModal() {
+    facturaOverlay.classList.remove("crudVisible");
+    facturaOverlay.addEventListener("transitionend", () => {
+        facturaOverlay.classList.add("remove");
+    }, { once: true });
+}
+
+closeFacturaBtn.addEventListener("click", () => {
+    // If closing before generating bill, still finalize the sale
+    if (ventaPendiente) finalizarVenta(ventaPendiente.metodo, ventaPendiente.total, ventaPendiente.cambio, ventaPendiente.items);
+    cerrarFacturaModal();
+});
+facturaOverlay.addEventListener("click", e => {
+    if (e.target === facturaOverlay) {
+        if (ventaPendiente) finalizarVenta(ventaPendiente.metodo, ventaPendiente.total, ventaPendiente.cambio, ventaPendiente.items);
+        cerrarFacturaModal();
+    }
+});
+
+document.getElementById("btnGenerarFactura").addEventListener("click", () => {
+    const nombre   = document.getElementById("clienteNombre").value.trim();
+    const telefono = document.getElementById("clienteTelefono").value.trim();
+    const correo   = document.getElementById("clienteCorreo").value.trim();
+
+    const { metodo, total, cambio, items } = ventaPendiente;
+    const fechaStr = new Date().toLocaleString("es-CO");
+    const facturaNum = "F-" + Date.now().toString().slice(-6);
+
+    const cambioHtml = metodo === "Efectivo" && cambio > 0
+        ? `<tr><td>Cambio entregado</td><td><strong>$${cambio.toLocaleString()}</strong></td></tr>` : "";
+
+    document.getElementById("facturaContenido").innerHTML = `
+        <div class="facturaDoc" id="facturaDoc">
+            <div class="facturaHeader">
+                <div class="facturaLogo">
+                    <h2>Papelería Papel y Luna</h2>
+                    <p>Recibo de Compra</p>
+                </div>
+                <div class="facturaNumFecha">
+                    <p><strong>${facturaNum}</strong></p>
+                    <p>${fechaStr}</p>
+                </div>
+            </div>
+
+            ${nombre || telefono || correo ? `
+            <div class="facturaSeccion">
+                <h4>Datos del Cliente</h4>
+                ${nombre   ? `<p><i class="fa-solid fa-user"></i> ${nombre}</p>` : ""}
+                ${telefono ? `<p><i class="fa-solid fa-phone"></i> ${telefono}</p>` : ""}
+                ${correo   ? `<p><i class="fa-solid fa-envelope"></i> ${correo}</p>` : ""}
+            </div>` : ""}
+
+            <div class="facturaSeccion">
+                <h4>Productos</h4>
+                <table class="facturaTabla">
+                    <thead>
+                        <tr><th>Producto</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr>
+                    </thead>
+                    <tbody>
+                        ${items.map(p => `
+                        <tr>
+                            <td>${p.nombre}</td>
+                            <td>${p.cantidad}</td>
+                            <td>$${p.precio.toLocaleString()}</td>
+                            <td>$${(p.precio * p.cantidad).toLocaleString()}</td>
+                        </tr>`).join("")}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="facturaSeccion facturaTotales">
+                <table class="facturaTabla">
+                    <tr><td>Método de pago</td><td><strong>${metodo}</strong></td></tr>
+                    <tr class="totalRow"><td>TOTAL</td><td><strong>$${total.toLocaleString()}</strong></td></tr>
+                    ${cambioHtml}
+                </table>
+            </div>
+
+            <p class="facturaGracias">¡Gracias por tu compra! 🌙</p>
+        </div>`;
+
+    document.getElementById("facturaClienteForm").classList.add("remove");
+    document.getElementById("facturaContenido").classList.remove("remove");
+    document.getElementById("facturaAcciones").classList.remove("remove");
+
+    // Finalize sale now that bill is generated
+    finalizarVenta(metodo, total, cambio, items, { nombre, telefono, correo, facturaNum });
+    ventaPendiente = null;
+});
+
+function finalizarVenta(metodo, total, cambio, items, cliente = {}) {
+    const venta = {
+        id:      Date.now(),
+        fecha:   new Date().toLocaleString("es-CO"),
+        metodo, total, cambio,
+        items:   items.map(p => ({ nombre: p.nombre, cantidad: p.cantidad, precio: p.precio })),
+        cliente
+    };
     const historial = JSON.parse(localStorage.getItem("historialVentas")) || [];
     historial.unshift(venta);
     localStorage.setItem("historialVentas", JSON.stringify(historial));
-
-    cerrarVentasModal();
 
     const cambioMsg = metodo === "Efectivo" && cambio > 0 ? ` · Cambio: $${cambio.toLocaleString()}` : "";
     showNotification(`¡Venta confirmada! $${total.toLocaleString()} · ${metodo}${cambioMsg}`);
@@ -678,7 +822,7 @@ const historialOverlay  = document.getElementById("historialOverlay");
 const openHistorialBtn  = document.getElementById("openHistorial");
 const closeHistorialBtn = document.getElementById("closeHistorial");
 
-openHistorialBtn.addEventListener("click", (e) => {
+openHistorialBtn.addEventListener("click", e => {
     e.preventDefault();
     historialOverlay.classList.remove("remove");
     void historialOverlay.offsetWidth;
@@ -694,7 +838,7 @@ function cerrarHistorial() {
 }
 
 closeHistorialBtn.addEventListener("click", cerrarHistorial);
-historialOverlay.addEventListener("click", (e) => { if (e.target === historialOverlay) cerrarHistorial(); });
+historialOverlay.addEventListener("click", e => { if (e.target === historialOverlay) cerrarHistorial(); });
 
 function renderHistorial() {
     const historial = JSON.parse(localStorage.getItem("historialVentas")) || [];
@@ -723,8 +867,7 @@ function renderHistorial() {
         </div>
         <div class="historialAcciones">
             <button id="btnBorrarHistorial" class="btnBorrarHistorial"><i class="fa-solid fa-trash"></i> Borrar historial</button>
-        </div>
-    `;
+        </div>`;
     document.getElementById("btnBorrarHistorial").addEventListener("click", borrarHistorial);
 
     listaEl.innerHTML = "";
@@ -734,19 +877,19 @@ function renderHistorial() {
         const metodoIcon = { Efectivo: "💵", Nequi: "📱", Debe: "📋" }[venta.metodo] || "💰";
         const cambioHtml = venta.metodo === "Efectivo" && venta.cambio > 0
             ? `<span class="ventaCambio">Cambio: $${venta.cambio.toLocaleString()}</span>` : "";
+        const clienteHtml = venta.cliente?.nombre
+            ? `<span class="ventaCliente"><i class="fa-solid fa-user"></i> ${venta.cliente.nombre}</span>` : "";
+
         div.innerHTML = `
             <div class="ventaEncabezado">
                 <span class="ventaMetodo">${metodoIcon} ${venta.metodo}</span>
                 <span class="ventaFecha">${venta.fecha}</span>
                 <span class="ventaTotal">$${venta.total.toLocaleString()}</span>
             </div>
-            ${cambioHtml}
+            ${clienteHtml}${cambioHtml}
             <div class="ventaItems">
-                ${venta.items.map(i =>
-                    `<span class="ventaItemChip">${i.nombre} ×${i.cantidad}</span>`
-                ).join("")}
-            </div>
-        `;
+                ${venta.items.map(i => `<span class="ventaItemChip">${i.nombre} ×${i.cantidad}</span>`).join("")}
+            </div>`;
         listaEl.appendChild(div);
     });
 }
