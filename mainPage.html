@@ -1,69 +1,136 @@
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <title>Papelería Papel y Luna</title>
-        <link rel="stylesheet" href="mainPageStyle.css">
-        <script src="mainPageScript.js" defer></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </head>
+<head>
+    <title>Papelería Papel y Luna</title>
+    <link rel="stylesheet" href="mainPageStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="mainPageScript.js" defer></script>
+</head>
 
-    <body>
-        <div id="contInvi"></div>
-        <header class="header2">
-            <div class="BarraTop">
-                <div class="LogoContainer">
-                    <a href="https://www.instagram.com/papeleriapapelyluna/" target="_blank">
-                     <picture>
-                         <source media="(max-width:1020px)" srcset="PapeleriaPapelYLunaLogo.jpg">
+<body>
 
-                        <img src="PapeleriaPapelYLunaBanner.jpg" alt="Logo de la papelería" class="logo" id="logo" title="Ir al Instagram">
-                    </picture> 
-                    </a>
-                </div>
-                <form class="buscador" id="buscador" onsubmit="return false;">
-                    <input type="search" name="search" placeholder="Buscar producto" id="search">
-                </form>
-                <nav>
-                    <a href="ShoppingCart.html" id="carrito" title="Ir al carrito de compras"><i class="fa-solid fa-basket-shopping" id="icono"></i><p id="contador">0</p></a>
-                    <a href="#contInvi" title="Ir a inicio"><span class="txtNav">Ir a Inicio </span><i class="fa-solid fa-house"></i></a>
-                    <a href="#footer" title="Ir a contactos"><span class="txtNav">Contacto </span><i class="fa-solid fa-envelope"></i></a>
-                </nav>
+    <!-- ===================== CRUD MODAL ===================== -->
+    <div id="crudOverlay" class="crudOverlay remove">
+        <div id="crudModal" class="crudModal">
+            <div class="crudHeader">
+                <h2>Gestionar Productos</h2>
+                <button id="closeCrud" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
             </div>
-        </header>
-        <div id="alertaNoti" class="alertaNoti">
-            <div id="alertContent">
 
-                <span id="alertIcon">
-                    <svg class="checkIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10" stroke="#F7F7F7" stroke-width="1.5"></circle> <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#F7F7F7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                </span>
+            <!-- Form -->
+            <form id="productForm" class="crudForm">
+                <input type="hidden" id="editId">
+                <div class="formRow">
+                    <label>Nombre</label>
+                    <input type="text" id="formName" placeholder="Nombre del producto" required>
+                </div>
+                <div class="formRow">
+                    <label>Precio</label>
+                    <input type="number" id="formPrice" placeholder="Precio" required min="1">
+                </div>
+                <div class="formRow">
+                    <label>Stock</label>
+                    <input type="number" id="formStock" placeholder="Stock" required min="0">
+                </div>
+                <div class="formRow">
+                    <label>URL Imagen</label>
+                    <input type="text" id="formImage" placeholder="https://..." required>
+                </div>
+                <div class="formButtons">
+                    <button type="submit" id="formSubmitBtn" class="btnGuardar">Guardar Producto</button>
+                    <button type="button" id="cancelEdit" class="btnCancelar remove">Cancelar Edición</button>
+                </div>
+            </form>
 
-                <span id="alertMsj"></span>
-                
-                <span id="alertClose">
-                    <svg class="closeIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="#0F0F0F"></path> </g></svg>
-                </span>
+            <!-- Product List inside modal -->
+            <div id="crudProductList" class="crudProductList"></div>
+        </div>
+    </div>
+
+    <!-- ===================== HEADER ===================== -->
+    <div id="contInvi"></div>
+    <header class="header2">
+        <div class="BarraTop">
+            <div class="LogoContainer">
+                <a href="https://www.instagram.com/papeleriapapelyluna/" target="_blank">
+                    <picture>
+                        <source media="(max-width:1020px)" srcset="PapeleriaPapelYLunaLogo.jpg">
+                        <img src="PapeleriaPapelYLunaBanner.jpg" alt="Logo de la papelería" class="logo" id="logo"
+                            title="Ir al Instagram">
+                    </picture>
+                </a>
             </div>
+            <form class="buscador" id="buscador" onsubmit="return false;">
+                <input type="search" name="search" placeholder="Buscar producto" id="search">
+            </form>
+            <nav>
+                <a href="#contInvi" id="carritoLink" title="Ver carrito de compras"><i
+                        class="fa-solid fa-basket-shopping" id="icono"></i>
+                    <p id="contador">0</p>
+                </a>
+                <a href="#contInvi" title="Ir a inicio"><span class="txtNav">Inicio </span><i
+                        class="fa-solid fa-house"></i></a>
+                <a href="#footer" title="Ir a contactos"><span class="txtNav">Contacto </span><i
+                        class="fa-solid fa-envelope"></i></a>
+                <a href="#" id="openCrud" title="Gestionar productos"><span class="txtNav">Admin </span><i
+                        class="fa-solid fa-screwdriver-wrench"></i></a>
+            </nav>
         </div>
-        <div class="app" >
-            <main>
-                <div id="buscadorVacio">
-                    <h2>No se encontró lo que buscas</h2>
-                    <p>Prueba mirar otra cosa :)</p>
-                    <img src="https://cdn-icons-png.flaticon.com/512/1178/1178479.png" alt="Nada" class="nadaEncontrado">
-                </div>
-                <section id="contenido">
-                </section>
-                <div id="carroCompras">
-                    coso para carrito
-                </div>
-            </main>
-        </div>
-        <footer id="footer">
-            <h3>Camilo Fajardo: camilofaac@unisabana.edu.co</h3>
-            <h3>Kenny Fang: kennyface@unisabana.edu.co</h3>
-            <h3>Juan Manuel: juancaspar@unisabana.edu.co</h3>
-        </footer>
-    </body>
+    </header>
 
-    </html>
+    <!-- ===================== NOTIFICATION ===================== -->
+    <div id="alertaNoti" class="alertaNoti">
+        <div id="alertContent">
+            <span id="alertIcon">
+                <svg class="checkIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="#F7F7F7" stroke-width="1.5"></circle>
+                    <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#F7F7F7" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </span>
+            <span id="alertMsj"></span>
+            <span id="alertClose">
+                <svg class="closeIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z"
+                        fill="#0F0F0F"></path>
+                </svg>
+            </span>
+        </div>
+    </div>
+
+    <!-- ===================== MAIN ===================== -->
+    <div class="app">
+        <main>
+            <div id="buscadorVacio">
+                <h2>No se encontró lo que buscas</h2>
+                <p>Prueba mirar otra cosa :)</p>
+                <img src="https://cdn-icons-png.flaticon.com/512/1178/1178479.png" alt="Nada" class="nadaEncontrado">
+            </div>
+
+            <section id="contenido"></section>
+
+            <!-- ===================== LIVE CART SIDEBAR ===================== -->
+            <div id="carroCompras">
+                <div id="containergrande">
+                    <div id="listaproductos">
+                        <h1>Carrito de Compras</h1>
+                        <div id="cartItemsContainer"></div>
+                        <div id="empty">
+                            <h2>Tu carrito está vacío</h2>
+                            <p>Agrega productos para verlos aquí.</p>
+                            <img src="https://cdn-icons-png.flaticon.com/512/17568/17568902.png" alt="carritovacio"
+                                class="CarritoVacio">
+                        </div>
+                    </div>
+                    <div id="payresult"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer id="footer">
+        <h3>Camilo Fajardo: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ff9c9e92969390999e9e9cbf8a91968c9e9d9e919ed19a9b8ad19c90">[email&#160;protected]</a></h3>
+        <h3>Ke

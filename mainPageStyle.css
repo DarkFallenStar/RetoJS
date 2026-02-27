@@ -1,49 +1,60 @@
-
+/* ============================================================
+   RESET — minimal, safe reset (no border:none globally)
+   ============================================================ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
-    border: none;
-    transition: 0.3s ease;
 }
 
+/* ============================================================
+   BASE
+   ============================================================ */
 body {
     font-family: Arial, sans-serif;
 }
 
-.header2{
+p {
+    margin: 0.5em 0;
+    font-size: 1em;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header2 {
     position: sticky;
     top: 0;
     left: 0;
     width: 100%;
     padding: 1em 0;
-
     background-color: #F7F7F7;
     display: flex;
     align-items: center;
+    z-index: 100;
 }
 
-.BarraTop, main {
+.BarraTop,
+main {
     width: 100%;
     margin: auto;
-    padding: 0 2em 0 2em;
+    padding: 0 2em;
 }
 
-.BarraTop{
+.BarraTop {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 0.5em;
 }
 
-.buscador{
+.buscador {
     padding: 0 0 0 2em;
     width: 100%;
-
 }
 
-#search{
+#search {
     font-size: 1.2em;
     height: 2em;
     border-radius: 2em;
@@ -51,71 +62,76 @@ body {
     padding-left: 1em;
     width: 100%;
     min-width: 9.4em;
+    transition: border-color 0.2s ease;
 }
 
+#search:focus {
+    outline: none;
+    border-color: #FDCD00;
+    box-shadow: 0 0 0 2px rgba(253, 205, 0, 0.3);
+}
 
 .logo {
     height: 4.5em;
-
 }
 
+/* ============================================================
+   NAV
+   ============================================================ */
 nav {
     display: flex;
     gap: 1em;
     align-items: center;
 }
 
-nav a{
+nav a {
     text-decoration: none;
     color: black;
     font-size: 1.2em;
     font-weight: bold;
     padding: 0.625em 1.5em;
-
-    white-space: nowrap 
+    white-space: nowrap;
+    border-radius: 2em;
+    transition: background-color 0.2s ease;
+    position: relative;
 }
 
 nav a:hover {
     background-color: #FDCD00;
     color: black;
-    border-radius: 2em;
-}
-
-#carrito {
-    position: relative;
 }
 
 #contador {
     position: absolute;
     right: 0.4em;
     top: -0.3em;
-    border-radius: 2em;
+    background-color: #ff6229;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.65em;
+    min-width: 1.4em;
+    height: 1.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    pointer-events: none;
 }
 
-
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
 main {
     margin: 2em 0;
     display: grid;
     grid-template-columns: 2fr 1fr;
+    align-items: start;
 }
 
-#carroCompras{
-    background-color: rebeccapurple;
-}
-
-footer {
-    text-align: center;
-    padding: 2em 0;
-    background-color: #FDCD00;
-    margin-top: 4em;
-}
-
-p{
-    margin: 0.5em 0;
-    font-size: 1em;
-}
-
-#contenido{
+/* ============================================================
+   PRODUCT GRID
+   ============================================================ */
+#contenido {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -126,64 +142,88 @@ p{
     margin: 0 3em;
 }
 
-
-
-.tarjeta{
+.tarjeta {
     background-color: #fdf0b3;
     padding: 1em;
     border-radius: 1em;
     border: 1px solid black;
     flex-grow: 1;
 }
-    
-.imgContainer{
+
+.imgContainer {
     margin: 0.3em auto;
     text-align: center;
-
 }
-.imagenProducto{
-    width:  10em;
+
+.imagenProducto {
+    width: 10em;
     aspect-ratio: 1 / 1;
     border-radius: 1em;
 }
 
-.tarjeta p{
+.tarjeta p {
     margin-top: 0.5em;
     font-size: 1.1em;
 }
 
-.tarjeta h2{
+.tarjeta h2 {
     margin-top: 0.5em;
     font-size: 1.4em;
 }
 
-.ponerCarro, .disabledButton{
+/* ============================================================
+   PRODUCT BUTTONS
+   ============================================================ */
+.ponerCarro,
+.disabledButton {
     text-decoration: none;
     color: black;
     font-size: 1em;
     font-weight: bold;
     padding: 0.625em 1em;
-    border-radius: 2em; 
+    border-radius: 2em;
     margin-top: 0.5em;
     width: 100%;
-    box-shadow: 0 0.15em 0em rgb(0, 0, 0, 0.5);
-    transition: none;
-}
-.ponerCarro:hover{
-    background-color: #FDCD00;
-    color: black;
-    border-radius: 2em;
+    box-shadow: 0 0.15em 0 rgba(0, 0, 0, 0.5);
+    border: none;
     cursor: pointer;
-}
-    
-.ponerCarro:active{
-    background-color: #b87f25;
-    transform: translateY(0.1em);
-    box-shadow: 0 0em 0em rgb(0, 0, 0, 0.5);
-    
+    background-color: #F7F7F7;
 }
 
-.alertaNoti{
+.ponerCarro:hover {
+    background-color: #FDCD00;
+    color: black;
+}
+
+.ponerCarro:active {
+    background-color: #b87f25;
+    transform: translateY(0.1em);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
+}
+
+.disabledButton {
+    background-color: #ff6229;
+    cursor: not-allowed;
+    color: white;
+}
+
+/* ============================================================
+   EMPTY SEARCH MESSAGE
+   ============================================================ */
+#buscadorVacio {
+    display: none;
+    text-align: center;
+    line-height: 2em;
+}
+
+.nadaEncontrado {
+    width: 10em;
+}
+
+/* ============================================================
+   NOTIFICATION
+   ============================================================ */
+.alertaNoti {
     position: fixed;
     display: none;
     top: 0.5em;
@@ -191,122 +231,507 @@ p{
     justify-content: center;
     border-radius: 0.6em;
     border: 1px solid #d1d5db;
-    box-shadow: 0 0.2em 0.4em rgb(0, 0, 0, 0.5);
+    box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.5);
     background-color: white;
-    transition: 0.3s ease;
+    z-index: 9999;
 }
-    
-#alertContent{
+
+#alertContent {
     align-items: center;
     display: flex;
     gap: 1em;
     justify-content: center;
 }
 
-#alertIcon{
+#alertIcon {
     background-color: #17a34a;
     padding: 0.5em;
     border-radius: 0.5em 0 0 0.5em;
+    display: flex;
+    align-items: center;
 }
 
-#alertClose{
+#alertClose {
     padding: 0.5em;
-}
-
-#alertClose:hover{
     cursor: pointer;
-    background-color: #d1d5db;
     border-radius: 0 0.5em 0.5em 0;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
 }
 
-.checkIcon, .closeIcon{
+#alertClose:hover {
+    background-color: #d1d5db;
+}
+
+.checkIcon,
+.closeIcon {
     width: 1.5em;
 }
 
-#buscadorVacio{
-    display: none;
-    text-align: center;    
-    line-height: 2em;
+/* ============================================================
+   CART SIDEBAR
+   ============================================================ */
+#carroCompras {
+    background-color: white;
+    position: sticky;
+    top: 5em;
 }
 
-.nadaEncontrado{
+#containergrande {
+    display: flex;
+    flex-direction: column;
+}
+
+#listaproductos {
+    padding-top: 1px;
+    background: #fdf0b3;
+    text-align: center;
+}
+
+#empty {
+    padding: 1.5em 2em;
+    border-radius: 0 0 2em 2em;
+    margin: auto;
+    line-height: 3em;
+}
+
+.CarritoVacio {
     width: 10em;
+    height: auto;
+    margin-top: 1em;
 }
 
-@media (max-width:1280px) {
+/* ============================================================
+   CART ITEMS
+   ============================================================ */
+.producto {
+    display: flex;
+    flex-direction: column;
+    font-size: medium;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 0.5em;
+    padding: 1em 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.infoProducto {
+    width: 100%;
+    line-height: 1.8em;
+    font-size: 1em;
+    padding: 0 1em;
+    text-align: left;
+}
+
+.containerBotones {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0 1em;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.quitar,
+.agregar,
+.eliminar {
+    font-size: 1.4em;
+    width: 2em;
+    height: 1.6em;
+    cursor: pointer;
+    border-radius: 2em;
+    box-shadow: 0 0.1em 0 rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: #F7F7F7;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.agregar:hover,
+.quitar:hover {
+    background-color: #FDCD00;
+}
+
+.agregar:active,
+.quitar:active {
+    background-color: #b87f25;
+    transform: translateY(0.1em);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
+}
+
+.eliminar:hover {
+    background-color: #ff6229;
+    color: white;
+}
+
+.eliminar:active {
+    background-color: red;
+    transform: translateY(0.1em);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================
+   PAY PANEL
+   ============================================================ */
+#payresult {
+    background-color: #fdf0b3;
+    padding: 1.5em 2em;
+    line-height: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.pagar {
+    font-size: 1.2em;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 2em;
+    padding: 0.6em 1em;
+    background-color: #F7F7F7;
+    box-shadow: 0 0.1em 0 rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.pagar:hover {
+    background-color: #FDCD00;
+}
+
+.pagar:active {
+    background-color: #b87f25;
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+    text-align: center;
+    padding: 2em 0;
+    background-color: #FDCD00;
+    margin-top: 4em;
+}
+
+/* ============================================================
+   ANIMATION STATES
+   ============================================================ */
+.show {
+    display: flex !important;
+    animation: slide-in 0.5s forwards;
+}
+
+.showDiv {
+    display: block !important;
+}
+
+.hide {
+    display: flex !important;
+    animation: slide-out 0.5s forwards;
+}
+
+.remove {
+    display: none !important;
+}
+
+@keyframes slide-in {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(0%); }
+}
+
+@keyframes slide-out {
+    0% { transform: translateY(0%); }
+    100% { transform: translateY(-150%); }
+}
+
+/* ============================================================
+   CRUD MODAL
+   ============================================================ */
+.crudOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 5vh 1em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    overflow-y: auto;
+}
+
+.crudOverlay.crudVisible {
+    opacity: 1;
+}
+
+.crudModal {
+    background: #F7F7F7;
+    border-radius: 1em;
+    width: 100%;
+    max-width: 560px;
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.crudOverlay.crudVisible .crudModal {
+    transform: translateY(0);
+}
+
+.crudHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.crudHeader h2 {
+    font-size: 1.4em;
+}
+
+.closeCrudBtn {
+    background: none;
+    font-size: 1.4em;
+    cursor: pointer;
+    padding: 0.2em 0.5em;
+    border-radius: 0.5em;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.closeCrudBtn:hover {
+    background: #FDCD00;
+}
+
+.crudForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+    background: #fdf0b3;
+    padding: 1em;
+    border-radius: 0.8em;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.formRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+
+.formRow label {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.formRow input {
+    padding: 0.5em 0.8em;
+    border-radius: 0.5em;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formRow input:focus {
+    outline: none;
+    border-color: #FDCD00;
+    box-shadow: 0 0 0 2px rgba(253, 205, 0, 0.3);
+}
+
+.formButtons {
+    display: flex;
+    gap: 0.8em;
+    flex-wrap: wrap;
+}
+
+.btnGuardar {
+    background: #FDCD00;
+    font-weight: bold;
+    padding: 0.6em 1.2em;
+    border-radius: 2em;
+    cursor: pointer;
+    font-size: 1em;
+    border: none;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btnGuardar:hover { background: #e6b800; }
+.btnGuardar:active { transform: translateY(1px); box-shadow: none; }
+
+.btnCancelar {
+    background: #e2e2e2;
+    font-weight: bold;
+    padding: 0.6em 1.2em;
+    border-radius: 2em;
+    cursor: pointer;
+    font-size: 1em;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.btnCancelar:hover { background: #ccc; }
+
+.crudProductList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+}
+
+.crudProductList h3 {
+    font-size: 1.1em;
+    border-bottom: 2px solid #FDCD00;
+    padding-bottom: 0.3em;
+}
+
+.crudRow {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    padding: 0.6em;
+    background: #fdf0b3;
+    border-radius: 0.6em;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.crudThumb {
+    width: 3em;
+    height: 3em;
+    object-fit: cover;
+    border-radius: 0.4em;
+    flex-shrink: 0;
+}
+
+.crudRowInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9em;
+    gap: 0.15em;
+}
+
+.crudRowBtns {
+    display: flex;
+    gap: 0.4em;
+}
+
+.btnEditar,
+.btnEliminar {
+    padding: 0.4em 0.7em;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 0.9em;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    transition: background-color 0.2s ease;
+}
+
+.btnEditar { background: #F7F7F7; }
+.btnEditar:hover { background: #FDCD00; }
+
+.btnEliminar { background: #F7F7F7; }
+.btnEliminar:hover { background: #ff6229; color: white; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1280px) {
     .header2 {
         width: 100%;
         margin-left: 0;
-        padding: 0 0;
+        padding: 0;
     }
-        
-    .BarraTop{
+
+    .BarraTop {
         background-color: #F7F7F7;
         padding: 1em 2em;
         width: 100%;
         margin-left: 0;
         margin-right: 0;
     }
-}   
+}
 
-@media (max-width:768px) {
-    .logo{
+@media (max-width: 900px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    #carroCompras {
+        position: static;
+        border-top: 2px solid #FDCD00;
+        margin-top: 2em;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
         height: 3em;
     }
 
-    .buscador{
+    .buscador {
         padding: 0;
     }
 
-    nav{
+    nav {
         gap: 0.5em;
     }
 
-    main{
+    main {
         padding: 0;
         margin-top: 1em;
     }
 
-    #search{
+    #search {
         font-size: 1em;
-        
     }
 
-    nav a{
+    nav a {
         font-size: 1em;
         padding: 0.625em 0.5em;
     }
-    .BarraTop{
+
+    .BarraTop {
         padding: 1em;
     }
-    
-    .imagenProducto{
+
+    .imagenProducto {
         width: 9em;
     }
 
-    .info{
+    .info {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
         justify-content: center;
         align-items: center;
     }
-    .tarjeta p{
+
+    .tarjeta p {
         margin-bottom: 0;
         font-size: 0.9em;
     }
 
-    .tarjeta h2{
+    .tarjeta h2 {
         font-size: 1.2em;
     }
 
-    .ponerCarro, .disabledButton{
+    .ponerCarro,
+    .disabledButton {
         margin-top: 1em;
         min-height: 3em;
         font-size: 0.85em;
     }
 
-    #contenido{
+    #contenido {
         gap: 1.5em;
         row-gap: 3em;
     }
@@ -314,15 +739,12 @@ p{
     #contador {
         right: -0.3em;
     }
-    #contador p{
-        font-size: 0.75em;
-    }
 }
 
-@media (max-width:480px) {
-    .tarjeta{
+@media (max-width: 480px) {
+    .tarjeta {
         display: flex;
-        flex-direction: row;    
+        flex-direction: row;
         justify-content: center;
         align-items: center;
         text-align: center;
@@ -330,141 +752,73 @@ p{
         padding: 0.2em 0.5em;
         min-width: 16em;
     }
-    .txtNav{
+
+    .txtNav {
         display: none;
     }
-    .logo{
+
+    .logo {
         height: 2em;
     }
-    .BarraTop{
+
+    .BarraTop {
         padding: 0.7em 0.5em;
-        overflow: scroll;
+        gap: 0.2em;
+        overflow-x: auto;
     }
-    .tarjeta p{
+
+    .tarjeta p {
         margin: 0 0 0.3em 0;
         font-size: 0.6em;
     }
 
-    .tarjeta h2{
+    .tarjeta h2 {
         margin-bottom: 0.3em;
         font-size: 0.8em;
     }
 
-    .imagenProducto{
+    .imagenProducto {
         width: 5.5em;
     }
 
-    #contenido{
+    #contenido {
         gap: 1em;
     }
-    
-    #search{
+
+    #search {
         font-size: 0.7em;
     }
-    
-    .info{
+
+    .info {
         flex-shrink: 0.3;
     }
 
-    .ponerCarro, .disabledButton{
+    .ponerCarro,
+    .disabledButton {
         font-size: 0.6em;
+    }
 
-        
-    }
-    .BarraTop{
-        gap: 0.2em;
-    }
-    nav{
+    nav {
         gap: 0;
     }
-    
-    footer{
+
+    footer {
         font-size: 0.5em;
     }
 
-    #buscadorVacio{ 
+    #buscadorVacio {
         line-height: 1em;
     }
 
-    #buscadorVacio p{
+    #buscadorVacio p {
         font-size: 0.7em;
     }
 
-    #buscadorVacio h2{
+    #buscadorVacio h2 {
         font-size: 1em;
     }
 
-    .nadaEncontrado{
+    .nadaEncontrado {
         width: 5em;
-    }
-}
-
-/*Esto de abajo es para estados y animaciones*/
-.disabledButton{
-    background-color: #ff6229;
-}
-
-.show{
-    display: block;
-    animation: slide-in 0.5s forwards ;
-}
-
-.showDiv{
-    display: block;
-    /*animation: slide-inItem 0.3s forwards;*/
-}
-
-/*.hideDiv{
-    animation: slide-outItem 0.4s forwards;
-}
-}*/
-
-.hide{
-    display: block;
-    animation: slide-out 0.5s forwards ;
-}
-.remove{
-    display: none;
-}
-
-@keyframes slide-in {
-    0%{
-        transform: translateX(100%);
-    }
-
-    100%{
-        transform: translateX(0%);
-    }
-}
-
-@keyframes slide-out {
-    0%{
-        transform: translateY(0%);
-    }
-
-    100%{
-        transform: translateY(-150%);
-    }
-}
-
-@keyframes slide-inItem {
-    0%{
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    100%{
-        transform: translateX(0%);
-        opacity: 1;
-    }
-}
-
-@keyframes slide-outItem {
-    0%{
-        transform: translateX(0%);
-        opacity: 1;
-    }
-    100%{
-        transform: translateX(100%);
-        opacity: 0;
     }
 }
