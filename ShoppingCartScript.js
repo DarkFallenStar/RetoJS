@@ -24,21 +24,20 @@ document.addEventListener("DOMContentLoaded",()=>{
             <button class="quitar">-</button>
             <p id="cantidad-${producto.id}">Cantidad: ${producto.cantidad}</p>
             <button class="agregar">+</button>
-        </div>
         <button class="eliminar">X</button>
+        </div>
     `; 
     contenedor.appendChild(productoDiv);
 
     total += producto.precio * producto.cantidad;
     productoTotal += producto.cantidad;
 });
-    document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
+    document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2><button class="pagar">Pagar</button>`;
 
     const buttonAgregar = document.querySelectorAll(".agregar")   
     const buttonQuitar = document.querySelectorAll(".quitar")   
     const buttonEliminar = document.querySelectorAll(".eliminar");
-    const payResultContenedor = document.getElementById("payresult");
-    actualizarPayResult();
+    const buttonPagar = document.querySelectorAll(".pagar");
     
     buttonAgregar.forEach(butt => {
         butt.addEventListener('click', add);
@@ -51,11 +50,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     buttonEliminar.forEach(butt => {
         butt.addEventListener("click", eliminarProducto);
     });
-    payResultContenedor.addEventListener("click", (e) => {
-    if (e.target.classList.contains("pagar")) {
-        pagar();
-    }
-});
+    buttonPagar.forEach(butt => {
+        butt.addEventListener("click", pagar);
+    });
 });
 function recalcularTotales(){
 
@@ -87,19 +84,12 @@ function eliminarProducto(e){
     recalcularTotales();
     document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
     toggleEmptyMessage();
-    actualizarPayResult()
-}
-
-function actualizarPayResult(){
-    recalcularTotales();
-    const payResult = document.getElementById("payresult");
-    payResult.innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2><button class="pagar">Pagar</button>`;
-    toggleEmptyMessage();
 }
 function pagar(){
-    sessionStorage.setItem("totalAPagar", total); 
+    alert(`Gracias por tu compra! Total pagado: $${total}`);
+    carrito = [];
     sessionStorage.setItem("carrito", JSON.stringify(carrito));
-    window.location.href = "Ventas.html";
+    location.reload();
 }
 
 function remove(e){
@@ -114,9 +104,11 @@ function remove(e){
         productoTotal--
         total -= productoCarrito.precio
 
-        actualizarPayResult()
         document.getElementById(`cantidad-${productoCarrito.id}`).innerHTML = `Cantidad: ${productoCarrito.cantidad}`;
+        
         document.getElementById(`precio-${productoCarrito.id}`).innerHTML = `SubTotal: $${productoCarrito.cantidad*productoCarrito.precio}`;
+
+        document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
 
         sessionStorage.setItem("carrito", JSON.stringify(carrito));
         recalcularTotales()
@@ -135,12 +127,16 @@ function add(e){
         productoCarrito.cantidad++;
         productoTotal++
         total += productoCarrito.precio
-        actualizarPayResult()
+
+
         document.getElementById(`cantidad-${productoCarrito.id}`).innerHTML = `Cantidad: ${productoCarrito.cantidad}`;
+        
         document.getElementById(`precio-${productoCarrito.id}`).innerHTML = `SubTotal: $${productoCarrito.cantidad*productoCarrito.precio}`;
+
+        document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
+
         sessionStorage.setItem("carrito", JSON.stringify(carrito));
         recalcularTotales()
-        
     }
 }
 
