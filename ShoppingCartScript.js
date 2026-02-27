@@ -16,17 +16,16 @@ document.addEventListener("DOMContentLoaded",()=>{
     productoDiv.innerHTML = `
         <img src='${producto.imagen}' class="imagenProducto">
         <div class="infoProducto">
-        <h2>${producto.nombre}</h2>
-        <p>Precio Unitario: $${producto.precio}</p>
-        <p id="cantidad-${producto.id}">Cantidad: ${producto.cantidad}</p>
-        <p id="precio-${producto.id}">SubTotal: $${producto.cantidad*producto.precio}</p>
+            <h2>${producto.nombre}</h2>
+            <p>Precio Unitario: $${producto.precio}</p>
+            <p id="precio-${producto.id}">SubTotal: $${producto.cantidad*producto.precio}</p>
         </div>
         <div class="containerBotones" id="${producto.id}">
-        <button class="quitar">-</button>
-        <button class="agregar">+</button>
-        <button class="eliminar">X</button>
-
+            <button class="quitar">-</button>
+            <p id="cantidad-${producto.id}">Cantidad: ${producto.cantidad}</p>
+            <button class="agregar">+</button>
         </div>
+        <button class="eliminar">X</button>
     `; 
     contenedor.appendChild(productoDiv);
 
