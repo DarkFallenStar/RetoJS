@@ -32,6 +32,7 @@ p {
     background-color: #F7F7F7;
     display: flex;
     align-items: center;
+    z-index: 100;
 }
 
 .BarraTop,
@@ -376,6 +377,12 @@ main {
     transform: translateY(0.1em);
     box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
 }
+
+/*.quitar:not(:disabled):hover{
+    background-color: #ff6229;
+    color: white;
+    cursor: not-allowed;
+}*/
 
 .eliminar:hover {
     background-color: #ff6229;

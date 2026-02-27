@@ -254,11 +254,21 @@ function cartAdd(e) {
 
 function cartRemove(e) {
     const id = e.target.dataset.id;
+    const boton = e.target;
     const cartProd = elementosComprados.find(p => p.id === id);
     const prod = Productos.find(p => p.id === id);
 
-    if (!cartProd || cartProd.cantidad <= 1) return;
-
+    if (!cartProd || cartProd.cantidad <= 1) {
+        showNotification(`No se puede dejar en 0`, "error")
+        /*console.log("pepe");
+        boton.classList.add("disabledButton");
+        boton.disabled = true;*/
+        return;
+    }
+    else{
+        /*boton.disabled = false;*/ 
+    }
+    
     cartProd.cantidad--;
     if (prod) {
         prod.stock++;
