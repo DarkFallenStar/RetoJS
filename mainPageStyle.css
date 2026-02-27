@@ -684,6 +684,9 @@ footer {
         margin-left: 0;
         margin-right: 0;
     }
+    .txtNav {
+        display: none;
+    }
 }
 
 @media (max-width: 768px) {
@@ -760,9 +763,7 @@ footer {
         right: -0.3em;
     }
     
-    .txtNav {
-        display: none;
-    }
+
 }
 
 @media (max-width: 480px) {
@@ -810,7 +811,7 @@ footer {
     }
 
     #search {
-        font-size: 0.7em;
+        font-size: 0.6em;
     }
 
     .info {
