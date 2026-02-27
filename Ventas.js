@@ -60,7 +60,7 @@ function mostrarBotonPagar(nombreMetodo) {
             if (nombreMetodo === "Efectivo") {
                 const monto = document.getElementById("montoEfectivo").value;
                 if (!monto || monto <= 0) {
-                    alert("Por favor, dinos con cuánto pagas para darte las vueltas.");
+                    alert("Por favor, dinos con cuánto pagas para darte el cambio.");
                     return;
                 }
                 else if (monto < total) {
@@ -69,14 +69,23 @@ function mostrarBotonPagar(nombreMetodo) {
                 }
                 else if(monto > total) {
                     const vueltas = monto - total;
-                    alert(`El monto ingresado es mayor al total. Tus vueltas son $${vueltas}.`);
+                    alert(`El monto ingresado es mayor al total. El cambio es $${vueltas}.`);
+
+                    if (confirm(`¿Confirmar monto de $${monto}? 
+                        Costo total: $${total}`) == true){
+                        alert(`Pago confirmado ($${monto}).
+                        Costo total: $${total}.
+                        Cambio: $${vueltas}.`);
+                    }
+                    else{
+                        return
+                    }
                 }
-                alert(`Pedido confirmado. Pagas con $${monto}.`);
             } else {
                 alert(`Pedido confirmado con ${nombreMetodo}.`);
             }
             sessionStorage.removeItem("carrito"); 
             sessionStorage.removeItem("totalAPagar");
-            window.location.href = "mainPage.html";
+            window.close();
         };
 }

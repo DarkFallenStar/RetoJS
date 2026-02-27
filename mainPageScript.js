@@ -191,9 +191,9 @@ function renderCart() {
             </div>
             <div class="containerBotones" id="cbtns-${producto.id}">
                 <button class="quitar" data-id="${producto.id}">-</button>
-                <p id="cantidad-${producto.id}">Cantidad: ${producto.cantidad}</p>
+                <p id="cantidad-${producto.id}"><strong>${producto.cantidad}</strong></p>
                 <button class="agregar" data-id="${producto.id}">+</button>
-                <button class="eliminar" data-id="${producto.id}">X</button>
+                <button class="eliminar" data-id="${producto.id}">x</button>
             </div>
         `;
         container.appendChild(div);
@@ -285,6 +285,10 @@ function cartDelete(e) {
     const cartProd = elementosComprados.find(p => p.id === id);
     const prod = Productos.find(p => p.id === id);
 
+    if (confirm("¿Estás segur@ de que quieres quitar este producto del carrito?") == false){
+        return
+    };
+
     if (cartProd && prod) {
         prod.stock += cartProd.cantidad;
         saveProducts(Productos);
@@ -307,6 +311,7 @@ function cartDelete(e) {
 
 function pagar() {
     const total = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    window.open("Ventas.html", "_blank");
     alert(`¡Gracias por tu compra! Total pagado: $${total.toLocaleString()}`);
     elementosComprados = [];
     saveCart();
@@ -453,7 +458,7 @@ function renderCrudList() {
             <img src="${p.imagen}" class="crudThumb" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1178/1178479.png'">
             <div class="crudRowInfo">
                 <strong>${p.nombre}</strong>
-                <span>$${p.precio.toLocaleString()} · Stock: ${p.stock}</span>
+                <span>$${p.precio.toLocaleString()}<br>Stock: ${p.stock}</span>
             </div>
             <div class="crudRowBtns">
                 <button class="btnEditar" data-id="${p.id}"><i class="fa-solid fa-pen"></i></button>

@@ -6,6 +6,7 @@
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
+    transition: 0.3s ease;
 }
 
 /* ============================================================
@@ -16,7 +17,6 @@ body {
 }
 
 p {
-    margin: 0.5em 0;
     font-size: 1em;
 }
 
@@ -32,7 +32,6 @@ p {
     background-color: #F7F7F7;
     display: flex;
     align-items: center;
-    z-index: 100;
 }
 
 .BarraTop,
@@ -50,8 +49,8 @@ main {
 }
 
 .buscador {
-    padding: 0 0 0 2em;
-    width: 100%;
+    padding: 0 0 0 0.5em;
+    flex-grow: 1;
 }
 
 #search {
@@ -80,8 +79,8 @@ main {
    ============================================================ */
 nav {
     display: flex;
-    gap: 1em;
     align-items: center;
+    gap: 1em;
 }
 
 nav a {
@@ -89,7 +88,7 @@ nav a {
     color: black;
     font-size: 1.2em;
     font-weight: bold;
-    padding: 0.625em 1.5em;
+    padding: 0.625em 0.6em;
     white-space: nowrap;
     border-radius: 2em;
     transition: background-color 0.2s ease;
@@ -103,8 +102,8 @@ nav a:hover {
 
 #contador {
     position: absolute;
-    right: 0.4em;
-    top: -0.3em;
+    right: 0em;
+    top: 0;
     background-color: #ff6229;
     color: white;
     border-radius: 50%;
@@ -126,6 +125,7 @@ main {
     display: grid;
     grid-template-columns: 2fr 1fr;
     align-items: start;
+    column-gap: 2em;
 }
 
 /* ============================================================
@@ -139,7 +139,7 @@ main {
     justify-content: center;
     column-gap: 2em;
     row-gap: 4em;
-    margin: 0 3em;
+    margin: 0;
 }
 
 .tarjeta {
@@ -188,14 +188,15 @@ main {
     border: none;
     cursor: pointer;
     background-color: #F7F7F7;
+    transition: none;
 }
 
-.ponerCarro:hover {
+.ponerCarro:not(:disabled):hover {
     background-color: #FDCD00;
     color: black;
 }
 
-.ponerCarro:active {
+.ponerCarro:not(:disabled):active {
     background-color: #b87f25;
     transform: translateY(0.1em);
     box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
@@ -275,7 +276,8 @@ main {
 #carroCompras {
     background-color: white;
     position: sticky;
-    top: 5em;
+    top: 6.75em;
+    border: 1px solid black;
 }
 
 #containergrande {
@@ -284,9 +286,15 @@ main {
 }
 
 #listaproductos {
-    padding-top: 1px;
     background: #fdf0b3;
     text-align: center;
+    padding: 1em;
+}
+
+#listaproductos h1{
+    border-top: 3px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+    font-size: 1.8em;
 }
 
 #empty {
@@ -318,17 +326,23 @@ main {
 
 .infoProducto {
     width: 100%;
-    line-height: 1.8em;
+    line-height: 1.5em;
     font-size: 1em;
     padding: 0 1em;
     text-align: left;
 }
 
+.infoProducto h2{
+    font-size: 1.25em;
+    margin-bottom: 0.3em;
+}
+
 .containerBotones {
     display: flex;
     align-items: center;
-    gap: 0.5em;
-    padding: 0 1em;
+    gap: 1.5em;
+    margin: 0.3em;
+  
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -338,13 +352,17 @@ main {
 .eliminar {
     font-size: 1.4em;
     width: 2em;
-    height: 1.6em;
+    height: 1.2em;
     cursor: pointer;
-    border-radius: 2em;
     box-shadow: 0 0.1em 0 rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.15);
     background-color: #F7F7F7;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    transition: none;
+}
+
+.eliminar{
+    width: 1.4em;
+    height: 1.1em;
 }
 
 .agregar:hover,
@@ -381,7 +399,8 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 1em;
-    border-top: 2px solid rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-top: 4px solid rgba(0, 0, 0, 0.1);
 }
 
 .pagar {
@@ -660,25 +679,19 @@ footer {
     }
 }
 
-@media (max-width: 900px) {
-    main {
-        grid-template-columns: 1fr;
+@media (max-width: 768px) {
+
+    .app{
+        margin: 0 2em;
     }
 
     #carroCompras {
         position: static;
-        border-top: 2px solid #FDCD00;
         margin-top: 2em;
     }
-}
 
-@media (max-width: 768px) {
     .logo {
         height: 3em;
-    }
-
-    .buscador {
-        padding: 0;
     }
 
     nav {
@@ -686,6 +699,7 @@ footer {
     }
 
     main {
+        grid-template-columns: 1fr;
         padding: 0;
         margin-top: 1em;
     }
@@ -696,7 +710,6 @@ footer {
 
     nav a {
         font-size: 1em;
-        padding: 0.625em 0.5em;
     }
 
     .BarraTop {
@@ -739,6 +752,10 @@ footer {
     #contador {
         right: -0.3em;
     }
+    
+    .txtNav {
+        display: none;
+    }
 }
 
 @media (max-width: 480px) {
@@ -752,18 +769,14 @@ footer {
         padding: 0.2em 0.5em;
         min-width: 16em;
     }
-
-    .txtNav {
-        display: none;
-    }
-
+    
     .logo {
         height: 2em;
     }
 
     .BarraTop {
         padding: 0.7em 0.5em;
-        gap: 0.2em;
+        gap: 0;
         overflow-x: auto;
     }
 
@@ -783,6 +796,10 @@ footer {
 
     #contenido {
         gap: 1em;
+    }
+
+    #buscador{
+        padding: 0.2em;
     }
 
     #search {
@@ -820,5 +837,29 @@ footer {
 
     .nadaEncontrado {
         width: 5em;
+    }
+    
+    .app{
+        margin: 0.75em;
+    }
+
+    #listaproductos {
+        padding: 0.8em 0.5em;
+    }
+    
+    #listaproductos h1 {
+        font-size: 1.4em;
+    }
+
+    #listaproductos h2 {
+        font-size: 1.1em;
+    }
+
+    #listaproductos p {
+        font-size: 0.9em;
+    }
+
+    #payresult{
+        font-size: 0.8em;
     }
 }
