@@ -698,6 +698,7 @@ footer {
     #carroCompras {
         position: static;
         margin-top: 2em;
+        grid-row-start: 1;
     }
 
     .logo {
@@ -870,6 +871,7 @@ footer {
     #payresult{
         font-size: 0.8em;
     }
+    
 }
 
 /* ============================================================
