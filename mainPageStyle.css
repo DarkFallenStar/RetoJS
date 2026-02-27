@@ -64,7 +64,7 @@ nav {
     align-items: center;
 }
 
-a{
+nav a{
     text-decoration: none;
     color: black;
     font-size: 1.2em;
@@ -74,7 +74,7 @@ a{
     white-space: nowrap 
 }
 
-a:hover {
+nav a:hover {
     background-color: #FDCD00;
     color: black;
     border-radius: 2em;
@@ -258,7 +258,7 @@ p{
         
     }
 
-    a{
+    nav a{
         font-size: 1em;
         padding: 0.625em 0.5em;
     }
