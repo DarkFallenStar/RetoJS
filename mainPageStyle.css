@@ -29,6 +29,7 @@ body {
     margin: auto;
     padding: 0 2em 0 2em;
 }
+
 .BarraTop{
     display: flex;
     justify-content: space-between;
@@ -94,6 +95,12 @@ nav a:hover {
 
 main {
     margin: 2em 0;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+#carroCompras{
+    background-color: rebeccapurple;
 }
 
 footer {
