@@ -77,8 +77,8 @@ function recalcularCounter(){
 function buscarProductos() {
     search.addEventListener("input", e=>{
         const inpuText= e.target.value.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        const filtro = Productos.filter(i => i.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(inpuText))
-        let antifiltro = Productos.filter(i => !i.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(inpuText))
+        filtro = Productos.filter(i => i.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(inpuText))
+        antifiltro = Productos.filter(i => !i.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(inpuText))
         
         console.log(antifiltro)
 
@@ -110,6 +110,7 @@ function buscarProductos() {
                 pDiv.classList.add("remove");
             });
         }
+        toggleEmptyMessage();
     })
 }
 function addCounter(e){
@@ -171,5 +172,15 @@ function addCounter(e){
                 once: true,
             })
         },3000)
+    }
+}
+
+function toggleEmptyMessage(){
+    const emptyEl = document.getElementById('buscadorVacio');
+
+    if(antifiltro.length == Productos.length){
+        emptyEl.style.display = 'block';
+    } else {
+        emptyEl.style.display = 'none';
     }
 }

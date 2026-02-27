@@ -216,6 +216,16 @@ p{
     width: 1.5em;
 }
 
+#buscadorVacio{
+    display: none;
+    text-align: center;    
+    line-height: 2em;
+}
+
+.nadaEncontrado{
+    width: 10em;
+}
+
 @media (max-width:1280px) {
     .header2 {
         width: 100%;
@@ -233,9 +243,6 @@ p{
 }   
 
 @media (max-width:768px) {
-    p{
-        font-size: 0.75em;
-    }
     .logo{
         height: 3em;
     }
@@ -300,6 +307,9 @@ p{
     #contador {
         right: -0.3em;
     }
+    #contador p{
+        font-size: 0.75em;
+    }
 }
 
 @media (max-width:480px) {
@@ -363,6 +373,22 @@ p{
     
     footer{
         font-size: 0.5em;
+    }
+
+    #buscadorVacio{ 
+        line-height: 1em;
+    }
+
+    #buscadorVacio p{
+        font-size: 0.7em;
+    }
+
+    #buscadorVacio h2{
+        font-size: 1em;
+    }
+
+    .nadaEncontrado{
+        width: 5em;
     }
 }
 
