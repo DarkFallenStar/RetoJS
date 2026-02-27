@@ -875,12 +875,52 @@ footer {
 }
 
 /* ============================================================
+   CATEGORY BADGE
+   ============================================================ */
+.categoriaBadge {
+    display: inline-block;
+    background-color: #FDCD00;
+    color: #333;
+    font-size: 0.68em;
+    font-weight: bold;
+    padding: 0.18em 0.65em;
+    border-radius: 2em;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.3em;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+.categoriaBadgeCrud {
+    font-size: 0.72em;
+    margin: 0.1em 0;
+}
+.crudPrices  { font-size: 0.82em; color: #444; }
+.margenLabel { color: #27ae60; font-weight: bold; }
+.labelHint   { font-size: 0.78em; color: #888; font-weight: normal; }
+
+/* ============================================================
+   CRUD FORM — select for Categoría
+   ============================================================ */
+.formRow select {
+    padding: 0.5em 2.2em 0.5em 0.8em;
+    border-radius: 0.5em;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 0.9em center;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.formRow select:focus {
+    outline: none;
+    border-color: #FDCD00;
+    box-shadow: 0 0 0 2px rgba(253,205,0,0.3);
+}
+#formCategoriaCustom { margin-top: 0.4em; }
+
+/* ============================================================
    VENTAS MODAL
    ============================================================ */
-
-.ventasModal {
-    max-width: 520px;
-}
+.ventasModal { max-width: 520px; }
 
 .ventasResumenBox {
     background: #fdf0b3;
@@ -891,20 +931,13 @@ footer {
     gap: 0.4em;
     border: 1px solid rgba(0,0,0,0.08);
 }
-
-.ventasResumenFila {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1em;
-}
-
-.ventasTotal {
+.ventasResumenFila { display: flex; justify-content: space-between; font-size: 1em; }
+.ventasTotalFila {
     font-size: 1.15em;
     border-top: 1px solid rgba(0,0,0,0.12);
     padding-top: 0.4em;
     margin-top: 0.2em;
 }
-
 .ventasItemsList {
     margin-top: 0.5em;
     display: flex;
@@ -913,7 +946,6 @@ footer {
     max-height: 9em;
     overflow-y: auto;
 }
-
 .ventasItem {
     display: flex;
     justify-content: space-between;
@@ -922,19 +954,8 @@ footer {
     border-bottom: 1px dashed rgba(0,0,0,0.1);
     color: #444;
 }
-
-.ventasMetodos h3 {
-    font-size: 1em;
-    margin-bottom: 0.6em;
-    color: #555;
-}
-
-.metodosContainer {
-    display: flex;
-    justify-content: center;
-    gap: 1em;
-    flex-wrap: wrap;
-}
+.ventasMetodos h3 { font-size: 1em; margin-bottom: 0.6em; color: #555; }
+.metodosContainer { display: flex; justify-content: center; gap: 1em; flex-wrap: wrap; }
 
 .metodoPagoBoton {
     background-color: white;
@@ -947,33 +968,18 @@ footer {
     flex-direction: column;
     align-items: center;
     gap: 0.4em;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
-
-.metodoPagoBoton:hover {
-    background-color: #fffbe6;
-    transform: translateY(-2px);
-}
-
+.metodoPagoBoton:hover { background-color: #fffbe6; transform: translateY(-2px); }
 .metodoPagoBoton.metodoSeleccionado {
     background-color: #FDCD00;
     border-color: #e6b800;
     box-shadow: 0 4px 8px rgba(253,205,0,0.4);
     transform: translateY(-2px);
 }
-
-.imgMetodo {
-    width: 3.5em;
-    height: 3.5em;
-    object-fit: contain;
-}
-
-.metodoPagoBoton p {
-    font-weight: bold;
-    font-size: 0.9em;
-    margin: 0;
-}
+.imgMetodo { width: 3.5em; height: 3.5em; object-fit: contain; }
+.metodoPagoBoton p { font-weight: bold; font-size: 0.9em; margin: 0; }
 
 .pago-efectivo-caja {
     background: #fdf0b3;
@@ -985,10 +991,8 @@ footer {
     gap: 0.5em;
     align-items: center;
 }
-
 .pago-efectivo-caja h3 { font-size: 1em; }
 .pago-efectivo-caja p  { font-size: 0.9em; color: #555; margin: 0; }
-
 .pago-efectivo-caja input {
     height: 2.2em;
     font-size: 1.1em;
@@ -999,20 +1003,12 @@ footer {
     text-align: center;
     transition: border-color 0.2s ease;
 }
-
 .pago-efectivo-caja input:focus {
     outline: none;
     border-color: #FDCD00;
     box-shadow: 0 0 0 2px rgba(253,205,0,0.3);
 }
-
-.metodoTexto {
-    text-align: center;
-    font-size: 0.95em;
-    color: #444;
-    padding: 0.5em 0;
-    margin: 0;
-}
+.metodoTexto { text-align: center; font-size: 0.95em; color: #444; padding: 0.5em 0; margin: 0; }
 
 .btnConfirmarFinal {
     width: 100%;
@@ -1027,34 +1023,115 @@ footer {
     box-shadow: 0 3px 0 #1e8449;
     transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
 }
-
 .btnConfirmarFinal:hover  { background-color: #219150; }
 .btnConfirmarFinal:active { transform: translateY(2px); box-shadow: 0 1px 0 #1e8449; }
 
-.ventasResumen,
-.ventasMetodos,
-.ventasFormPago,
-.ventasAccion {
+.ventasResumen, .ventasMetodos, .ventasFormPago, .ventasAccion {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
 }
 
 /* ============================================================
-   HISTORIAL DE VENTAS MODAL
+   FACTURA (BILL) MODAL
    ============================================================ */
+.facturaModal { max-width: 560px; }
 
-.historialResumenTop {
+.facturaClienteForm {
     display: flex;
     flex-direction: column;
+    gap: 0.8em;
+    background: #fdf0b3;
+    padding: 1em;
+    border-radius: 0.8em;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+.facturaClienteForm h3 { font-size: 1em; }
+
+.facturaContenido {
+    background: white;
+    border-radius: 0.8em;
+    border: 1px solid rgba(0,0,0,0.12);
+    overflow: hidden;
+}
+.facturaDoc { padding: 1.5em; font-size: 0.92em; }
+
+.facturaHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 3px solid #FDCD00;
+    padding-bottom: 0.8em;
+    margin-bottom: 1em;
+    flex-wrap: wrap;
     gap: 0.5em;
 }
+.facturaLogo h2 { font-size: 1.2em; color: #222; }
+.facturaLogo p  { font-size: 0.8em; color: #888; margin: 0; }
+.facturaNumFecha { text-align: right; }
+.facturaNumFecha p { font-size: 0.82em; color: #666; margin: 0; }
 
-.historialStats {
-    display: flex;
-    gap: 0.8em;
-    flex-wrap: wrap;
+.facturaSeccion { margin-bottom: 1em; }
+.facturaSeccion h4 {
+    font-size: 0.82em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.2em;
+    margin-bottom: 0.5em;
 }
+.facturaSeccion p { font-size: 0.9em; margin: 0.2em 0; color: #444; }
+.facturaSeccion p i { margin-right: 0.4em; color: #888; }
+
+.facturaTabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88em;
+}
+.facturaTabla th {
+    background: #fdf0b3;
+    padding: 0.4em 0.6em;
+    text-align: left;
+    font-size: 0.8em;
+    color: #555;
+}
+.facturaTabla td {
+    padding: 0.4em 0.6em;
+    border-bottom: 1px solid #f0f0f0;
+}
+.facturaTotales .facturaTabla td {
+    padding: 0.35em 0.6em;
+    font-size: 0.92em;
+}
+.totalRow td { font-size: 1.05em; border-top: 2px solid #FDCD00; padding-top: 0.5em; }
+
+.facturaGracias {
+    text-align: center;
+    font-size: 0.9em;
+    color: #888;
+    margin-top: 1em;
+    padding-top: 0.8em;
+    border-top: 1px dashed #ccc;
+}
+
+.facturaAcciones { display: flex; flex-direction: column; gap: 0.5em; }
+
+/* Print — hide everything except the bill */
+@media print {
+    body > *:not(#facturaOverlay) { display: none !important; }
+    #facturaOverlay { position: static !important; background: none !important; padding: 0 !important; }
+    .crudModal { box-shadow: none !important; border: none !important; max-height: none !important; overflow: visible !important; }
+    .crudHeader, .facturaClienteForm, .facturaAcciones { display: none !important; }
+    .facturaContenido { display: block !important; border: none !important; }
+    .facturaDoc { padding: 0 !important; }
+}
+
+/* ============================================================
+   HISTORIAL DE VENTAS MODAL
+   ============================================================ */
+.historialResumenTop { display: flex; flex-direction: column; gap: 0.5em; }
+.historialStats      { display: flex; gap: 0.8em; flex-wrap: wrap; }
 
 .statBox {
     flex: 1;
@@ -1068,21 +1145,14 @@ footer {
     gap: 0.2em;
     border: 1px solid rgba(0,0,0,0.08);
 }
-
 .statBox span   { font-size: 0.8em; color: #666; }
 .statBox strong { font-size: 1.3em; }
+.statIngresos          { border-color: #27ae60; }
+.statIngresos strong   { color: #27ae60; }
+.statDeudas            { border-color: #e67e22; }
+.statDeudas strong     { color: #e67e22; }
 
-.statIngresos         { border-color: #27ae60; }
-.statIngresos strong  { color: #27ae60; }
-
-.statDeudas           { border-color: #e67e22; }
-.statDeudas strong    { color: #e67e22; }
-
-.historialAcciones {
-    display: flex;
-    justify-content: flex-end;
-}
-
+.historialAcciones { display: flex; justify-content: flex-end; }
 .btnBorrarHistorial {
     font-size: 0.85em;
     padding: 0.4em 1em;
@@ -1092,12 +1162,7 @@ footer {
     border: 1px solid #ccc;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
-
-.btnBorrarHistorial:hover {
-    background: #ff6229;
-    color: white;
-    border-color: #ff6229;
-}
+.btnBorrarHistorial:hover { background: #ff6229; color: white; border-color: #ff6229; }
 
 .historialLista {
     display: flex;
@@ -1106,7 +1171,6 @@ footer {
     max-height: 55vh;
     overflow-y: auto;
 }
-
 .historialVenta {
     background: #fdf0b3;
     border-radius: 0.7em;
@@ -1116,7 +1180,6 @@ footer {
     flex-direction: column;
     gap: 0.35em;
 }
-
 .ventaEncabezado {
     display: flex;
     justify-content: space-between;
@@ -1124,18 +1187,13 @@ footer {
     flex-wrap: wrap;
     gap: 0.3em;
 }
-
 .ventaMetodo  { font-weight: bold; font-size: 0.95em; }
 .ventaFecha   { font-size: 0.78em; color: #777; }
 .ventaTotal   { font-weight: bold; font-size: 1.05em; color: #27ae60; }
 .ventaCambio  { font-size: 0.8em; color: #e67e22; }
-
-.ventaItems {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3em;
-}
-
+.ventaCliente { font-size: 0.82em; color: #555; }
+.ventaCliente i { margin-right: 0.3em; }
+.ventaItems   { display: flex; flex-wrap: wrap; gap: 0.3em; }
 .ventaItemChip {
     background: rgba(253,205,0,0.35);
     border-radius: 2em;
@@ -1143,7 +1201,6 @@ footer {
     font-size: 0.78em;
     border: 1px solid rgba(253,205,0,0.6);
 }
-
 .historialVacio {
     text-align: center;
     padding: 2em 0;
