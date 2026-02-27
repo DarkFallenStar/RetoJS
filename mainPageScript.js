@@ -3,13 +3,13 @@
 // ============================================================
 
 const DEFAULT_PRODUCTS = [
-    { id: "papel",      nombre: "Papel resma",      stock: 10,  precio: 16000, costo: 11000, categoria: "Papelería",    imagen: "https://tauro.com.co/wp-content/uploads/2020/02/Papel-resma-Marfil-430x490.jpg" },
-    { id: "Tijeras",    nombre: "Tijeras",           stock: 20,  precio: 6100,  costo: 3200,  categoria: "Papelería",    imagen: "https://officemax.vtexassets.com/arquivos/ids/1347697/35697_1.jpg?v=638158814488200000" },
+    { id: "papel",      nombre: "Papel resma",      stock: 10,  precio: 16000, costo: 11000, categoria: "Papelaría",    imagen: "https://tauro.com.co/wp-content/uploads/2020/02/Papel-resma-Marfil-430x490.jpg" },
+    { id: "Tijeras",    nombre: "Tijeras",           stock: 20,  precio: 6100,  costo: 3200,  categoria: "Papelaría",    imagen: "https://officemax.vtexassets.com/arquivos/ids/1347697/35697_1.jpg?v=638158814488200000" },
     { id: "Legajador",  nombre: "Legajador carta",   stock: 5,   precio: 7750,  costo: 4500,  categoria: "Organización", imagen: "https://tauro.com.co/wp-content/uploads/2019/12/83525-430x490.png" },
     { id: "lapicero",   nombre: "Lapicero",          stock: 99,  precio: 700,   costo: 350,   categoria: "Escritura",    imagen: "https://tauro.com.co/wp-content/uploads/2019/12/11635.png" },
-    { id: "Cinta",      nombre: "Cinta",             stock: 32,  precio: 5700,  costo: 3000,  categoria: "Papelería",    imagen: "https://tauro.com.co/wp-content/uploads/2019/12/131723-430x490.png" },
+    { id: "Cinta",      nombre: "Cinta",             stock: 32,  precio: 5700,  costo: 3000,  categoria: "Papelaría",    imagen: "https://tauro.com.co/wp-content/uploads/2019/12/131723-430x490.png" },
     { id: "Colores",    nombre: "Colores",           stock: 18,  precio: 1200,  costo: 600,   categoria: "Arte",         imagen: "https://tauro.com.co/wp-content/uploads/2019/12/139867-300x300.png" },
-    { id: "Bond",       nombre: "Papel bond",        stock: 10,  precio: 2400,  costo: 1200,  categoria: "Papelería",    imagen: "https://tauro.com.co/wp-content/uploads/2020/05/PAPEL-BOND.jpg" },
+    { id: "Bond",       nombre: "Papel bond",        stock: 10,  precio: 2400,  costo: 1200,  categoria: "Papelaría",    imagen: "https://tauro.com.co/wp-content/uploads/2020/05/PAPEL-BOND.jpg" },
     { id: "Borrador",   nombre: "Borrador",          stock: 210, precio: 550,   costo: 250,   categoria: "Escritura",    imagen: "https://tauro.com.co/wp-content/uploads/2021/02/10502-430x490.jpg" },
     { id: "Cuaderno",   nombre: "Cuaderno",          stock: 22,  precio: 700,   costo: 400,   categoria: "Organización", imagen: "https://tauro.com.co/wp-content/uploads/2025/01/CUADERNO-COSIDO-DOBLE-RAYADO-SURT-FAMA-430x490.jpg" },
     { id: "Grapas",     nombre: "Grapas",            stock: 4,   precio: 4050,  costo: 2200,  categoria: "Organización", imagen: "https://tauro.com.co/wp-content/uploads/2019/12/11484.png" },
@@ -414,7 +414,6 @@ function resetForm() {
     cancelEditBtn.classList.add("remove");
 }
 
-// Show/hide custom category input when "Otro" is selected
 document.getElementById("formCategoria").addEventListener("change", function () {
     const customInput = document.getElementById("formCategoriaCustom");
     if (this.value === "Otro") {
@@ -430,13 +429,13 @@ document.getElementById("formCategoria").addEventListener("change", function () 
 productForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const editId   = document.getElementById("editId").value;
-    const nombre   = document.getElementById("formName").value.trim();
-    const precio   = parseInt(document.getElementById("formPrice").value);
-    const stock    = parseInt(document.getElementById("formStock").value);
-    const imagen   = document.getElementById("formImage").value.trim();
-    const costo    = parseInt(document.getElementById("formCosto").value) || 0;
-    const catSel   = document.getElementById("formCategoria").value;
+    const editId    = document.getElementById("editId").value;
+    const nombre    = document.getElementById("formName").value.trim();
+    const precio    = parseInt(document.getElementById("formPrice").value);
+    const stock     = parseInt(document.getElementById("formStock").value);
+    const imagen    = document.getElementById("formImage").value.trim();
+    const costo     = parseInt(document.getElementById("formCosto").value) || 0;
+    const catSel    = document.getElementById("formCategoria").value;
     const catCustom = document.getElementById("formCategoriaCustom").value.trim();
     const categoria = catSel === "Otro" ? (catCustom || "Otro") : catSel;
 
@@ -484,10 +483,7 @@ function renderCrudList() {
             <div class="crudRowInfo">
                 <strong>${p.nombre}</strong>
                 ${p.categoria ? `<span class="categoriaBadge categoriaBadgeCrud">${p.categoria}</span>` : ''}
-                <span class="crudPrices">
-                    Precio: $${p.precio.toLocaleString()}
-                    ${p.costo ? ` · Costo: $${p.costo.toLocaleString()} · <span class="margenLabel">Margen: $${(p.precio - p.costo).toLocaleString()}</span>` : ''}
-                </span>
+                <span class="crudPrices">Precio: $${p.precio.toLocaleString()}${p.costo ? ` · Costo: $${p.costo.toLocaleString()} · <span class="margenLabel">Margen: $${(p.precio - p.costo).toLocaleString()}</span>` : ''}</span>
                 <span>Stock: ${p.stock}</span>
             </div>
             <div class="crudRowBtns">
@@ -652,15 +648,22 @@ function seleccionarMetodo(idMetodo) {
         formDiv.innerHTML = `<p class="metodoTexto">Has seleccionado: <strong>${idMetodo}</strong></p>`;
     }
 
-    const accionDiv = document.getElementById("ventasAccion");
-    accionDiv.innerHTML = `<button id="btnConfirmarFinal" class="btnConfirmarFinal">Confirmar Pedido</button>`;
+    document.getElementById("ventasAccion").innerHTML =
+        `<button id="btnConfirmarFinal" class="btnConfirmarFinal">Confirmar Pedido</button>`;
     document.getElementById("btnConfirmarFinal").addEventListener("click", confirmarPago);
 }
 
 function confirmarPago() {
-    const total = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    // FIX: capture metodo into a local const BEFORE cerrarVentasModal() resets the global to null
+    const metodo = metodoPagoSeleccionado;
+    const total  = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
 
-    if (metodoPagoSeleccionado === "Efectivo") {
+    if (!metodo) {
+        showNotification("Selecciona un método de pago.", "error");
+        return;
+    }
+
+    if (metodo === "Efectivo") {
         const monto = parseFloat(document.getElementById("montoEfectivo")?.value);
         if (!monto || monto <= 0) { showNotification("Por favor ingresa el monto con el que pagas.", "error"); return; }
         if (monto < total)        { showNotification(`Monto insuficiente. El total es $${total.toLocaleString()}.`, "error"); return; }
@@ -670,37 +673,31 @@ function confirmarPago() {
             : `Pago exacto: $${total.toLocaleString()}`;
         if (!confirm(`¿Confirmar pago?\n${msg}`)) return;
         cerrarVentasModal();
-        abrirFacturaModal(metodoPagoSeleccionado, total, vueltas);
+        abrirFacturaModal(metodo, total, vueltas);
 
-    } else if (metodoPagoSeleccionado === "Debe") {
+    } else if (metodo === "Debe") {
         if (!confirm(`¿Registrar esta venta como deuda?\nTotal: $${total.toLocaleString()}`)) return;
         cerrarVentasModal();
-        abrirFacturaModal(metodoPagoSeleccionado, total, 0);
+        abrirFacturaModal(metodo, total, 0);
 
-    } else if (metodoPagoSeleccionado === "Nequi") {
+    } else if (metodo === "Nequi") {
         if (!confirm(`¿Confirmar pago por Nequi?\nTotal: $${total.toLocaleString()}`)) return;
         cerrarVentasModal();
-        abrirFacturaModal(metodoPagoSeleccionado, total, 0);
-
-    } else {
-        showNotification("Selecciona un método de pago.", "error");
+        abrirFacturaModal(metodo, total, 0);
     }
 }
 
 // ============================================================
-//  FACTURA (BILL) MODAL
+//  FACTURA MODAL
 // ============================================================
 
 const facturaOverlay  = document.getElementById("facturaOverlay");
 const closeFacturaBtn = document.getElementById("closeFactura");
-
-// Store pending sale data until client form is submitted
 let ventaPendiente = null;
 
 function abrirFacturaModal(metodo, total, cambio) {
     ventaPendiente = { metodo, total, cambio, items: [...elementosComprados] };
 
-    // Reset to show client form first
     document.getElementById("facturaClienteForm").classList.remove("remove");
     document.getElementById("facturaContenido").classList.add("remove");
     document.getElementById("facturaAcciones").classList.add("remove");
@@ -721,13 +718,18 @@ function cerrarFacturaModal() {
 }
 
 closeFacturaBtn.addEventListener("click", () => {
-    // If closing before generating bill, still finalize the sale
-    if (ventaPendiente) finalizarVenta(ventaPendiente.metodo, ventaPendiente.total, ventaPendiente.cambio, ventaPendiente.items);
+    if (ventaPendiente) {
+        finalizarVenta(ventaPendiente.metodo, ventaPendiente.total, ventaPendiente.cambio, ventaPendiente.items);
+        ventaPendiente = null;
+    }
     cerrarFacturaModal();
 });
 facturaOverlay.addEventListener("click", e => {
     if (e.target === facturaOverlay) {
-        if (ventaPendiente) finalizarVenta(ventaPendiente.metodo, ventaPendiente.total, ventaPendiente.cambio, ventaPendiente.items);
+        if (ventaPendiente) {
+            finalizarVenta(ventaPendiente.metodo, ventaPendiente.total, ventaPendiente.cambio, ventaPendiente.items);
+            ventaPendiente = null;
+        }
         cerrarFacturaModal();
     }
 });
@@ -736,11 +738,9 @@ document.getElementById("btnGenerarFactura").addEventListener("click", () => {
     const nombre   = document.getElementById("clienteNombre").value.trim();
     const telefono = document.getElementById("clienteTelefono").value.trim();
     const correo   = document.getElementById("clienteCorreo").value.trim();
-
     const { metodo, total, cambio, items } = ventaPendiente;
-    const fechaStr = new Date().toLocaleString("es-CO");
+    const fechaStr   = new Date().toLocaleString("es-CO");
     const facturaNum = "F-" + Date.now().toString().slice(-6);
-
     const cambioHtml = metodo === "Efectivo" && cambio > 0
         ? `<tr><td>Cambio entregado</td><td><strong>$${cambio.toLocaleString()}</strong></td></tr>` : "";
 
@@ -756,7 +756,6 @@ document.getElementById("btnGenerarFactura").addEventListener("click", () => {
                     <p>${fechaStr}</p>
                 </div>
             </div>
-
             ${nombre || telefono || correo ? `
             <div class="facturaSeccion">
                 <h4>Datos del Cliente</h4>
@@ -764,13 +763,10 @@ document.getElementById("btnGenerarFactura").addEventListener("click", () => {
                 ${telefono ? `<p><i class="fa-solid fa-phone"></i> ${telefono}</p>` : ""}
                 ${correo   ? `<p><i class="fa-solid fa-envelope"></i> ${correo}</p>` : ""}
             </div>` : ""}
-
             <div class="facturaSeccion">
                 <h4>Productos</h4>
                 <table class="facturaTabla">
-                    <thead>
-                        <tr><th>Producto</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr>
-                    </thead>
+                    <thead><tr><th>Producto</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr></thead>
                     <tbody>
                         ${items.map(p => `
                         <tr>
@@ -782,7 +778,6 @@ document.getElementById("btnGenerarFactura").addEventListener("click", () => {
                     </tbody>
                 </table>
             </div>
-
             <div class="facturaSeccion facturaTotales">
                 <table class="facturaTabla">
                     <tr><td>Método de pago</td><td><strong>${metodo}</strong></td></tr>
@@ -790,7 +785,6 @@ document.getElementById("btnGenerarFactura").addEventListener("click", () => {
                     ${cambioHtml}
                 </table>
             </div>
-
             <p class="facturaGracias">¡Gracias por tu compra! 🌙</p>
         </div>`;
 
@@ -798,17 +792,16 @@ document.getElementById("btnGenerarFactura").addEventListener("click", () => {
     document.getElementById("facturaContenido").classList.remove("remove");
     document.getElementById("facturaAcciones").classList.remove("remove");
 
-    // Finalize sale now that bill is generated
     finalizarVenta(metodo, total, cambio, items, { nombre, telefono, correo, facturaNum });
     ventaPendiente = null;
 });
 
 function finalizarVenta(metodo, total, cambio, items, cliente = {}) {
     const venta = {
-        id:      Date.now(),
-        fecha:   new Date().toLocaleString("es-CO"),
+        id:     Date.now(),
+        fecha:  new Date().toLocaleString("es-CO"),
         metodo, total, cambio,
-        items:   items.map(p => ({ nombre: p.nombre, cantidad: p.cantidad, precio: p.precio })),
+        items:  items.map(p => ({ nombre: p.nombre, cantidad: p.cantidad, precio: p.precio })),
         cliente
     };
     const historial = JSON.parse(localStorage.getItem("historialVentas")) || [];
@@ -884,24 +877,99 @@ function renderHistorial() {
     historial.forEach(venta => {
         const div = document.createElement("div");
         div.classList.add("historialVenta");
-        const metodoIcon = { Efectivo: "💵", Nequi: "📱", Debe: "📋" }[venta.metodo] || "💰";
-        const cambioHtml = venta.metodo === "Efectivo" && venta.cambio > 0
+        const metodoIcon  = { Efectivo: "💵", Nequi: "📱", Debe: "📋" }[venta.metodo] || "💰";
+        const metodoLabel = venta.metodo || "Desconocido";
+        const cambioHtml  = venta.metodo === "Efectivo" && venta.cambio > 0
             ? `<span class="ventaCambio">Cambio: $${venta.cambio.toLocaleString()}</span>` : "";
         const clienteHtml = venta.cliente?.nombre
             ? `<span class="ventaCliente"><i class="fa-solid fa-user"></i> ${venta.cliente.nombre}</span>` : "";
 
         div.innerHTML = `
             <div class="ventaEncabezado">
-                <span class="ventaMetodo">${metodoIcon} ${venta.metodo}</span>
+                <span class="ventaMetodo">${metodoIcon} ${metodoLabel}</span>
                 <span class="ventaFecha">${venta.fecha}</span>
                 <span class="ventaTotal">$${venta.total.toLocaleString()}</span>
             </div>
             ${clienteHtml}${cambioHtml}
             <div class="ventaItems">
                 ${venta.items.map(i => `<span class="ventaItemChip">${i.nombre} ×${i.cantidad}</span>`).join("")}
+            </div>
+            <div class="ventaReciboBtn">
+                <button class="btnVerRecibo" data-id="${venta.id}"><i class="fa-solid fa-receipt"></i> Ver Recibo</button>
             </div>`;
         listaEl.appendChild(div);
     });
+
+    listaEl.querySelectorAll(".btnVerRecibo").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = parseInt(btn.dataset.id);
+            const venta = historial.find(v => v.id === id);
+            if (venta) abrirReciboHistorial(venta);
+        });
+    });
+}
+
+function abrirReciboHistorial(venta) {
+    // Close historial modal first
+    cerrarHistorial();
+
+    const facturaNum = venta.cliente?.facturaNum || "F-" + venta.id.toString().slice(-6);
+    const cambioHtml = venta.metodo === "Efectivo" && venta.cambio > 0
+        ? `<tr><td>Cambio entregado</td><td><strong>$${venta.cambio.toLocaleString()}</strong></td></tr>` : "";
+    const cliente = venta.cliente || {};
+
+    document.getElementById("facturaClienteForm").classList.add("remove");
+    document.getElementById("facturaContenido").classList.remove("remove");
+    document.getElementById("facturaAcciones").classList.remove("remove");
+
+    document.getElementById("facturaContenido").innerHTML = `
+        <div class="facturaDoc" id="facturaDoc">
+            <div class="facturaHeader">
+                <div class="facturaLogo">
+                    <h2>Papelería Papel y Luna</h2>
+                    <p>Recibo de Compra</p>
+                </div>
+                <div class="facturaNumFecha">
+                    <p><strong>${facturaNum}</strong></p>
+                    <p>${venta.fecha}</p>
+                </div>
+            </div>
+            ${cliente.nombre || cliente.telefono || cliente.correo ? `
+            <div class="facturaSeccion">
+                <h4>Datos del Cliente</h4>
+                ${cliente.nombre   ? `<p><i class="fa-solid fa-user"></i> ${cliente.nombre}</p>` : ""}
+                ${cliente.telefono ? `<p><i class="fa-solid fa-phone"></i> ${cliente.telefono}</p>` : ""}
+                ${cliente.correo   ? `<p><i class="fa-solid fa-envelope"></i> ${cliente.correo}</p>` : ""}
+            </div>` : ""}
+            <div class="facturaSeccion">
+                <h4>Productos</h4>
+                <table class="facturaTabla">
+                    <thead><tr><th>Producto</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr></thead>
+                    <tbody>
+                        ${venta.items.map(p => `
+                        <tr>
+                            <td>${p.nombre}</td>
+                            <td>${p.cantidad}</td>
+                            <td>$${p.precio.toLocaleString()}</td>
+                            <td>$${(p.precio * p.cantidad).toLocaleString()}</td>
+                        </tr>`).join("")}
+                    </tbody>
+                </table>
+            </div>
+            <div class="facturaSeccion facturaTotales">
+                <table class="facturaTabla">
+                    <tr><td>Método de pago</td><td><strong>${venta.metodo}</strong></td></tr>
+                    <tr class="totalRow"><td>TOTAL</td><td><strong>$${venta.total.toLocaleString()}</strong></td></tr>
+                    ${cambioHtml}
+                </table>
+            </div>
+            <p class="facturaGracias">¡Gracias por tu compra! 🌙</p>
+        </div>`;
+
+    const overlay = document.getElementById("facturaOverlay");
+    overlay.classList.remove("remove");
+    void overlay.offsetWidth;
+    overlay.classList.add("crudVisible");
 }
 
 function borrarHistorial() {
