@@ -11,6 +11,35 @@
 
 <body>
 
+    <!-- ===================== VENTAS MODAL ===================== -->
+    <div id="ventasOverlay" class="crudOverlay remove">
+        <div id="ventasModal" class="crudModal ventasModal">
+            <div class="crudHeader">
+                <h2>Finalizar Compra</h2>
+                <button id="closeVentas" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="ventasResumen" class="ventasResumen"></div>
+            <div id="ventasMetodos" class="ventasMetodos">
+                <h3>Selecciona un método de pago</h3>
+                <div id="metodosContainer" class="metodosContainer"></div>
+            </div>
+            <div id="ventasFormPago" class="ventasFormPago"></div>
+            <div id="ventasAccion"></div>
+        </div>
+    </div>
+
+    <!-- ===================== HISTORIAL MODAL ===================== -->
+    <div id="historialOverlay" class="crudOverlay remove">
+        <div id="historialModal" class="crudModal">
+            <div class="crudHeader">
+                <h2><i class="fa-solid fa-chart-line"></i> Historial de Ventas</h2>
+                <button id="closeHistorial" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="historialResumenTop" class="historialResumenTop"></div>
+            <div id="historialLista" class="historialLista"></div>
+        </div>
+    </div>
+
     <!-- ===================== CRUD MODAL ===================== -->
     <div id="crudOverlay" class="crudOverlay remove">
         <div id="crudModal" class="crudModal">
@@ -74,6 +103,8 @@
                         class="fa-solid fa-house"></i></a>
                 <a href="#footer" title="Ir a contactos"><span class="txtNav">Contacto </span><i
                         class="fa-solid fa-envelope"></i></a>
+                <a href="#" id="openHistorial" title="Historial de ventas"><span class="txtNav">Ventas </span><i
+                        class="fa-solid fa-chart-line"></i></a>
                 <a href="#" id="openCrud" title="Gestionar productos"><span class="txtNav">Admin </span><i
                         class="fa-solid fa-screwdriver-wrench"></i></a>
             </nav>
@@ -137,6 +168,4 @@
     </div>
 
     <footer id="footer">
-        <h3>Camilo Fajardo: camilofaac@unisabana.edu.co</h3>
-        <h3>Kenny Fang: kennyface@unisabana.edu.co</h3>
-        <h3>Juan Manuel Castro: juanca  @unisabana.edu.co</h3>
+        <h3>Camilo Fajardo: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3d0d2dedadfdcd5d2d2d0f3c6dddac0d2d1d2ddd29dd6d7c69dd0dc">[email&#160;protected]

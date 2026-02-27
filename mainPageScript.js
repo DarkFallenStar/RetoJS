@@ -310,13 +310,9 @@ function cartDelete(e) {
 }
 
 function pagar() {
-    const total = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
-    window.open("Ventas.html", "_blank");
-    alert(`¡Gracias por tu compra! Total pagado: $${total.toLocaleString()}`);
-    elementosComprados = [];
-    saveCart();
-    renderCart();
-    recalcularCounter();
+    if (elementosComprados.length === 0) return;
+    metodoPagoSeleccionado = null;
+    abrirVentasModal();
 }
 
 // ============================================================
@@ -523,3 +519,241 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCart();
     recalcularCounter();
 });
+
+// ============================================================
+//  VENTAS MODAL
+// ============================================================
+
+const METODOS_PAGO = [
+    { id: "Efectivo", nombre: "Efectivo", img: "https://cdn-icons-png.flaticon.com/512/1041/1041971.png" },
+    { id: "Nequi",    nombre: "Nequi",    img: "https://images.seeklogo.com/logo-png/40/2/nequi-logo-png_seeklogo-404357.png" },
+    { id: "Debe",     nombre: "Debe",     img: "https://cdn-icons-png.flaticon.com/512/4090/4090236.png" }
+];
+
+const ventasOverlay  = document.getElementById("ventasOverlay");
+const closeVentasBtn = document.getElementById("closeVentas");
+
+let metodoPagoSeleccionado = null;
+
+function abrirVentasModal() {
+    const total      = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    const totalUnits = elementosComprados.reduce((s, p) => s + p.cantidad, 0);
+
+    // Resumen de productos
+    document.getElementById("ventasResumen").innerHTML = `
+        <div class="ventasResumenBox">
+            <div class="ventasResumenFila"><span>Productos:</span><strong>${totalUnits}</strong></div>
+            <div class="ventasResumenFila ventasTotal"><span>Total a Pagar:</span><strong>$${total.toLocaleString()}</strong></div>
+        </div>
+        <div class="ventasItemsList">
+            ${elementosComprados.map(p =>
+                `<div class="ventasItem">
+                    <span>${p.nombre} ×${p.cantidad}</span>
+                    <span>$${(p.precio * p.cantidad).toLocaleString()}</span>
+                </div>`
+            ).join("")}
+        </div>
+    `;
+
+    // Botones de método de pago
+    const mc = document.getElementById("metodosContainer");
+    mc.innerHTML = "";
+    METODOS_PAGO.forEach(m => {
+        const btn = document.createElement("button");
+        btn.classList.add("metodoPagoBoton");
+        btn.dataset.id = m.id;
+        btn.innerHTML = `<img src="${m.img}" class="imgMetodo"><p>${m.nombre}</p>`;
+        btn.addEventListener("click", () => seleccionarMetodo(m.id));
+        mc.appendChild(btn);
+    });
+
+    document.getElementById("ventasFormPago").innerHTML = "";
+    document.getElementById("ventasAccion").innerHTML   = "";
+
+    ventasOverlay.classList.remove("remove");
+    void ventasOverlay.offsetWidth;
+    ventasOverlay.classList.add("crudVisible");
+}
+
+function cerrarVentasModal() {
+    ventasOverlay.classList.remove("crudVisible");
+    ventasOverlay.addEventListener("transitionend", () => {
+        ventasOverlay.classList.add("remove");
+    }, { once: true });
+    metodoPagoSeleccionado = null;
+}
+
+closeVentasBtn.addEventListener("click", cerrarVentasModal);
+ventasOverlay.addEventListener("click", (e) => { if (e.target === ventasOverlay) cerrarVentasModal(); });
+
+function seleccionarMetodo(idMetodo) {
+    metodoPagoSeleccionado = idMetodo;
+
+    // Resaltar botón seleccionado
+    document.querySelectorAll(".metodoPagoBoton").forEach(b => {
+        b.classList.toggle("metodoSeleccionado", b.dataset.id === idMetodo);
+    });
+
+    const formDiv = document.getElementById("ventasFormPago");
+    if (idMetodo === "Efectivo") {
+        formDiv.innerHTML = `
+            <div class="pago-efectivo-caja">
+                <h3>Pago en Efectivo</h3>
+                <p>¿Con cuánto vas a pagar?</p>
+                <input type="number" id="montoEfectivo" placeholder="Monto en COP" min="1">
+            </div>
+        `;
+    } else {
+        formDiv.innerHTML = `<p class="metodoTexto">Has seleccionado: <strong>${idMetodo}</strong></p>`;
+    }
+
+    const accionDiv = document.getElementById("ventasAccion");
+    accionDiv.innerHTML = `<button id="btnConfirmarFinal" class="btnConfirmarFinal">Confirmar Pedido</button>`;
+    document.getElementById("btnConfirmarFinal").addEventListener("click", confirmarPago);
+}
+
+function confirmarPago() {
+    const total = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+
+    if (metodoPagoSeleccionado === "Efectivo") {
+        const monto = parseFloat(document.getElementById("montoEfectivo")?.value);
+        if (!monto || monto <= 0) {
+            showNotification("Por favor ingresa el monto con el que pagas.", "error");
+            return;
+        }
+        if (monto < total) {
+            showNotification(`Monto insuficiente. El total es $${total.toLocaleString()}.`, "error");
+            return;
+        }
+        const vueltas = monto - total;
+        const msg = vueltas > 0
+            ? `Pago: $${monto.toLocaleString()}\nTotal: $${total.toLocaleString()}\nCambio: $${vueltas.toLocaleString()}`
+            : `Pago exacto: $${total.toLocaleString()}`;
+        if (!confirm(`¿Confirmar pago?\n${msg}`)) return;
+        finalizarVenta(metodoPagoSeleccionado, total, vueltas);
+
+    } else if (metodoPagoSeleccionado === "Debe") {
+        if (!confirm(`¿Registrar esta venta como deuda?\nTotal: $${total.toLocaleString()}`)) return;
+        finalizarVenta(metodoPagoSeleccionado, total, 0);
+
+    } else if (metodoPagoSeleccionado === "Nequi") {
+        if (!confirm(`¿Confirmar pago por Nequi?\nTotal: $${total.toLocaleString()}`)) return;
+        finalizarVenta(metodoPagoSeleccionado, total, 0);
+
+    } else {
+        showNotification("Selecciona un método de pago.", "error");
+    }
+}
+
+function finalizarVenta(metodo, total, cambio) {
+    const venta = {
+        id:     Date.now(),
+        fecha:  new Date().toLocaleString("es-CO"),
+        metodo,
+        total,
+        cambio,
+        items:  elementosComprados.map(p => ({ nombre: p.nombre, cantidad: p.cantidad, precio: p.precio }))
+    };
+
+    const historial = JSON.parse(localStorage.getItem("historialVentas")) || [];
+    historial.unshift(venta);
+    localStorage.setItem("historialVentas", JSON.stringify(historial));
+
+    cerrarVentasModal();
+
+    const cambioMsg = metodo === "Efectivo" && cambio > 0 ? ` · Cambio: $${cambio.toLocaleString()}` : "";
+    showNotification(`¡Venta confirmada! $${total.toLocaleString()} · ${metodo}${cambioMsg}`);
+
+    elementosComprados = [];
+    saveCart();
+    renderCart();
+    recalcularCounter();
+}
+
+// ============================================================
+//  HISTORIAL DE VENTAS MODAL
+// ============================================================
+
+const historialOverlay  = document.getElementById("historialOverlay");
+const openHistorialBtn  = document.getElementById("openHistorial");
+const closeHistorialBtn = document.getElementById("closeHistorial");
+
+openHistorialBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    historialOverlay.classList.remove("remove");
+    void historialOverlay.offsetWidth;
+    historialOverlay.classList.add("crudVisible");
+    renderHistorial();
+});
+
+function cerrarHistorial() {
+    historialOverlay.classList.remove("crudVisible");
+    historialOverlay.addEventListener("transitionend", () => {
+        historialOverlay.classList.add("remove");
+    }, { once: true });
+}
+
+closeHistorialBtn.addEventListener("click", cerrarHistorial);
+historialOverlay.addEventListener("click", (e) => { if (e.target === historialOverlay) cerrarHistorial(); });
+
+function renderHistorial() {
+    const historial = JSON.parse(localStorage.getItem("historialVentas")) || [];
+    const listaEl   = document.getElementById("historialLista");
+    const resumenEl = document.getElementById("historialResumenTop");
+
+    if (historial.length === 0) {
+        resumenEl.innerHTML = "";
+        listaEl.innerHTML = `
+            <div class="historialVacio">
+                <img src="https://cdn-icons-png.flaticon.com/512/1178/1178479.png" class="nadaEncontrado">
+                <p>Aún no hay ventas registradas.</p>
+            </div>`;
+        return;
+    }
+
+    const totalVentas   = historial.length;
+    const totalIngresos = historial.filter(v => v.metodo !== "Debe").reduce((s, v) => s + v.total, 0);
+    const totalDeudas   = historial.filter(v => v.metodo === "Debe").reduce((s, v) => s + v.total, 0);
+
+    resumenEl.innerHTML = `
+        <div class="historialStats">
+            <div class="statBox"><span>Ventas</span><strong>${totalVentas}</strong></div>
+            <div class="statBox statIngresos"><span>Ingresos</span><strong>$${totalIngresos.toLocaleString()}</strong></div>
+            <div class="statBox statDeudas"><span>Por Cobrar</span><strong>$${totalDeudas.toLocaleString()}</strong></div>
+        </div>
+        <div class="historialAcciones">
+            <button id="btnBorrarHistorial" class="btnBorrarHistorial"><i class="fa-solid fa-trash"></i> Borrar historial</button>
+        </div>
+    `;
+    document.getElementById("btnBorrarHistorial").addEventListener("click", borrarHistorial);
+
+    listaEl.innerHTML = "";
+    historial.forEach(venta => {
+        const div = document.createElement("div");
+        div.classList.add("historialVenta");
+        const metodoIcon = { Efectivo: "💵", Nequi: "📱", Debe: "📋" }[venta.metodo] || "💰";
+        const cambioHtml = venta.metodo === "Efectivo" && venta.cambio > 0
+            ? `<span class="ventaCambio">Cambio: $${venta.cambio.toLocaleString()}</span>` : "";
+        div.innerHTML = `
+            <div class="ventaEncabezado">
+                <span class="ventaMetodo">${metodoIcon} ${venta.metodo}</span>
+                <span class="ventaFecha">${venta.fecha}</span>
+                <span class="ventaTotal">$${venta.total.toLocaleString()}</span>
+            </div>
+            ${cambioHtml}
+            <div class="ventaItems">
+                ${venta.items.map(i =>
+                    `<span class="ventaItemChip">${i.nombre} ×${i.cantidad}</span>`
+                ).join("")}
+            </div>
+        `;
+        listaEl.appendChild(div);
+    });
+}
+
+function borrarHistorial() {
+    if (!confirm("¿Borrar todo el historial de ventas? Esta acción no se puede deshacer.")) return;
+    localStorage.removeItem("historialVentas");
+    renderHistorial();
+    showNotification("Historial borrado.");
+}

@@ -863,3 +863,283 @@ footer {
         font-size: 0.8em;
     }
 }
+
+/* ============================================================
+   VENTAS MODAL
+   ============================================================ */
+
+.ventasModal {
+    max-width: 520px;
+}
+
+.ventasResumenBox {
+    background: #fdf0b3;
+    border-radius: 0.8em;
+    padding: 0.8em 1.2em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.ventasResumenFila {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+}
+
+.ventasTotal {
+    font-size: 1.15em;
+    border-top: 1px solid rgba(0,0,0,0.12);
+    padding-top: 0.4em;
+    margin-top: 0.2em;
+}
+
+.ventasItemsList {
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    max-height: 9em;
+    overflow-y: auto;
+}
+
+.ventasItem {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88em;
+    padding: 0.2em 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    color: #444;
+}
+
+.ventasMetodos h3 {
+    font-size: 1em;
+    margin-bottom: 0.6em;
+    color: #555;
+}
+
+.metodosContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+.metodoPagoBoton {
+    background-color: white;
+    border: 2px solid #FDCD00;
+    border-radius: 1em;
+    padding: 1em 0.8em;
+    cursor: pointer;
+    width: 9em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4em;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.metodoPagoBoton:hover {
+    background-color: #fffbe6;
+    transform: translateY(-2px);
+}
+
+.metodoPagoBoton.metodoSeleccionado {
+    background-color: #FDCD00;
+    border-color: #e6b800;
+    box-shadow: 0 4px 8px rgba(253,205,0,0.4);
+    transform: translateY(-2px);
+}
+
+.imgMetodo {
+    width: 3.5em;
+    height: 3.5em;
+    object-fit: contain;
+}
+
+.metodoPagoBoton p {
+    font-weight: bold;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.pago-efectivo-caja {
+    background: #fdf0b3;
+    border-radius: 0.8em;
+    padding: 1em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.pago-efectivo-caja h3 { font-size: 1em; }
+.pago-efectivo-caja p  { font-size: 0.9em; color: #555; margin: 0; }
+
+.pago-efectivo-caja input {
+    height: 2.2em;
+    font-size: 1.1em;
+    border-radius: 1em;
+    border: 1px solid #aaa;
+    padding: 0 1em;
+    width: 60%;
+    text-align: center;
+    transition: border-color 0.2s ease;
+}
+
+.pago-efectivo-caja input:focus {
+    outline: none;
+    border-color: #FDCD00;
+    box-shadow: 0 0 0 2px rgba(253,205,0,0.3);
+}
+
+.metodoTexto {
+    text-align: center;
+    font-size: 0.95em;
+    color: #444;
+    padding: 0.5em 0;
+    margin: 0;
+}
+
+.btnConfirmarFinal {
+    width: 100%;
+    padding: 0.85em;
+    background-color: #27ae60;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 2em;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 3px 0 #1e8449;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btnConfirmarFinal:hover  { background-color: #219150; }
+.btnConfirmarFinal:active { transform: translateY(2px); box-shadow: 0 1px 0 #1e8449; }
+
+.ventasResumen,
+.ventasMetodos,
+.ventasFormPago,
+.ventasAccion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+/* ============================================================
+   HISTORIAL DE VENTAS MODAL
+   ============================================================ */
+
+.historialResumenTop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.historialStats {
+    display: flex;
+    gap: 0.8em;
+    flex-wrap: wrap;
+}
+
+.statBox {
+    flex: 1;
+    min-width: 7em;
+    background: #fdf0b3;
+    border-radius: 0.7em;
+    padding: 0.7em 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2em;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.statBox span   { font-size: 0.8em; color: #666; }
+.statBox strong { font-size: 1.3em; }
+
+.statIngresos         { border-color: #27ae60; }
+.statIngresos strong  { color: #27ae60; }
+
+.statDeudas           { border-color: #e67e22; }
+.statDeudas strong    { color: #e67e22; }
+
+.historialAcciones {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btnBorrarHistorial {
+    font-size: 0.85em;
+    padding: 0.4em 1em;
+    border-radius: 2em;
+    cursor: pointer;
+    background: #F7F7F7;
+    border: 1px solid #ccc;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.btnBorrarHistorial:hover {
+    background: #ff6229;
+    color: white;
+    border-color: #ff6229;
+}
+
+.historialLista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.historialVenta {
+    background: #fdf0b3;
+    border-radius: 0.7em;
+    padding: 0.8em 1em;
+    border: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+}
+
+.ventaEncabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.3em;
+}
+
+.ventaMetodo  { font-weight: bold; font-size: 0.95em; }
+.ventaFecha   { font-size: 0.78em; color: #777; }
+.ventaTotal   { font-weight: bold; font-size: 1.05em; color: #27ae60; }
+.ventaCambio  { font-size: 0.8em; color: #e67e22; }
+
+.ventaItems {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
+}
+
+.ventaItemChip {
+    background: rgba(253,205,0,0.35);
+    border-radius: 2em;
+    padding: 0.15em 0.6em;
+    font-size: 0.78em;
+    border: 1px solid rgba(253,205,0,0.6);
+}
+
+.historialVacio {
+    text-align: center;
+    padding: 2em 0;
+    color: #888;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+}
