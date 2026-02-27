@@ -697,7 +697,7 @@ footer {
 
     #carroCompras {
         position: static;
-        margin-top: 2em;
+        margin-bottom: 2em;
         grid-row-start: 1;
     }
 
