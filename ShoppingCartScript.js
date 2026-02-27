@@ -32,12 +32,13 @@ document.addEventListener("DOMContentLoaded",()=>{
     total += producto.precio * producto.cantidad;
     productoTotal += producto.cantidad;
 });
-    document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2><button class="pagar">Pagar</button>`;
+    document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
 
     const buttonAgregar = document.querySelectorAll(".agregar")   
     const buttonQuitar = document.querySelectorAll(".quitar")   
     const buttonEliminar = document.querySelectorAll(".eliminar");
-    const buttonPagar = document.querySelectorAll(".pagar");
+    const payResultContenedor = document.getElementById("payresult");
+    actualizarPayResult();
     
     buttonAgregar.forEach(butt => {
         butt.addEventListener('click', add);
@@ -50,9 +51,11 @@ document.addEventListener("DOMContentLoaded",()=>{
     buttonEliminar.forEach(butt => {
         butt.addEventListener("click", eliminarProducto);
     });
-    buttonPagar.forEach(butt => {
-        butt.addEventListener("click", pagar);
-    });
+    payResultContenedor.addEventListener("click", (e) => {
+    if (e.target.classList.contains("pagar")) {
+        pagar();
+    }
+});
 });
 function recalcularTotales(){
 
@@ -84,12 +87,19 @@ function eliminarProducto(e){
     recalcularTotales();
     document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
     toggleEmptyMessage();
+    actualizarPayResult()
+}
+
+function actualizarPayResult(){
+    recalcularTotales();
+    const payResult = document.getElementById("payresult");
+    payResult.innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2><button class="pagar">Pagar</button>`;
+    toggleEmptyMessage();
 }
 function pagar(){
-    alert(`Gracias por tu compra! Total pagado: $${total}`);
-    carrito = [];
+    sessionStorage.setItem("totalAPagar", total); 
     sessionStorage.setItem("carrito", JSON.stringify(carrito));
-    location.reload();
+    window.location.href = "Ventas.html";
 }
 
 function remove(e){
@@ -104,11 +114,9 @@ function remove(e){
         productoTotal--
         total -= productoCarrito.precio
 
+        actualizarPayResult()
         document.getElementById(`cantidad-${productoCarrito.id}`).innerHTML = `Cantidad: ${productoCarrito.cantidad}`;
-        
         document.getElementById(`precio-${productoCarrito.id}`).innerHTML = `SubTotal: $${productoCarrito.cantidad*productoCarrito.precio}`;
-
-        document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
 
         sessionStorage.setItem("carrito", JSON.stringify(carrito));
         recalcularTotales()
@@ -127,16 +135,12 @@ function add(e){
         productoCarrito.cantidad++;
         productoTotal++
         total += productoCarrito.precio
-
-
+        actualizarPayResult()
         document.getElementById(`cantidad-${productoCarrito.id}`).innerHTML = `Cantidad: ${productoCarrito.cantidad}`;
-        
         document.getElementById(`precio-${productoCarrito.id}`).innerHTML = `SubTotal: $${productoCarrito.cantidad*productoCarrito.precio}`;
-
-        document.getElementById("payresult").innerHTML = `<h2 id="productosTotales">Cantidad de Productos Totales: ${productoTotal}</h2><h2>Precio Total: $${total}</h2>`;
-
         sessionStorage.setItem("carrito", JSON.stringify(carrito));
         recalcularTotales()
+        
     }
 }
 
