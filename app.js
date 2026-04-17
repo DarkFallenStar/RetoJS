@@ -9,7 +9,8 @@
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxRbuAaS9b4RqwkQWwp72BSWd8L0L9WwrAJ_i5a0djU6zGZc93Kf4MMbmeuJaPK8DsaWA/exec";
 
 let Productos = [];
-let elementosComprados = JSON.parse(sessionStorage.getItem("carrito")) || [];
+let elementosComprados    = JSON.parse(sessionStorage.getItem("carrito")) || [];
+let totalPersonalizado    = null; // null = calcular automáticamente; número = total editado manualmente
 
 // ============================================================
 //  DATA LAYER — Google Sheets
@@ -337,12 +338,33 @@ function renderCart() {
         div.innerHTML = `
             <div class="infoProducto">
                 <h2>${producto.nombre}</h2>
-                <p>Precio Unitario: $${producto.precio.toLocaleString()}</p>
-                <p id="precio-${producto.id}">SubTotal: $${(producto.precio * producto.cantidad).toLocaleString()}</p>
+                <div class="editableRow">
+                    <label class="editableLabel">Precio unit.</label>
+                    <div class="editableInputWrap">
+                        <span class="editablePrefix">$</span>
+                        <input class="inputPrecio" type="number" min="0"
+                               data-id="${producto.id}"
+                               value="${producto.precio}"
+                               title="Editar precio unitario">
+                    </div>
+                    <button class="btnActualizarPrecio" data-id="${producto.id}"
+                            title="Guardar nuevo precio en el catálogo">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </button>
+                </div>
+                <div class="editableRow subtotalRow">
+                    <label class="editableLabel">Subtotal</label>
+                    <span class="subtotalVal" id="precio-${producto.id}">
+                        $${(producto.precio * producto.cantidad).toLocaleString()}
+                    </span>
+                </div>
             </div>
             <div class="containerBotones" id="cbtns-${producto.id}">
                 <button class="quitar"   data-id="${producto.id}">-</button>
-                <p id="cantidad-${producto.id}"><strong>${producto.cantidad}</strong></p>
+                <input class="inputCantidad" type="number" min="1"
+                       data-id="${producto.id}"
+                       value="${producto.cantidad}"
+                       title="Editar cantidad">
                 <button class="agregar"  data-id="${producto.id}">+</button>
                 <button class="eliminar" data-id="${producto.id}">x</button>
             </div>
@@ -354,16 +376,133 @@ function renderCart() {
     container.querySelectorAll(".quitar").forEach(b   => b.addEventListener("click", cartRemove));
     container.querySelectorAll(".eliminar").forEach(b => b.addEventListener("click", cartDelete));
 
+    // ── Edición inline de precio ──────────────────────────────
+    container.querySelectorAll(".inputPrecio").forEach(input => {
+        input.addEventListener("change", function () {
+            const id        = this.dataset.id;
+            const cartProd  = elementosComprados.find(p => p.id === id);
+            if (!cartProd) return;
+            const nuevoPrecio = Math.max(0, parseFloat(this.value) || 0);
+            this.value = nuevoPrecio;
+            cartProd.precio = nuevoPrecio;
+            // Actualizar subtotal visual sin re-renderizar
+            const subEl = document.getElementById(`precio-${id}`);
+            if (subEl) subEl.textContent = `$${(nuevoPrecio * cartProd.cantidad).toLocaleString()}`;
+            totalPersonalizado = null; // recalcular total automáticamente
+            saveCart();
+            _actualizarTotalUI();
+        });
+    });
+
+    // ── Actualizar precio en Sheets ──────────────────────────
+    container.querySelectorAll(".btnActualizarPrecio").forEach(btn => {
+        btn.addEventListener("click", async function () {
+            const id       = this.dataset.id;
+            const cartProd = elementosComprados.find(p => p.id === id);
+            const prod     = Productos.find(p => p.id === id);
+            if (!cartProd || !prod) return;
+
+            const nuevoPrecio = cartProd.precio;
+            if (nuevoPrecio === prod.precio) {
+                showNotification("El precio ya está actualizado en el catálogo.", "error");
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+            const productoActualizado = { ...prod, precio: nuevoPrecio };
+            const ok = await saveProductRemote("update", productoActualizado);
+
+            if (ok) {
+                prod.precio = nuevoPrecio; // actualizar en memoria local también
+                showNotification(`Precio de <strong>${prod.nombre}</strong> actualizado a $${nuevoPrecio.toLocaleString()} en el catálogo ✔`);
+                this.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                this.style.background = "#27ae60";
+                this.style.color = "#fff";
+                this.style.borderColor = "#27ae60";
+                setTimeout(() => {
+                    this.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i>`;
+                    this.style.background = "";
+                    this.style.color = "";
+                    this.style.borderColor = "";
+                    this.disabled = false;
+                }, 2000);
+            } else {
+                this.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i>`;
+                this.disabled = false;
+            }
+        });
+    });
+
+    // ── Edición inline de cantidad ────────────────────────────
+    container.querySelectorAll(".inputCantidad").forEach(input => {
+        input.addEventListener("change", function () {
+            const id        = this.dataset.id;
+            const cartProd  = elementosComprados.find(p => p.id === id);
+            const prod      = Productos.find(p => p.id === id);
+            if (!cartProd) return;
+
+            const cantAnterior = cartProd.cantidad;
+            let   cantNueva    = Math.max(1, parseInt(this.value) || 1);
+
+            // Verificar stock disponible
+            if (prod) {
+                const stockDisponible = prod.stock + cantAnterior; // stock real + lo que ya está en carrito
+                if (cantNueva > stockDisponible) {
+                    cantNueva = stockDisponible;
+                    showNotification(`Stock máximo disponible: ${stockDisponible}`, "error");
+                }
+                // Ajustar stock local
+                prod.stock = prod.stock + cantAnterior - cantNueva;
+                const stockEl = document.getElementById(`stock-${id}`);
+                if (stockEl) stockEl.innerHTML = `Stock: ${prod.stock}`;
+                const btnEl = document.getElementById(`btn-${id}`);
+                if (btnEl) {
+                    if (prod.stock <= 0) {
+                        btnEl.innerHTML = "Agotado"; btnEl.classList.remove("ponerCarro");
+                        btnEl.classList.add("disabledButton"); btnEl.disabled = true;
+                    } else {
+                        btnEl.innerHTML = "Agregar a carrito"; btnEl.classList.add("ponerCarro");
+                        btnEl.classList.remove("disabledButton"); btnEl.disabled = false;
+                    }
+                }
+            }
+
+            this.value = cantNueva;
+            cartProd.cantidad = cantNueva;
+            // Actualizar subtotal visual sin re-renderizar
+            const subEl = document.getElementById(`precio-${id}`);
+            if (subEl) subEl.textContent = `$${(cartProd.precio * cantNueva).toLocaleString()}`;
+            totalPersonalizado = null;
+            saveCart();
+            _actualizarTotalUI();
+            recalcularCounter();
+        });
+    });
+
     renderPayResult();
 }
 
 function renderPayResult() {
-    const total      = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    const totalCalc  = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
     const totalUnits = elementosComprados.reduce((s, p) => s + p.cantidad, 0);
+    const totalMostrar = totalPersonalizado !== null ? totalPersonalizado : totalCalc;
     const payEl      = document.getElementById("payresult");
     payEl.innerHTML  = `
-        <h2>Cantidad de Productos: ${totalUnits}</h2>
-        <h2>Precio Total: $${total.toLocaleString()}</h2>
+        <p class="cartUnidades">Productos: <strong>${totalUnits}</strong></p>
+        <div class="totalEditableRow">
+            <label class="totalEditableLabel">Total</label>
+            <div class="totalEditableWrap">
+                <span class="editablePrefix">$</span>
+                <input id="inputTotalVenta" class="inputTotalVenta" type="number" min="0"
+                       value="${totalMostrar}"
+                       title="Editar total de la venta">
+            </div>
+            ${totalPersonalizado !== null ? `<button id="btnResetTotal" class="btnResetTotal" title="Restaurar total calculado">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>` : ""}
+        </div>
         <div class="cartAcciones">
             <button class="pagar" id="btnPagar">Pagar</button>
             <button class="btnGuardarVenta" id="btnGuardarVenta">
@@ -377,6 +516,35 @@ function renderPayResult() {
     document.getElementById("btnPagar").addEventListener("click", pagar);
     document.getElementById("btnGuardarVenta").addEventListener("click", iniciarGuardarVenta);
     document.getElementById("btnVaciarCarrito").addEventListener("click", vaciarCarrito);
+
+    // Edición del total
+    document.getElementById("inputTotalVenta").addEventListener("change", function () {
+        const v = parseFloat(this.value);
+        if (!isNaN(v) && v >= 0) {
+            totalPersonalizado = v;
+        } else {
+            totalPersonalizado = null;
+            this.value = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+        }
+        // Re-render solo el panel de pago para mostrar/ocultar botón reset
+        renderPayResult();
+    });
+
+    const resetBtn = document.getElementById("btnResetTotal");
+    if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+            totalPersonalizado = null;
+            renderPayResult();
+        });
+    }
+}
+
+// Actualiza solo el valor del total sin re-renderizar todo
+function _actualizarTotalUI() {
+    const input = document.getElementById("inputTotalVenta");
+    if (!input || totalPersonalizado !== null) return; // si hay total manual no tocar
+    const totalCalc = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    input.value = totalCalc;
 }
 
 function vaciarCarrito() {
@@ -398,8 +566,9 @@ function vaciarCarrito() {
             }
         });
         // Limpiar venta guardada activa si existía
-        ventaGuardadaActiva = null;
-        elementosComprados  = [];
+        ventaGuardadaActiva  = null;
+        totalPersonalizado   = null;
+        elementosComprados   = [];
         saveCart();
         renderCart();
         recalcularCounter();

@@ -1547,3 +1547,334 @@ footer {
     margin-bottom: 0.4em;
     font-weight: 600;
 }
+
+/* ============================================================
+   EDICIÓN INLINE EN EL CARRITO (precio, cantidad, total)
+   ============================================================ */
+
+/* Fila editable dentro de infoProducto */
+.editableRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0.1em 0;
+}
+
+.subtotalRow {
+    margin-top: 0.25em;
+}
+
+.editableLabel {
+    font-size: 0.8em;
+    color: #888;
+    min-width: 5.5em;
+    flex-shrink: 0;
+}
+
+.editableInputWrap {
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    padding: 0.1em 0.4em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.editableInputWrap:focus-within {
+    border-color: #FDCD00;
+    box-shadow: 0 0 0 2px rgba(253,205,0,0.3);
+}
+
+.editablePrefix {
+    font-size: 0.85em;
+    color: #888;
+    line-height: 1;
+}
+
+.inputPrecio {
+    width: 6em;
+    border: none;
+    outline: none;
+    font-size: 0.9em;
+    font-family: inherit;
+    background: transparent;
+    text-align: right;
+    padding: 0.2em 0;
+}
+
+/* Ocultar spinners del number input en precio */
+.inputPrecio::-webkit-outer-spin-button,
+.inputPrecio::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.inputPrecio[type=number] { -moz-appearance: textfield; }
+
+.subtotalVal {
+    font-size: 0.92em;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Input de cantidad reemplaza el <p> */
+.inputCantidad {
+    width: 3em;
+    height: 1.8em;
+    text-align: center;
+    font-size: 1em;
+    font-weight: 700;
+    border: 1px solid #ccc;
+    border-radius: 0.4em;
+    background: #fff;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputCantidad:focus {
+    outline: none;
+    border-color: #FDCD00;
+    box-shadow: 0 0 0 2px rgba(253,205,0,0.3);
+}
+
+.inputCantidad::-webkit-outer-spin-button,
+.inputCantidad::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.inputCantidad[type=number] { -moz-appearance: textfield; }
+
+/* Total editable en el panel de pago */
+.cartUnidades {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0;
+    align-self: flex-start;
+}
+
+.totalEditableRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    width: 100%;
+    justify-content: center;
+}
+
+.totalEditableLabel {
+    font-size: 1em;
+    font-weight: 700;
+    color: #333;
+}
+
+.totalEditableWrap {
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+    background: #fff;
+    border: 2px solid #FDCD00;
+    border-radius: 0.6em;
+    padding: 0.25em 0.6em;
+    transition: box-shadow 0.2s ease;
+}
+
+.totalEditableWrap:focus-within {
+    box-shadow: 0 0 0 3px rgba(253,205,0,0.4);
+}
+
+.inputTotalVenta {
+    width: 7em;
+    border: none;
+    outline: none;
+    font-size: 1.2em;
+    font-weight: 700;
+    font-family: inherit;
+    background: transparent;
+    text-align: right;
+    color: #27ae60;
+}
+
+.inputTotalVenta::-webkit-outer-spin-button,
+.inputTotalVenta::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.inputTotalVenta[type=number] { -moz-appearance: textfield; }
+
+.btnResetTotal {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 1.8em;
+    height: 1.8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8em;
+    color: #888;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btnResetTotal:hover { background: #FDCD00; color: #333; border-color: #FDCD00; }
+
+/* ============================================================
+   BOTÓN ACTUALIZAR PRECIO EN CATÁLOGO
+   ============================================================ */
+.btnActualizarPrecio {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    padding: 0.2em 0.45em;
+    cursor: pointer;
+    font-size: 0.8em;
+    color: #888;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btnActualizarPrecio:hover { background: #3498db; color: white; border-color: #3498db; }
+
+/* ============================================================
+   MODAL COMPRAS
+   ============================================================ */
+.comprasModal { max-width: 600px; }
+
+.comprasItems {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+    max-height: 40vh;
+    overflow-y: auto;
+    padding: 0.2em 0;
+}
+
+.comprasVacio {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.9em;
+    padding: 1em 0;
+}
+
+.compraItemRow {
+    background: #fdf0b3;
+    border-radius: 0.7em;
+    padding: 0.7em 0.9em;
+    border: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.compraItemTop {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.compraSelectProd {
+    flex: 1;
+    padding: 0.45em 0.7em;
+    border-radius: 0.5em;
+    border: 1px solid #ccc;
+    font-size: 0.9em;
+    font-family: inherit;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+.compraSelectProd:focus { outline: none; border-color: #FDCD00; box-shadow: 0 0 0 2px rgba(253,205,0,0.3); }
+
+.compraItemBottom {
+    display: flex;
+    gap: 0.8em;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.compraField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    flex: 1;
+    min-width: 6em;
+}
+
+.compraField label {
+    font-size: 0.75em;
+    color: #777;
+    font-weight: 600;
+}
+
+.compraSubtotalField { min-width: 7em; }
+
+.compraSubtotal {
+    font-size: 0.95em;
+    color: #27ae60;
+    padding: 0.3em 0;
+}
+
+.compraInputCant,
+.compraInputCosto {
+    padding: 0.4em 0.6em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    font-size: 0.9em;
+    font-family: inherit;
+    background: #fff;
+    width: 100%;
+    transition: border-color 0.2s ease;
+}
+.compraInputCant:focus,
+.compraInputCosto:focus { outline: none; border-color: #FDCD00; box-shadow: 0 0 0 2px rgba(253,205,0,0.3); }
+
+.btnAgregarItemCompra {
+    width: 100%;
+    padding: 0.55em;
+    border: 2px dashed #FDCD00;
+    background: transparent;
+    border-radius: 0.7em;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #8a6e00;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    transition: background 0.2s ease;
+    margin-top: 0.3em;
+}
+.btnAgregarItemCompra:hover { background: #fdf0b3; }
+
+.comprasTotales {
+    background: #f7f7f7;
+    border-radius: 0.7em;
+    padding: 0.8em 1em;
+    border: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-top: 0.3em;
+}
+
+.comprasTotalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95em;
+}
+
+.comprasTotalEditRow {
+    border-top: 1px solid #eee;
+    padding-top: 0.5em;
+    font-weight: 700;
+}
+
+/* Compras select proveedor (mismo estilo que otros selects del proyecto) */
+#comprasProveedor {
+    padding: 0.5em 2.2em 0.5em 0.8em;
+    border-radius: 0.5em;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 0.9em center;
+    appearance: none;
+    cursor: pointer;
+    width: 100%;
+    transition: border-color 0.2s ease;
+    font-family: inherit;
+}
+#comprasProveedor:focus { outline: none; border-color: #FDCD00; box-shadow: 0 0 0 2px rgba(253,205,0,0.3); }

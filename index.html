@@ -11,6 +11,7 @@
     <script src="ventasGuardadas.js" defer></script>
     <script src="crud.js" defer></script>
     <script src="gestion.js" defer></script>
+    <script src="compras.js" defer></script>
 </head>
 
 <body>
@@ -241,6 +242,70 @@
         </div>
     </div>
 
+
+    <!-- ===================== COMPRAS MODAL ===================== -->
+    <div id="comprasOverlay" class="crudOverlay remove">
+        <div id="comprasModal" class="crudModal comprasModal">
+            <div class="crudHeader">
+                <h2><i class="fa-solid fa-cart-flatbed"></i> Registrar Compra</h2>
+                <button id="closeCompras" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Proveedor -->
+            <div class="formRow">
+                <label>Proveedor</label>
+                <select id="comprasProveedor">
+                    <option value="" disabled selected>Selecciona un proveedor</option>
+                </select>
+            </div>
+
+            <!-- Lista de ítems de compra -->
+            <div id="comprasItems" class="comprasItems"></div>
+
+            <!-- Botón agregar ítem -->
+            <button id="comprasAgregarItem" class="btnAgregarItemCompra">
+                <i class="fa-solid fa-plus"></i> Agregar producto
+            </button>
+
+            <!-- Totales -->
+            <div class="comprasTotales">
+                <div class="comprasTotalRow">
+                    <span>Total Calculado</span>
+                    <strong id="comprasTotalCalc">$0</strong>
+                </div>
+                <div class="comprasTotalRow comprasTotalEditRow">
+                    <label for="comprasTotalInput">Total Final</label>
+                    <div class="editableInputWrap">
+                        <span class="editablePrefix">$</span>
+                        <input id="comprasTotalInput" type="number" min="0" placeholder="0"
+                               class="inputTotalVenta" style="width:8em;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acción -->
+            <button id="comprasRegistrar" class="btnConfirmarFinal" style="margin-top:0.5em;">
+                <i class="fa-solid fa-receipt"></i> Registrar Compra
+            </button>
+        </div>
+    </div>
+
+    <!-- ===================== RECIBO COMPRA MODAL ===================== -->
+    <div id="reciboCompraOverlay" class="crudOverlay remove">
+        <div id="reciboCompraModal" class="crudModal facturaModal">
+            <div class="crudHeader">
+                <h2><i class="fa-solid fa-receipt"></i> Recibo de Compra</h2>
+                <button id="closeReciboCompra" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="reciboCompraContenido" class="facturaContenido"></div>
+            <div class="facturaAcciones">
+                <button class="btnConfirmarFinal" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ===================== HEADER ===================== -->
     <div id="contInvi"></div>
     <header class="header2">
@@ -264,8 +329,8 @@
                 </a>
                 <a href="#" id="openGestion" title="Gestión"><span class="txtNav">Gestión </span><i
                         class="fa-solid fa-gears"></i></a>
-                <a href="#footer" title="Ir a contactos"><span class="txtNav">Contacto </span><i
-                        class="fa-solid fa-envelope"></i></a>
+                <a href="#" id="openCompras" title="Registro de compras"><span class="txtNav">Compras </span><i
+                        class="fa-solid fa-cart-flatbed"></i></a>
                 <a href="#" id="openHistorial" title="Historial de ventas"><span class="txtNav">Ventas </span><i
                         class="fa-solid fa-chart-line"></i></a>
                 <a href="#" id="openCrud" title="Gestionar productos"><span class="txtNav">CRUD </span><i

@@ -4,6 +4,7 @@
 //  Hoja "ventas":           id | fecha | metodo | total | cambio | items | cliente
 //  Hoja "clientes":         id | nombre | telefono | correo
 //  Hoja "ventas_guardadas": id | fecha | total | items | cliente
+//  Hoja "compras":          id | fecha | proveedor_id | proveedor_nombre | total | items
 // ============================================================
 
 function doGet(e) {
@@ -28,6 +29,7 @@ function doPost(e) {
     if (resource === "proveedores")      return handleGenerico("proveedores", data, "entidad");
     if (resource === "categorias")       return handleGenerico("categorias",  data, "nombre");
     if (resource === "ventas_guardadas") return handleVentaGuardada(data);
+    if (resource === "compras")           return appendRow("compras", data);
 
     return resp({ success: false, message: "Resource desconocido: " + resource });
   } catch (err) {

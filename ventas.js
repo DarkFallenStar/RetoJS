@@ -88,7 +88,9 @@ const closeVentasBtn = document.getElementById("closeVentas");
 let metodoPagoSeleccionado = null;
 
 function abrirVentasModal() {
-    const total      = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    const totalCalc  = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    const total      = (typeof totalPersonalizado === "number" && totalPersonalizado >= 0)
+                       ? totalPersonalizado : totalCalc;
     const totalUnits = elementosComprados.reduce((s, p) => s + p.cantidad, 0);
 
     document.getElementById("ventasResumen").innerHTML = `
@@ -160,7 +162,10 @@ function seleccionarMetodo(idMetodo) {
 
 function confirmarPago() {
     const metodo = metodoPagoSeleccionado;
-    const total  = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    // Usar total personalizado si el usuario lo editó, si no calcular automáticamente
+    const totalCalc = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    const total     = (typeof totalPersonalizado === "number" && totalPersonalizado >= 0)
+                      ? totalPersonalizado : totalCalc;
 
     if (!metodo) {
         showNotification("Selecciona un método de pago.", "error");
@@ -350,8 +355,9 @@ async function finalizarVenta(metodo, total, cambio, items, cliente = {}, ventaI
         ? ` · Cambio: $${cambio.toLocaleString()}` : "";
     showNotification(`¡Venta confirmada! $${total.toLocaleString()} · ${metodo}${cambioMsg}`);
 
-    elementosComprados = [];
-    ventaGuardadaActiva = null; // la compra se completó → ya no es guardada
+    elementosComprados  = [];
+    ventaGuardadaActiva = null;   // la compra se completó → ya no es guardada
+    totalPersonalizado  = null;   // resetear total manual
     saveCart();
     renderCart();
     recalcularCounter();
