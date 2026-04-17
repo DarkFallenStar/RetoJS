@@ -64,15 +64,36 @@ function handleVentaGuardada(data) {
   // Sin action = guardar nueva fila
   if (!data.action) return appendRow("ventas_guardadas", data);
 
+  if (data.action === "update") {
+    var sheet = getSheet("ventas_guardadas"), values = sheet.getDataRange().getValues();
+    var headers = values[0], idCol = headers.indexOf("id");
+    if (idCol === -1) return resp({ success: false, message: "Columna id no encontrada en ventas_guardadas" });
+    // Normalizar el id buscado: convertir a string y quitar decimales si viene como número
+    var idBuscado = String(data.id).replace(/\.0$/, "");
+    for (var i = 1; i < values.length; i++) {
+      var idFila = String(values[i][idCol]).replace(/\.0$/, "");
+      if (idFila === idBuscado) {
+        var dataToSave = {};
+        for (var key in data) { if (key !== "action") dataToSave[key] = data[key]; }
+        sheet.getRange(i + 1, 1, 1, headers.length).setValues([buildRow(headers, dataToSave)]);
+        return resp({ success: true });
+      }
+    }
+    return resp({ success: false, message: "Venta guardada no encontrada para update: " + data.id });
+  }
+
   if (data.action === "delete") {
     var sheet = getSheet("ventas_guardadas"), values = sheet.getDataRange().getValues();
     var headers = values[0], idCol = headers.indexOf("id");
     if (idCol === -1) return resp({ success: false, message: "Columna id no encontrada en ventas_guardadas" });
+    var idBuscado = String(data.id).replace(/\.0$/, "");
     for (var i = 1; i < values.length; i++) {
-      if (String(values[i][idCol]) === String(data.id)) { sheet.deleteRow(i + 1); return resp({ success: true }); }
+      var idFila = String(values[i][idCol]).replace(/\.0$/, "");
+      if (idFila === idBuscado) { sheet.deleteRow(i + 1); return resp({ success: true }); }
     }
     return resp({ success: false, message: "Venta guardada no encontrada: " + data.id });
   }
+
   return resp({ success: false, message: "Accion desconocida: " + data.action });
 }
 

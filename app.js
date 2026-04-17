@@ -73,20 +73,38 @@ async function saveVentaRemote(venta) {
     }
 }
 
+// Busca cliente por nombre en Sheets; si existe devuelve su id,
+// si no existe lo crea. Siempre devuelve el id usado (o null si falla).
 async function saveClienteRemote(cliente) {
+    const nombreBuscar = (cliente.nombre || "").trim();
     try {
+        if (nombreBuscar && nombreBuscar !== "nulo") {
+            const res  = await fetch(`${GAS_URL}?resource=clientes`);
+            const json = await res.json();
+            if (json.success && json.data) {
+                const existente = json.data.find(c =>
+                    String(c.nombre || "").trim().toLowerCase() === nombreBuscar.toLowerCase()
+                );
+                if (existente) {
+                    // Cliente ya existe → devolver su id sin crear uno nuevo
+                    return Number(existente.id);
+                }
+            }
+        }
+        // Cliente nuevo → crear con id propio
+        const newId = Date.now();
         const payload = {
-            id:       Date.now(),
+            id:       newId,
             nombre:   cliente.nombre   || "nulo",
             telefono: cliente.telefono || "nulo",
             correo:   cliente.correo   || "nulo"
         };
         const json = await gasPost("clientes", payload);
         if (!json.success) throw new Error(json.message || "Error al guardar cliente");
-        return true;
+        return newId;
     } catch (err) {
         console.error("saveClienteRemote:", err);
-        return false;
+        return null;
     }
 }
 
@@ -285,6 +303,23 @@ function renderCart() {
     const emptyEl   = document.getElementById("empty");
     const payEl     = document.getElementById("payresult");
 
+    // ── Actualizar título según tipo de venta ──────────────────
+    const tituloEl = document.getElementById("cartTitulo");
+    const badgeEl  = document.getElementById("cartBadge");
+    if (tituloEl) tituloEl.textContent = "Venta";
+    if (badgeEl) {
+        if (ventaGuardadaActiva) {
+            const nombre = ventaGuardadaActiva.cliente?.nombre &&
+                           ventaGuardadaActiva.cliente.nombre !== "nulo"
+                           ? ventaGuardadaActiva.cliente.nombre : null;
+            badgeEl.innerHTML = nombre
+                ? `<span class="cartBadgeGuardada"><i class="fa-solid fa-bookmark"></i> Guardada · ${nombre}</span>`
+                : `<span class="cartBadgeGuardada"><i class="fa-solid fa-bookmark"></i> Guardada</span>`;
+        } else {
+            badgeEl.innerHTML = `<span class="cartBadgeNueva"><i class="fa-solid fa-plus"></i> Nueva</span>`;
+        }
+    }
+
     container.innerHTML = "";
 
     if (elementosComprados.length === 0) {
@@ -334,10 +369,42 @@ function renderPayResult() {
             <button class="btnGuardarVenta" id="btnGuardarVenta">
                 <i class="fa-solid fa-bookmark"></i> Guardar Venta
             </button>
+            <button class="btnVaciarCarrito" id="btnVaciarCarrito" title="Vaciar venta">
+                <i class="fa-solid fa-trash"></i> Vaciar
+            </button>
         </div>
     `;
     document.getElementById("btnPagar").addEventListener("click", pagar);
     document.getElementById("btnGuardarVenta").addEventListener("click", iniciarGuardarVenta);
+    document.getElementById("btnVaciarCarrito").addEventListener("click", vaciarCarrito);
+}
+
+function vaciarCarrito() {
+    showConfirm("¿Vaciar toda la venta actual?<br>Los productos volverán al stock.", () => {
+        // Devolver stock de todos los items
+        elementosComprados.forEach(item => {
+            const prod = Productos.find(p => p.id === item.id);
+            if (!prod) return;
+            prod.stock += item.cantidad;
+            const stockEl = document.getElementById(`stock-${prod.id}`);
+            if (stockEl) stockEl.innerHTML = `Stock: ${prod.stock}`;
+            const btnEl = document.getElementById(`btn-${prod.id}`);
+            if (btnEl && prod.stock > 0) {
+                btnEl.innerHTML = "Agregar a carrito";
+                btnEl.classList.add("ponerCarro");
+                btnEl.classList.remove("disabledButton");
+                btnEl.disabled = false;
+                btnEl.addEventListener("click", addToCart);
+            }
+        });
+        // Limpiar venta guardada activa si existía
+        ventaGuardadaActiva = null;
+        elementosComprados  = [];
+        saveCart();
+        renderCart();
+        recalcularCounter();
+        showNotification("Venta vaciada. Stock restaurado.");
+    });
 }
 
 function cartAdd(e) {

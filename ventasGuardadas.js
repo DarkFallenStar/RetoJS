@@ -99,7 +99,7 @@ async function renderVentasGuardadas() {
             </div>
             ${clienteHtml}
             <div class="ventaItems">
-                ${(venta.items || []).map(i => `<span class="ventaItemChip">${i.nombre} ×${i.cantidad}</span>`).join("")}
+                ${(venta.items || []).map(i => `<span class="ventaItemChip">${i.nombre || i.id} ×${i.cantidad}</span>`).join("")}
             </div>
             <div class="vgBotones">
                 <button class="btnAbrirVG" data-idx="${idx}">
@@ -146,6 +146,11 @@ function mostrarPopupClienteVG() {
     const existing = document.getElementById("popupVGOverlay");
     if (existing) existing.remove();
 
+    // Si hay una venta guardada activa, pre-llenar con sus datos
+    const safe = v => (v && v !== "nulo") ? v : "";
+    const clientePrevio = ventaGuardadaActiva?.cliente || {};
+    const esActualizacion = !!ventaGuardadaActiva;
+
     const overlay = document.createElement("div");
     overlay.id = "popupVGOverlay";
     overlay.style.cssText = `
@@ -163,19 +168,22 @@ function mostrarPopupClienteVG() {
 
     box.innerHTML = `
         <h3 style="font-size:1.1em;border-bottom:2px solid #FDCD00;padding-bottom:0.4em;">
-            <i class="fa-solid fa-bookmark"></i> Guardar Venta
+            <i class="fa-solid fa-bookmark"></i> ${esActualizacion ? "Actualizar Venta Guardada" : "Guardar Venta"}
         </h3>
+        ${esActualizacion ? '<p style="font-size:0.82em;color:#888;margin:0;background:#fdf0b3;padding:0.4em 0.7em;border-radius:0.5em;">Esta venta ya estaba guardada. Se actualizará con los items actuales del carrito.</p>' : ""}
         <p style="font-size:0.88em;color:#666;margin:0;">
             Datos del Cliente <span style="font-weight:normal;color:#aaa;">(opcional)</span>
         </p>
         <div style="display:flex;flex-direction:column;gap:0.6em;">
-            <input id="vgNombre"   type="text"  placeholder="Nombre"         style="${inputStyle()}">
-            <input id="vgTelefono" type="tel"   placeholder="Teléfono"       style="${inputStyle()}">
-            <input id="vgCorreo"   type="email" placeholder="correo@ej.com"  style="${inputStyle()}">
+            <input id="vgNombre"   type="text"  placeholder="Nombre"        value="${safe(clientePrevio.nombre)}"   style="${inputStyle()}">
+            <input id="vgTelefono" type="tel"   placeholder="Teléfono"      value="${safe(clientePrevio.telefono)}" style="${inputStyle()}">
+            <input id="vgCorreo"   type="email" placeholder="correo@ej.com" value="${safe(clientePrevio.correo)}"   style="${inputStyle()}">
         </div>
         <div style="display:flex;gap:0.7em;margin-top:0.2em;">
             <button id="vgCancelarBtn" style="flex:1;padding:0.65em;border-radius:2em;border:1.5px solid #ccc;background:#f5f5f5;font-size:0.95em;cursor:pointer;font-weight:600;">Cancelar</button>
-            <button id="vgGuardarBtn"  style="flex:1;padding:0.65em;border-radius:2em;border:none;background:#FDCD00;font-size:0.95em;cursor:pointer;font-weight:700;"><i class="fa-solid fa-bookmark"></i> Guardar</button>
+            <button id="vgGuardarBtn"  style="flex:1;padding:0.65em;border-radius:2em;border:none;background:#FDCD00;font-size:0.95em;cursor:pointer;font-weight:700;">
+                <i class="fa-solid fa-bookmark"></i> ${esActualizacion ? "Actualizar" : "Guardar"}
+            </button>
         </div>
     `;
 
@@ -193,7 +201,7 @@ function mostrarPopupClienteVG() {
 
         const btn = overlay.querySelector("#vgGuardarBtn");
         btn.disabled = true;
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Guardando…`;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${esActualizacion ? "Actualizando…" : "Guardando…"}`;
 
         await guardarVentaRemote({ nombre, telefono, correo });
         close();
@@ -205,36 +213,54 @@ function inputStyle() {
 }
 
 async function guardarVentaRemote(cliente) {
-    const id    = Date.now();
     const total = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
-    const items = elementosComprados.map(p => ({ id: p.id, nombre: p.nombre, precio: p.precio, imagen: p.imagen, cantidad: p.cantidad }));
+    // Guardamos id, nombre, cantidad y precio — suficiente para mostrar y reconstruir
+    const itemsMin = elementosComprados.map(p => ({
+        id:       p.id,
+        nombre:   p.nombre,
+        cantidad: p.cantidad,
+        precio:   p.precio
+    }));
     const fecha = new Date().toLocaleString("es-CO");
 
     try {
+        const clienteId = await saveClienteRemote(cliente);
+        const clienteObj = {
+            nombre:   cliente.nombre   || "nulo",
+            telefono: cliente.telefono || "nulo",
+            correo:   cliente.correo   || "nulo"
+        };
+
         const payload = {
-            id,
             fecha,
             total,
-            items:   JSON.stringify(items),
-            cliente: JSON.stringify({
-                nombre:   cliente.nombre   || "nulo",
-                telefono: cliente.telefono || "nulo",
-                correo:   cliente.correo   || "nulo"
-            })
+            items:   JSON.stringify(itemsMin),
+            cliente: JSON.stringify(clienteObj)
         };
-        const json = await gasPost("ventas_guardadas", payload);
-        if (!json.success) throw new Error(json.message);
 
-        // También guardar cliente en hoja clientes
-        saveClienteRemote(cliente);
+        let json;
+        if (ventaGuardadaActiva) {
+            // Ya existe → actualizar la fila existente (no crear una nueva)
+            payload.id     = ventaGuardadaActiva.id;
+            payload.action = "update";
+            json = await gasPost("ventas_guardadas", payload);
+            if (!json.success) throw new Error(json.message);
+            showNotification(`Venta actualizada${cliente.nombre ? " para <strong>" + cliente.nombre + "</strong>" : ""} ✔`);
+        } else {
+            // Nueva venta guardada → id prefijado como string para evitar pérdida de precisión en Sheets
+            payload.id = "VG-" + (clienteId || Date.now());
+            json = await gasPost("ventas_guardadas", payload);
+            if (!json.success) throw new Error(json.message);
+            showNotification(`Venta guardada${cliente.nombre ? " para <strong>" + cliente.nombre + "</strong>" : ""} ✔`);
+        }
 
-        // Limpiar carrito
-        elementosComprados = [];
+        // Al guardar/actualizar se limpia la venta activa y el carrito
+        ventaGuardadaActiva = null;
+        elementosComprados  = [];
         saveCart();
         renderCart();
         recalcularCounter();
 
-        showNotification(`Venta guardada${cliente.nombre ? " para <strong>" + cliente.nombre + "</strong>" : ""} ✔`);
     } catch (err) {
         console.error("guardarVentaRemote:", err);
         showNotification("No se pudo guardar la venta. Intenta de nuevo.", "error");
@@ -258,29 +284,77 @@ function abrirVentaGuardadaEnCarrito(venta) {
 }
 
 function _cargarVentaEnCarrito(venta) {
-    // Restaurar items en el estado global del carrito
-    // Verificamos stock disponible para cada item
-    const itemsRestaurados = [];
-    const advertencias = [];
-
-    venta.items.forEach(item => {
-        const prod = Productos.find(p => p.id === item.id);
-        const cantidadMaxima = prod ? prod.stock + item.cantidad : item.cantidad; // stock actual + lo que se va a poner de vuelta
-
-        if (!prod) {
-            // Producto ya no existe, igual lo ponemos sin verificación de stock
-            itemsRestaurados.push({ ...item });
-            return;
-        }
-
-        // Descontar del stock local la cantidad que se va a poner en carrito
-        const cantidadReal = Math.min(item.cantidad, prod.stock + item.cantidad);
-        prod.stock = prod.stock + item.cantidad - cantidadReal;
-
-        // Actualizar UI del stock
+    // ── Paso 1: devolver al stock lo que había en el carrito actual ─
+    // (por si el usuario tenía items antes de abrir la venta guardada)
+    elementosComprados.forEach(itemActual => {
+        const prod = Productos.find(p => p.id === itemActual.id);
+        if (!prod) return;
+        prod.stock += itemActual.cantidad;
         const stockEl = document.getElementById(`stock-${prod.id}`);
         if (stockEl) stockEl.innerHTML = `Stock: ${prod.stock}`;
+        const btnEl = document.getElementById(`btn-${prod.id}`);
+        if (btnEl && prod.stock > 0) {
+            btnEl.innerHTML = "Agregar a carrito";
+            btnEl.classList.add("ponerCarro");
+            btnEl.classList.remove("disabledButton");
+            btnEl.disabled = false;
+        }
+    });
 
+    // ── Paso 2: reconstruir los items desde Productos (solo id+cantidad guardados) ─
+    const itemsReconstruidos = [];
+    const errores = [];
+
+    venta.items.forEach(itemMin => {
+        const prod = Productos.find(p => p.id === itemMin.id);
+        if (!prod) {
+            errores.push(`"${itemMin.nombre || itemMin.id}" ya no existe en el catálogo`);
+            return;
+        }
+        // El stock disponible es el real actual (ya devolvimos el carrito anterior arriba)
+        if (prod.stock < itemMin.cantidad) {
+            errores.push(`"${prod.nombre}": necesitas ${itemMin.cantidad} pero solo hay ${prod.stock} en stock`);
+            return;
+        }
+        itemsReconstruidos.push({
+            id:       prod.id,
+            nombre:   prod.nombre,   // del catálogo actual (más fresco)
+            precio:   prod.precio,   // precio actual del producto
+            imagen:   prod.imagen,
+            cantidad: itemMin.cantidad
+        });
+    });
+
+    if (errores.length > 0) {
+        // Revertir: volver a descontar los items que habíamos devuelto
+        elementosComprados.forEach(itemActual => {
+            const prod = Productos.find(p => p.id === itemActual.id);
+            if (!prod) return;
+            prod.stock -= itemActual.cantidad;
+            const stockEl = document.getElementById(`stock-${prod.id}`);
+            if (stockEl) stockEl.innerHTML = `Stock: ${prod.stock}`;
+            const btnEl = document.getElementById(`btn-${prod.id}`);
+            if (btnEl && prod.stock <= 0) {
+                btnEl.innerHTML = "Agotado";
+                btnEl.classList.remove("ponerCarro");
+                btnEl.classList.add("disabledButton");
+                btnEl.disabled = true;
+            }
+        });
+        showNotification(
+            `No se pudo abrir la venta:<br>${errores.map(e => `• ${e}`).join("<br>")}`,
+            "error"
+        );
+        return;
+    }
+
+    // ── Paso 3: descontar stock de los items de la venta guardada ──
+    itemsReconstruidos.forEach(item => {
+        const prod = Productos.find(p => p.id === item.id);
+        if (!prod) return;
+        prod.stock -= item.cantidad;
+        const stockEl = document.getElementById(`stock-${prod.id}`);
+        if (stockEl) stockEl.innerHTML = `Stock: ${prod.stock}`;
         const btnEl = document.getElementById(`btn-${prod.id}`);
         if (btnEl) {
             if (prod.stock <= 0) {
@@ -295,33 +369,25 @@ function _cargarVentaEnCarrito(venta) {
                 btnEl.disabled = false;
             }
         }
-
-        if (cantidadReal < item.cantidad) {
-            advertencias.push(`${item.nombre}: solo ${cantidadReal} disponibles`);
-        }
-
-        itemsRestaurados.push({ ...item, cantidad: cantidadReal });
     });
 
-    elementosComprados = itemsRestaurados;
+    // ── Paso 4: cargar en el carrito y guardar metadata ─────────
+    elementosComprados = itemsReconstruidos;
     saveCart();
 
-    // Guardar metadata de la venta guardada para usarla al pagar
     ventaGuardadaActiva = {
         id:      venta.id,
         cliente: venta.cliente,
-        items:   itemsRestaurados
+        items:   elementosComprados
     };
 
     cerrarVentasGuardadasModal();
     renderCart();
     recalcularCounter();
 
-    if (advertencias.length > 0) {
-        showNotification(`Venta cargada. Stock ajustado:<br>${advertencias.join("<br>")}`, "error");
-    } else {
-        showNotification(`Venta de <strong>${venta.cliente?.nombre || "cliente"}</strong> cargada en el carrito ✔`);
-    }
+    const nombreCliente = venta.cliente?.nombre && venta.cliente.nombre !== "nulo"
+        ? venta.cliente.nombre : "cliente";
+    showNotification(`Venta de <strong>${nombreCliente}</strong> cargada en el carrito ✔`);
 }
 
 // ============================================================

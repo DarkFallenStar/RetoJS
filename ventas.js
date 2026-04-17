@@ -257,37 +257,23 @@ function _generarContenidoFactura({ metodo, total, cambio, items, cliente = {}, 
 }
 
 function abrirFacturaModal(metodo, total, cambio) {
-    // ── Si viene de una venta guardada → generar recibo directo ──
-    if (ventaGuardadaActiva) {
-        const { cliente, items } = ventaGuardadaActiva;
-        const facturaNum = "F-" + String(ventaGuardadaActiva.id).slice(-6);
+    // Siempre pedir datos, pero si viene de venta guardada pre-llenar los campos
+    const items = ventaGuardadaActiva
+        ? ventaGuardadaActiva.items
+        : [...elementosComprados];
 
-        _generarContenidoFactura({ metodo, total, cambio, items, cliente, facturaNum });
+    ventaPendiente = { metodo, total, cambio, items };
 
-        document.getElementById("facturaClienteForm").classList.add("remove");
-        document.getElementById("facturaContenido").classList.remove("remove");
-        document.getElementById("facturaAcciones").classList.remove("remove");
-
-        // Guardar en ventas y eliminar la venta guardada
-        finalizarVenta(metodo, total, cambio, items, { ...cliente, facturaNum });
-        updateStockRemote(items);
-        limpiarVentaGuardadaActiva();
-
-        facturaOverlay.classList.remove("remove");
-        void facturaOverlay.offsetWidth;
-        facturaOverlay.classList.add("crudVisible");
-        return;
-    }
-
-    // ── Flujo normal: pedir datos del cliente ──────────────────
-    ventaPendiente = { metodo, total, cambio, items: [...elementosComprados] };
+    // Pre-llenar con datos de la venta guardada si existe
+    const cliente = ventaGuardadaActiva?.cliente || {};
+    const safe = v => (v && v !== "nulo") ? v : "";
+    document.getElementById("clienteNombre").value   = safe(cliente.nombre);
+    document.getElementById("clienteTelefono").value = safe(cliente.telefono);
+    document.getElementById("clienteCorreo").value   = safe(cliente.correo);
 
     document.getElementById("facturaClienteForm").classList.remove("remove");
     document.getElementById("facturaContenido").classList.add("remove");
     document.getElementById("facturaAcciones").classList.add("remove");
-    document.getElementById("clienteNombre").value   = "";
-    document.getElementById("clienteTelefono").value = "";
-    document.getElementById("clienteCorreo").value   = "";
 
     facturaOverlay.classList.remove("remove");
     void facturaOverlay.offsetWidth;
@@ -319,30 +305,39 @@ facturaOverlay.addEventListener("click", e => {
     }
 });
 
-document.getElementById("btnGenerarFactura").addEventListener("click", () => {
+document.getElementById("btnGenerarFactura").addEventListener("click", async () => {
     const nombre   = document.getElementById("clienteNombre").value.trim();
     const telefono = document.getElementById("clienteTelefono").value.trim();
     const correo   = document.getElementById("clienteCorreo").value.trim();
     const { metodo, total, cambio, items } = ventaPendiente;
-    const facturaNum = "F-" + Date.now().toString().slice(-6);
 
-    _generarContenidoFactura({ metodo, total, cambio, items, cliente: { nombre, telefono, correo }, facturaNum });
+    // Obtener (o crear) el cliente y usar su id como id de la venta
+    const clienteData = { nombre, telefono, correo };
+    const clienteId   = await saveClienteRemote(clienteData);
+
+    // id de venta: si hay venta guardada activa se usa su id, si no la del cliente o timestamp
+    const ventaId    = ventaGuardadaActiva ? ventaGuardadaActiva.id
+                     : (clienteId || Date.now());
+    const facturaNum = "F-" + String(ventaId).slice(-6);
+
+    _generarContenidoFactura({ metodo, total, cambio, items, cliente: clienteData, facturaNum });
 
     document.getElementById("facturaClienteForm").classList.add("remove");
     document.getElementById("facturaContenido").classList.remove("remove");
     document.getElementById("facturaAcciones").classList.remove("remove");
 
-    const clienteData = { nombre, telefono, correo };
-    finalizarVenta(metodo, total, cambio, items, { ...clienteData, facturaNum });
-    saveClienteRemote(clienteData);
+    finalizarVenta(metodo, total, cambio, items, { ...clienteData, facturaNum }, ventaId);
     updateStockRemote(items);
+
+    // Si venía de venta guardada, eliminarla de Sheets
+    if (ventaGuardadaActiva) limpiarVentaGuardadaActiva();
 
     ventaPendiente = null;
 });
 
-async function finalizarVenta(metodo, total, cambio, items, cliente = {}) {
+async function finalizarVenta(metodo, total, cambio, items, cliente = {}, ventaId = null) {
     const venta = {
-        id:     Date.now(),
+        id:     ventaId || Date.now(),
         fecha:  new Date().toLocaleString("es-CO"),
         metodo, total, cambio,
         items:  items.map(p => ({ nombre: p.nombre, cantidad: p.cantidad, precio: p.precio })),
