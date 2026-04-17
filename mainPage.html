@@ -6,7 +6,10 @@
     <link rel="stylesheet" href="mainPageStyle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="mainPageScript.js" defer></script>
+    <script src="app.js" defer></script>
+    <script src="ventas.js" defer></script>
+    <script src="ventasGuardadas.js" defer></script>
+    <script src="crud.js" defer></script>
 </head>
 
 <body>
@@ -37,6 +40,18 @@
             </div>
             <div id="historialResumenTop" class="historialResumenTop"></div>
             <div id="historialLista" class="historialLista"></div>
+        </div>
+    </div>
+
+
+    <!-- ===================== VENTAS GUARDADAS MODAL ===================== -->
+    <div id="ventasGuardadasOverlay" class="crudOverlay remove">
+        <div id="ventasGuardadasModal" class="crudModal">
+            <div class="crudHeader">
+                <h2><i class="fa-solid fa-bookmark"></i> Ventas Guardadas</h2>
+                <button id="closeVentasGuardadas" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="vgLista" class="historialLista"></div>
         </div>
     </div>
 
@@ -137,8 +152,8 @@
             <div class="LogoContainer">
                 <a href="https://www.instagram.com/papeleriapapelyluna/" target="_blank">
                     <picture>
-                        <source media="(max-width:1024px)" srcset="PapeleriaPapelYLunaLogo.jpg">
-                        <img src="PapeleriaPapelYLunaBanner.jpg" alt="Logo de la papelería" class="logo" id="logo"
+                        <source media="(max-width:1024px)" srcset="Resources/PapeleriaPapelYLunaLogo.jpg">
+                        <img src="Resources/PapeleriaPapelYLuna.jpg" alt="Logo de la papelería" class="logo" id="logo"
                             title="Ir al Instagram">
                     </picture>
                 </a>

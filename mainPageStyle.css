@@ -1228,3 +1228,174 @@ footer {
     align-items: center;
     gap: 0.5em;
 }
+/* ============================================================
+   CUSTOM CONFIRM DIALOG ANIMATIONS
+   ============================================================ */
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes slideUpModal {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ============================================================
+   EMPTY STATE — productos no disponibles o error de conexión
+   ============================================================ */
+.productsEmptyState {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3em 1em;
+    gap: 0.75em;
+    color: #555;
+}
+
+.productsEmptyState h2 {
+    font-size: 1.4em;
+    color: #333;
+    font-weight: 700;
+}
+
+.productsEmptyState p {
+    font-size: 0.95em;
+    color: #888;
+    line-height: 1.6;
+}
+
+.emptyStateImg {
+    width: 110px;
+    opacity: 0.75;
+    margin-bottom: 0.5em;
+}
+
+.btnRecargar {
+    margin-top: 0.5em;
+    padding: 0.6em 1.6em;
+    border-radius: 2em;
+    border: none;
+    background: #FDCD00;
+    color: #222;
+    font-size: 0.95em;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btnRecargar:hover {
+    background: #e6b800;
+    transform: translateY(-1px);
+}
+
+/* ============================================================
+   ANIMACIONES — popup de confirmación
+   ============================================================ */
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes slideUpModal {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ============================================================
+   VENTAS GUARDADAS — botones del carrito y cards
+   ============================================================ */
+
+/* Contenedor de botones del carrito (Pagar + Guardar Venta) */
+.cartAcciones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    width: 100%;
+}
+
+.btnGuardarVenta {
+    width: 100%;
+    padding: 0.75em;
+    background-color: #fff;
+    color: #333;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+    cursor: pointer;
+    border: 2px solid #FDCD00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.btnGuardarVenta:hover  { background-color: #FDCD00; }
+.btnGuardarVenta:active { transform: translateY(1px); }
+
+/* Tarjeta de venta guardada */
+.vgCard { border-left: 3px solid #FDCD00; }
+
+.vgBotones {
+    display: flex;
+    gap: 0.5em;
+    margin-top: 0.4em;
+    align-items: center;
+}
+
+.btnAbrirVG {
+    flex: 1;
+    background: #FDCD00;
+    border: none;
+    border-radius: 2em;
+    padding: 0.35em 0.9em;
+    font-size: 0.82em;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    transition: background 0.2s, transform 0.1s;
+}
+.btnAbrirVG:hover  { background: #e6b800; }
+.btnAbrirVG:active { transform: translateY(1px); }
+
+.btnEliminarVG {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.82em;
+    color: #888;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+}
+.btnEliminarVG:hover { background: #ff6229; color: white; border-color: #ff6229; }
+
+/* Menú popup del nav de Ventas */
+.ventasMenuItem {
+    width: 100%;
+    padding: 0.85em 1.2em;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.97em;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.15s ease;
+}
+.ventasMenuItem:last-child { border-bottom: none; }
+.ventasMenuItem:hover { background: #fdf0b3; }

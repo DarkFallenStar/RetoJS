@@ -1,0 +1,447 @@
+// ============================================================
+//  app.js — Aplicación General
+//  Contiene: config, capa de datos, notificaciones, popup de
+//  confirmación, carrito, tarjetas de productos, búsqueda e init.
+//
+//  Depende de: ventas.js, ventasGuardadas.js, crud.js
+// ============================================================
+
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxRbuAaS9b4RqwkQWwp72BSWd8L0L9WwrAJ_i5a0djU6zGZc93Kf4MMbmeuJaPK8DsaWA/exec";
+
+let Productos = [];
+let elementosComprados = JSON.parse(sessionStorage.getItem("carrito")) || [];
+
+// ============================================================
+//  DATA LAYER — Google Sheets
+// ============================================================
+
+async function loadProducts() {
+    const res  = await fetch(`${GAS_URL}?resource=productos`);
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message || "Error al cargar productos");
+    Productos = json.data.map(p => ({
+        id:        String(p.id       || p.Id       || ""),
+        nombre:    p.nombre    || p.Nombre    || "",
+        precio:    Number(p.precio    || p.Precio    || 0),
+        stock:     Number(p.stock     || p.Stock     || 0),
+        costo:     Number(p.costo     || p.Costo     || 0),
+        categoria: p.categoria || p.Categoria || "",
+        imagen:    p.imagen    || p.Imagen    || ""
+    }));
+}
+
+async function gasPost(resource, data) {
+    const res = await fetch(`${GAS_URL}?resource=${encodeURIComponent(resource)}`, {
+        method:  "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body:    JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
+
+async function saveProductRemote(action, producto) {
+    try {
+        const json = await gasPost("productos", { action, ...producto });
+        if (!json.success) throw new Error(json.message || "Error al guardar");
+        return true;
+    } catch (err) {
+        console.error("saveProductRemote:", err);
+        showNotification("Error al guardar en Google Sheets. Intenta de nuevo.", "error");
+        return false;
+    }
+}
+
+async function saveVentaRemote(venta) {
+    try {
+        const payload = {
+            id:      venta.id,
+            fecha:   venta.fecha,
+            metodo:  venta.metodo,
+            total:   venta.total,
+            cambio:  venta.cambio,
+            items:   JSON.stringify(venta.items || []),
+            cliente: JSON.stringify(venta.cliente || {})
+        };
+        const json = await gasPost("ventas", payload);
+        if (!json.success) throw new Error(json.message || "Error al registrar venta");
+        return true;
+    } catch (err) {
+        console.error("saveVentaRemote:", err);
+        showNotification("La venta no se pudo registrar en Sheets.", "error");
+        return false;
+    }
+}
+
+async function saveClienteRemote(cliente) {
+    try {
+        const payload = {
+            id:       Date.now(),
+            nombre:   cliente.nombre   || "nulo",
+            telefono: cliente.telefono || "nulo",
+            correo:   cliente.correo   || "nulo"
+        };
+        const json = await gasPost("clientes", payload);
+        if (!json.success) throw new Error(json.message || "Error al guardar cliente");
+        return true;
+    } catch (err) {
+        console.error("saveClienteRemote:", err);
+        return false;
+    }
+}
+
+async function updateStockRemote(items) {
+    for (const item of items) {
+        const prod = Productos.find(p => p.id === item.id);
+        if (!prod) continue;
+        try {
+            await gasPost("productos", { action: "update", ...prod });
+        } catch (err) {
+            console.error("updateStockRemote:", err);
+        }
+    }
+}
+
+// ============================================================
+//  CARRITO — sessionStorage
+// ============================================================
+
+function saveCart() {
+    sessionStorage.setItem("carrito", JSON.stringify(elementosComprados));
+}
+
+// ============================================================
+//  NOTIFICACIONES
+// ============================================================
+
+const alertaNoti = document.getElementById("alertaNoti");
+let timeoutId = null;
+
+function showNotification(mensaje, tipo = "success") {
+    alertaNoti.classList.remove("hide", "remove", "show");
+    void alertaNoti.offsetWidth;
+    alertaNoti.classList.add("show");
+    document.getElementById("alertMsj").innerHTML = mensaje;
+
+    const iconBg = document.getElementById("alertIcon");
+    iconBg.style.backgroundColor = tipo === "error" ? "#e53e3e" : "#17a34a";
+
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+        alertaNoti.classList.remove("show");
+        alertaNoti.classList.add("hide");
+        alertaNoti.addEventListener("animationend", () => {
+            if (!alertaNoti.classList.contains("show")) alertaNoti.classList.add("remove");
+        }, { once: true });
+    }, 3000);
+}
+
+document.getElementById("alertClose").addEventListener("click", () => {
+    if (timeoutId) clearTimeout(timeoutId);
+    alertaNoti.classList.remove("show");
+    alertaNoti.classList.add("hide");
+    alertaNoti.addEventListener("animationend", () => {
+        alertaNoti.classList.add("remove");
+    }, { once: true });
+});
+
+// ============================================================
+//  POPUP DE CONFIRMACIÓN
+// ============================================================
+
+function showConfirm(mensaje, onConfirm, onCancel) {
+    const existing = document.getElementById("customConfirmOverlay");
+    if (existing) existing.remove();
+
+    const overlay = document.createElement("div");
+    overlay.id = "customConfirmOverlay";
+    overlay.style.cssText = `
+        position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;
+        display:flex;align-items:center;justify-content:center;
+        animation:fadeInOverlay 0.2s ease;
+    `;
+
+    const box = document.createElement("div");
+    box.style.cssText = `
+        background:#fff;border-radius:1em;padding:2em 2em 1.5em;
+        max-width:360px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.18);
+        animation:slideUpModal 0.22s ease;text-align:center;
+    `;
+
+    box.innerHTML = `
+        <div style="font-size:2em;margin-bottom:0.4em;">❓</div>
+        <p style="font-size:1em;color:#333;margin-bottom:1.4em;line-height:1.5;">${mensaje}</p>
+        <div style="display:flex;gap:0.8em;justify-content:center;">
+            <button id="confirmNo" style="flex:1;padding:0.65em 1em;border-radius:2em;border:1.5px solid #ccc;background:#f5f5f5;font-size:0.95em;cursor:pointer;font-weight:600;">Cancelar</button>
+            <button id="confirmSi" style="flex:1;padding:0.65em 1em;border-radius:2em;border:none;background:#FDCD00;font-size:0.95em;cursor:pointer;font-weight:700;">Confirmar</button>
+        </div>
+    `;
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    const close = () => overlay.remove();
+    overlay.querySelector("#confirmSi").addEventListener("click", () => { close(); onConfirm && onConfirm(); });
+    overlay.querySelector("#confirmNo").addEventListener("click", () => { close(); onCancel && onCancel(); });
+    overlay.addEventListener("click", e => { if (e.target === overlay) { close(); onCancel && onCancel(); } });
+}
+
+// ============================================================
+//  TARJETAS DE PRODUCTOS + EMPTY STATE
+// ============================================================
+
+function renderProductsEmptyState(tipo = "vacio") {
+    const contenido = document.getElementById("contenido");
+    if (tipo === "error") {
+        contenido.innerHTML = `
+            <div class="productsEmptyState">
+                <img src="https://cdn-icons-png.flaticon.com/512/6195/6195678.png" alt="Error de conexión" class="emptyStateImg">
+                <h2>Sin conexión con la tienda</h2>
+                <p>No pudimos cargar los productos.<br>Revisa tu conexión e intenta de nuevo.</p>
+                <button class="btnRecargar" onclick="location.reload()">
+                    <i class="fa-solid fa-rotate-right"></i> Reintentar
+                </button>
+            </div>`;
+    } else {
+        contenido.innerHTML = `
+            <div class="productsEmptyState">
+                <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="Sin productos" class="emptyStateImg">
+                <h2>No hay productos disponibles</h2>
+                <p>Todavía no se han agregado productos a la tienda.</p>
+                <button class="btnRecargar" onclick="location.reload()">
+                    <i class="fa-solid fa-rotate-right"></i> Actualizar
+                </button>
+            </div>`;
+    }
+}
+
+function crearTarjeta(producto) {
+    const contenedor = document.getElementById("contenido");
+    const tarjeta    = document.createElement("div");
+    tarjeta.classList.add("tarjeta");
+    tarjeta.setAttribute("id", `tarjeta-${producto.id}`);
+    tarjeta.innerHTML = `
+        <div class="imgContainer"><img src="${producto.imagen}" class="imagenProducto" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1178/1178479.png'"></div>
+        <div class="info">
+            ${producto.categoria ? `<span class="categoriaBadge">${producto.categoria}</span>` : ''}
+            <h2>${producto.nombre}</h2>
+            <p id="stock-${producto.id}">Stock: ${producto.stock}</p>
+            <p>Precio: $${producto.precio.toLocaleString()}</p>
+        </div>
+        <button class="ponerCarro ${producto.stock <= 0 ? 'disabledButton' : ''}"
+                id="btn-${producto.id}"
+                data-id="${producto.id}"
+                ${producto.stock <= 0 ? 'disabled' : ''}>
+            ${producto.stock <= 0 ? 'Agotado' : 'Agregar a carrito'}
+        </button>
+    `;
+    contenedor.appendChild(tarjeta);
+    if (producto.stock > 0) {
+        tarjeta.querySelector(`#btn-${producto.id}`).addEventListener("click", addToCart);
+    }
+}
+
+function renderAllCards() {
+    document.getElementById("contenido").innerHTML = "";
+    if (Productos.length === 0) { renderProductsEmptyState("vacio"); return; }
+    Productos.forEach(p => crearTarjeta(p));
+    buscarProductos();
+}
+
+// ============================================================
+//  LÓGICA DEL CARRITO
+// ============================================================
+
+function addToCart(e) {
+    const idProducto = e.target.dataset.id;
+    const producto   = Productos.find(p => p.id === idProducto);
+    if (!producto || producto.stock <= 0) return;
+
+    producto.stock--;
+    document.getElementById(`stock-${producto.id}`).innerHTML = `Stock: ${producto.stock}`;
+
+    if (producto.stock <= 0) {
+        const btn = document.getElementById(`btn-${producto.id}`);
+        btn.innerHTML = "Agotado";
+        btn.classList.remove("ponerCarro");
+        btn.classList.add("disabledButton");
+        btn.disabled = true;
+    }
+
+    const existente = elementosComprados.find(p => p.id === idProducto);
+    if (existente) {
+        existente.cantidad++;
+    } else {
+        elementosComprados.push({ id: producto.id, nombre: producto.nombre, precio: producto.precio, imagen: producto.imagen, cantidad: 1 });
+    }
+    saveCart();
+    renderCart();
+    recalcularCounter();
+    showNotification(`Se añadió: <strong>${producto.nombre}</strong> al carrito`);
+}
+
+function renderCart() {
+    const container = document.getElementById("cartItemsContainer");
+    const emptyEl   = document.getElementById("empty");
+    const payEl     = document.getElementById("payresult");
+
+    container.innerHTML = "";
+
+    if (elementosComprados.length === 0) {
+        emptyEl.style.display = "block";
+        payEl.style.display   = "none";
+        return;
+    }
+
+    emptyEl.style.display = "none";
+    payEl.style.display   = "flex";
+
+    elementosComprados.forEach(producto => {
+        const div = document.createElement("div");
+        div.classList.add("producto");
+        div.innerHTML = `
+            <div class="infoProducto">
+                <h2>${producto.nombre}</h2>
+                <p>Precio Unitario: $${producto.precio.toLocaleString()}</p>
+                <p id="precio-${producto.id}">SubTotal: $${(producto.precio * producto.cantidad).toLocaleString()}</p>
+            </div>
+            <div class="containerBotones" id="cbtns-${producto.id}">
+                <button class="quitar"   data-id="${producto.id}">-</button>
+                <p id="cantidad-${producto.id}"><strong>${producto.cantidad}</strong></p>
+                <button class="agregar"  data-id="${producto.id}">+</button>
+                <button class="eliminar" data-id="${producto.id}">x</button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    container.querySelectorAll(".agregar").forEach(b  => b.addEventListener("click", cartAdd));
+    container.querySelectorAll(".quitar").forEach(b   => b.addEventListener("click", cartRemove));
+    container.querySelectorAll(".eliminar").forEach(b => b.addEventListener("click", cartDelete));
+
+    renderPayResult();
+}
+
+function renderPayResult() {
+    const total      = elementosComprados.reduce((s, p) => s + p.precio * p.cantidad, 0);
+    const totalUnits = elementosComprados.reduce((s, p) => s + p.cantidad, 0);
+    const payEl      = document.getElementById("payresult");
+    payEl.innerHTML  = `
+        <h2>Cantidad de Productos: ${totalUnits}</h2>
+        <h2>Precio Total: $${total.toLocaleString()}</h2>
+        <div class="cartAcciones">
+            <button class="pagar" id="btnPagar">Pagar</button>
+            <button class="btnGuardarVenta" id="btnGuardarVenta">
+                <i class="fa-solid fa-bookmark"></i> Guardar Venta
+            </button>
+        </div>
+    `;
+    document.getElementById("btnPagar").addEventListener("click", pagar);
+    document.getElementById("btnGuardarVenta").addEventListener("click", iniciarGuardarVenta);
+}
+
+function cartAdd(e) {
+    const id       = e.target.dataset.id;
+    const prod     = Productos.find(p => p.id === id);
+    const cartProd = elementosComprados.find(p => p.id === id);
+    if (!cartProd) return;
+    if (prod && prod.stock <= 0) { showNotification(`No hay más stock de <strong>${cartProd.nombre}</strong>`, "error"); return; }
+    cartProd.cantidad++;
+    if (prod) {
+        prod.stock--;
+        document.getElementById(`stock-${id}`).innerHTML = `Stock: ${prod.stock}`;
+        if (prod.stock <= 0) {
+            const btn = document.getElementById(`btn-${id}`);
+            if (btn) { btn.innerHTML = "Agotado"; btn.classList.remove("ponerCarro"); btn.classList.add("disabledButton"); btn.disabled = true; }
+        }
+    }
+    saveCart(); renderCart(); recalcularCounter();
+}
+
+function cartRemove(e) {
+    const id       = e.target.dataset.id;
+    const cartProd = elementosComprados.find(p => p.id === id);
+    const prod     = Productos.find(p => p.id === id);
+    if (!cartProd || cartProd.cantidad <= 1) { showNotification(`No se puede dejar en 0`, "error"); return; }
+    cartProd.cantidad--;
+    if (prod) {
+        prod.stock++;
+        document.getElementById(`stock-${id}`).innerHTML = `Stock: ${prod.stock}`;
+        const btn = document.getElementById(`btn-${id}`);
+        if (btn && prod.stock > 0) { btn.innerHTML = "Agregar a carrito"; btn.classList.add("ponerCarro"); btn.classList.remove("disabledButton"); btn.disabled = false; btn.addEventListener("click", addToCart); }
+    }
+    saveCart(); renderCart(); recalcularCounter();
+}
+
+function cartDelete(e) {
+    const id       = e.target.dataset.id;
+    const cartProd = elementosComprados.find(p => p.id === id);
+    const prod     = Productos.find(p => p.id === id);
+    showConfirm("¿Quitar este producto del carrito?", () => {
+        if (cartProd && prod) {
+            prod.stock += cartProd.cantidad;
+            document.getElementById(`stock-${id}`).innerHTML = `Stock: ${prod.stock}`;
+            const btn = document.getElementById(`btn-${id}`);
+            if (btn && prod.stock > 0) { btn.innerHTML = "Agregar a carrito"; btn.classList.add("ponerCarro"); btn.classList.remove("disabledButton"); btn.disabled = false; btn.addEventListener("click", addToCart); }
+        }
+        elementosComprados = elementosComprados.filter(p => p.id !== id);
+        saveCart(); renderCart(); recalcularCounter();
+    });
+}
+
+function pagar() {
+    if (elementosComprados.length === 0) return;
+    metodoPagoSeleccionado = null;
+    abrirVentasModal();
+}
+
+// ============================================================
+//  CONTADOR
+// ============================================================
+
+function recalcularCounter() {
+    document.getElementById("contador").innerHTML = elementosComprados.reduce((s, p) => s + p.cantidad, 0);
+}
+
+// ============================================================
+//  BUSCADOR
+// ============================================================
+
+let antifiltro = [];
+
+function buscarProductos() {
+    const search = document.getElementById("search");
+    search.removeEventListener("input", handleSearch);
+    search.addEventListener("input", handleSearch);
+}
+
+function handleSearch(e) {
+    const inputText = e.target.value.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const filtro    = Productos.filter(i => i.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(inputText));
+    antifiltro      = Productos.filter(i => !i.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(inputText));
+    filtro.forEach(i => { const t = document.getElementById(`tarjeta-${i.id}`); if (t) { t.classList.remove("remove"); t.classList.add("showDiv"); } });
+    antifiltro.forEach(i => { const t = document.getElementById(`tarjeta-${i.id}`); if (t) t.classList.add("remove"); });
+    toggleEmptyMessage();
+}
+
+function toggleEmptyMessage() {
+    document.getElementById("buscadorVacio").style.display = antifiltro.length === Productos.length ? "block" : "none";
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+
+document.addEventListener("DOMContentLoaded", async () => {
+    document.getElementById("contenido").innerHTML =
+        `<p style="grid-column:1/-1;text-align:center;color:#888;padding:2rem;">Cargando productos…</p>`;
+    try {
+        await loadProducts();
+        renderAllCards();
+    } catch (err) {
+        console.error("Init error:", err);
+        renderProductsEmptyState("error");
+    }
+    renderCart();
+    recalcularCounter();
+});
