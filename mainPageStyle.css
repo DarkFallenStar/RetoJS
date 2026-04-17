@@ -1467,3 +1467,83 @@ footer {
     background: #e74c3c;
     color: white;
 }
+
+/* ============================================================
+   GESTIÓN — módulo de clientes
+   ============================================================ */
+.clientesSearchBox {
+    margin-bottom: 0.6em;
+}
+
+.clientesSearchBox input {
+    width: 100%;
+    padding: 0.55em 1em;
+    border-radius: 2em;
+    border: 1px solid #ccc;
+    font-size: 0.95em;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clientesSearchBox input:focus {
+    outline: none;
+    border-color: #FDCD00;
+    box-shadow: 0 0 0 2px rgba(253,205,0,0.3);
+}
+
+.clienteRow {
+    align-items: flex-start;
+}
+
+.clienteInfo {
+    gap: 0.2em;
+}
+
+.clienteInfo span {
+    font-size: 0.82em;
+    color: #666;
+}
+
+.clienteEditForm {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+.clienteEditInput {
+    width: 100%;
+    padding: 0.45em 0.8em;
+    border-radius: 0.5em;
+    border: 1px solid #ccc;
+    font-size: 0.88em;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+}
+
+.clienteEditInput:focus {
+    outline: none;
+    border-color: #FDCD00;
+    box-shadow: 0 0 0 2px rgba(253,205,0,0.25);
+}
+
+/* ── Formulario de clientes (mismo estilo que crudForm) ── */
+.clienteForm {
+    background: #fdf0b3;
+    border-radius: 0.8em;
+    padding: 1em;
+    border: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    margin-bottom: 0.6em;
+}
+
+.clientesContador {
+    font-size: 0.9em;
+    color: #777;
+    border-bottom: 2px solid #FDCD00;
+    padding-bottom: 0.3em;
+    margin-bottom: 0.4em;
+    font-weight: 600;
+}

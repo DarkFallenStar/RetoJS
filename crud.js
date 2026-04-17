@@ -1,4 +1,53 @@
 // ============================================================
+//  CATEGORÍAS — carga dinámica desde Sheets
+//  También llamada por gestion.js cuando cambian las categorías
+// ============================================================
+
+let _categoriasCache = []; // nombres de categoría desde Sheets
+
+async function loadCategorias() {
+    try {
+        const res  = await fetch(`${GAS_URL}?resource=categorias`);
+        const json = await res.json();
+        if (!json.success) throw new Error(json.message);
+        _categoriasCache = json.data
+            .map(c => String(c.nombre || "").trim())
+            .filter(n => n && n !== "nulo");
+    } catch (err) {
+        console.error("loadCategorias:", err);
+        _categoriasCache = [];
+    }
+    _poblarSelectCategoria();
+}
+
+function _poblarSelectCategoria() {
+    const sel = document.getElementById("formCategoria");
+    if (!sel) return;
+
+    // Guardar valor seleccionado para restaurarlo si ya había uno
+    const valorActual = sel.value;
+
+    // Limpiar y reconstruir
+    sel.innerHTML = `<option value="" disabled selected>Selecciona una categoría</option>`;
+
+    _categoriasCache.forEach(nombre => {
+        const opt = document.createElement("option");
+        opt.value       = nombre;
+        opt.textContent = nombre;
+        sel.appendChild(opt);
+    });
+
+    // Opción "Otro" siempre al final
+    const otroOpt = document.createElement("option");
+    otroOpt.value       = "Otro";
+    otroOpt.textContent = "Otro…";
+    sel.appendChild(otroOpt);
+
+    // Restaurar selección previa si sigue siendo válida
+    if (valorActual) sel.value = valorActual;
+}
+
+// ============================================================
 //  crud.js — Módulo CRUD de Productos
 //  Contiene: modal de gestión, formulario, lista, editar y
 //  eliminar productos.
@@ -16,11 +65,12 @@ const cancelEditBtn = document.getElementById("cancelEdit");
 //  ABRIR / CERRAR MODAL
 // ============================================================
 
-openCrudBtn.addEventListener("click", (e) => {
+openCrudBtn.addEventListener("click", async (e) => {
     e.preventDefault();
     crudOverlay.classList.remove("remove");
     void crudOverlay.offsetWidth;
     crudOverlay.classList.add("crudVisible");
+    await loadCategorias(); // Cargar (o refrescar) categorías desde Sheets
     renderCrudList();
 });
 

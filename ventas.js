@@ -351,6 +351,7 @@ async function finalizarVenta(metodo, total, cambio, items, cliente = {}, ventaI
     showNotification(`¡Venta confirmada! $${total.toLocaleString()} · ${metodo}${cambioMsg}`);
 
     elementosComprados = [];
+    ventaGuardadaActiva = null; // la compra se completó → ya no es guardada
     saveCart();
     renderCart();
     recalcularCounter();

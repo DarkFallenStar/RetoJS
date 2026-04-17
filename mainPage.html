@@ -10,6 +10,7 @@
     <script src="ventas.js" defer></script>
     <script src="ventasGuardadas.js" defer></script>
     <script src="crud.js" defer></script>
+    <script src="gestion.js" defer></script>
 </head>
 
 <body>
@@ -118,10 +119,6 @@
                     <label>Categoría</label>
                     <select id="formCategoria" required>
                         <option value="" disabled selected>Selecciona una categoría</option>
-                        <option value="Papelería">Papelería</option>
-                        <option value="Escritura">Escritura</option>
-                        <option value="Arte">Arte</option>
-                        <option value="Organización">Organización</option>
                         <option value="Otro">Otro…</option>
                     </select>
                     <input type="text" id="formCategoriaCustom" placeholder="Escribe la categoría" class="remove">
@@ -142,6 +139,105 @@
 
             <!-- Product List inside modal -->
             <div id="crudProductList" class="crudProductList"></div>
+        </div>
+    </div>
+
+
+
+    <!-- ===================== PROVEEDORES MODAL ===================== -->
+    <div id="proveedoresOverlay" class="crudOverlay remove">
+        <div id="proveedoresModal" class="crudModal">
+            <div class="crudHeader">
+                <h2><i class="fa-solid fa-truck"></i> Proveedores</h2>
+                <button id="closeProveedores" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="proveedorForm" class="crudForm clienteForm">
+                <input type="hidden" id="proveedorEditId">
+                <div class="formRow">
+                    <label>Entidad</label>
+                    <input type="text" id="proveedorFormEntidad" placeholder="Nombre de la entidad" required>
+                </div>
+                <div class="formRow">
+                    <label>Teléfono</label>
+                    <input type="tel" id="proveedorFormTelefono" placeholder="Número de teléfono">
+                </div>
+                <div class="formRow">
+                    <label>Correo</label>
+                    <input type="email" id="proveedorFormCorreo" placeholder="correo@ejemplo.com">
+                </div>
+                <div class="formButtons">
+                    <button type="button" id="proveedorFormSubmit" class="btnGuardar">Guardar Proveedor</button>
+                    <button type="button" id="proveedorFormCancelar" class="btnCancelar remove">Cancelar Edición</button>
+                </div>
+            </div>
+            <div class="clientesSearchBox">
+                <input type="search" id="proveedoresSearch" placeholder="Buscar proveedor…">
+            </div>
+            <div id="proveedoresLista" class="crudProductList"></div>
+        </div>
+    </div>
+
+    <!-- ===================== CATEGORIAS MODAL ===================== -->
+    <div id="categoriasOverlay" class="crudOverlay remove">
+        <div id="categoriasModal" class="crudModal">
+            <div class="crudHeader">
+                <h2><i class="fa-solid fa-tags"></i> Categorías</h2>
+                <button id="closeCategorias" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="categoriaForm" class="crudForm clienteForm">
+                <input type="hidden" id="categoriaEditId">
+                <div class="formRow">
+                    <label>Categoría</label>
+                    <input type="text" id="categoriaFormNombre" placeholder="Nombre de la categoría" required>
+                </div>
+                <div class="formButtons">
+                    <button type="button" id="categoriaFormSubmit" class="btnGuardar">Guardar Categoría</button>
+                    <button type="button" id="categoriaFormCancelar" class="btnCancelar remove">Cancelar Edición</button>
+                </div>
+            </div>
+            <div class="clientesSearchBox">
+                <input type="search" id="categoriasSearch" placeholder="Buscar categoría…">
+            </div>
+            <div id="categoriasLista" class="crudProductList"></div>
+        </div>
+    </div>
+
+    <!-- ===================== CLIENTES MODAL ===================== -->
+    <div id="clientesOverlay" class="crudOverlay remove">
+        <div id="clientesModal" class="crudModal">
+            <div class="crudHeader">
+                <h2><i class="fa-solid fa-users"></i> Clientes</h2>
+                <button id="closeClientes" class="closeCrudBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Formulario crear/editar -->
+            <div id="clienteForm" class="crudForm clienteForm">
+                <input type="hidden" id="clienteEditId">
+                <div class="formRow">
+                    <label>Nombre</label>
+                    <input type="text" id="clienteFormNombre" placeholder="Nombre del cliente" required>
+                </div>
+                <div class="formRow">
+                    <label>Teléfono</label>
+                    <input type="tel" id="clienteFormTelefono" placeholder="Número de teléfono">
+                </div>
+                <div class="formRow">
+                    <label>Correo</label>
+                    <input type="email" id="clienteFormCorreo" placeholder="correo@ejemplo.com">
+                </div>
+                <div class="formButtons">
+                    <button type="button" id="clienteFormSubmit" class="btnGuardar">Guardar Cliente</button>
+                    <button type="button" id="clienteFormCancelar" class="btnCancelar remove">Cancelar Edición</button>
+                </div>
+            </div>
+
+            <!-- Buscador -->
+            <div class="clientesSearchBox">
+                <input type="search" id="clientesSearch" placeholder="Buscar cliente…">
+            </div>
+
+            <!-- Lista -->
+            <div id="clientesLista" class="crudProductList"></div>
         </div>
     </div>
 
@@ -166,8 +262,8 @@
                         class="fa-solid fa-basket-shopping" id="icono"></i>
                     <p id="contador">0</p>
                 </a>
-                <a href="#contInvi" title="Ir a inicio"><span class="txtNav">Inicio </span><i
-                        class="fa-solid fa-house"></i></a>
+                <a href="#" id="openGestion" title="Gestión"><span class="txtNav">Gestión </span><i
+                        class="fa-solid fa-gears"></i></a>
                 <a href="#footer" title="Ir a contactos"><span class="txtNav">Contacto </span><i
                         class="fa-solid fa-envelope"></i></a>
                 <a href="#" id="openHistorial" title="Historial de ventas"><span class="txtNav">Ventas </span><i
